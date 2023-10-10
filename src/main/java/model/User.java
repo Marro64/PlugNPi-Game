@@ -1,5 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
     private int uid;
     private String username;
@@ -7,7 +11,11 @@ public class User {
     private String password;
     private UserType usertype;
 
-    public User(int uid, String username, String email, String password, UserType usertype) {
+    public User(@JsonProperty("uid") int uid,
+                @JsonProperty("username") String username,
+                @JsonProperty("email") String email,
+                @JsonProperty("password") String password,
+                @JsonProperty("usertype") UserType usertype) {
         this.uid = uid;
         this.username = username;
         this.email = email;
