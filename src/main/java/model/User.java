@@ -1,9 +1,6 @@
 package model;
+import org.mindrot.jbcrypt.BCrypt;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class User {
     private int uid;
     private String username;
@@ -11,15 +8,15 @@ public class User {
     private String password;
     private UserType usertype;
 
-    public User(@JsonProperty("uid") int uid,
-                @JsonProperty("username") String username,
-                @JsonProperty("email") String email,
-                @JsonProperty("password") String password,
-                @JsonProperty("usertype") UserType usertype) {
+    public User(){
+
+    }
+
+    public User(int uid, String username, String email, String password, UserType usertype) {
         this.uid = uid;
         this.username = username;
         this.email = email;
-        this.password = password;
+        setPassword(password);
         this.usertype = usertype;
     }
 
@@ -52,7 +49,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = encryptPassword(password);
     }
 
     public UserType getUser_type() {
@@ -72,6 +69,11 @@ public class User {
                 ", password='" + password + '\'' +
                 ", user_type=" + usertype +
                 '}';
+    }
+     private String encryptPassword(String plainPassword) {
+
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+
     }
 }
 
