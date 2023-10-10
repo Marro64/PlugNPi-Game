@@ -12,14 +12,14 @@ public enum UserDao {
 
     public boolean UserExists(String username){
         JsonArray userExistsQuery =
-                ORM.executeQuery("SELECT id FROM public.user WHERE phone = ?",
+                ORM.executeQuery("SELECT u_id FROM project.account WHERE username = ?",
                         username);
 
         return userExistsQuery != null && userExistsQuery.size() != 0;
     }
 
     public JsonObject getByUsername(String username){
-        JsonArray userQuery = ORM.executeQuery("SELECT uid, password FROM public.user WHERE username = ?",
+        JsonArray userQuery = ORM.executeQuery("SELECT u_id, password FROM project.account WHERE username = ?",
                 username);
 
         if (userQuery == null || userQuery.size() == 0) return null;
