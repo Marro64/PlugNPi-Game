@@ -11,7 +11,7 @@ public class User {
     private String password;
     private UserType usertype;
 
-    public User(@JsonProperty("uid") int uid,
+    public User(@JsonProperty("u_id") int uid,
                 @JsonProperty("username") String username,
                 @JsonProperty("email") String email,
                 @JsonProperty("password") String password,
