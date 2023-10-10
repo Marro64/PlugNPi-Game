@@ -2,6 +2,7 @@ package resources;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -18,6 +19,9 @@ public class UserResources {
 
     @Context
     UriInfo uriInfo;
+
+    @Context
+    private ContainerRequestContext requestContext;
 
     @Context
     private HttpServletRequest request;
