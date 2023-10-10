@@ -2,16 +2,15 @@ package resources;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.*;
 import model.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Path("/users")
-public class UserResources {
+public class UsersResources {
 
     @Context
     UriInfo uriInfo;
