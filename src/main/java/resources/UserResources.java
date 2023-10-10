@@ -4,9 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import model.User;
+import dao.UserDao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +25,14 @@ public class UserResources {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String createAccount(User user) {
-        //TODO HASH PASSWORD
-        //TODO Create query for users
-        return "Successfully created user";
+       // int u_id = (int) requestContext.getProperty("u_id");
+           // if(UserDao.INSTANCE.UserExists(user.getUsername()))
+            {
+
+            }
+            return " ";
     }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
