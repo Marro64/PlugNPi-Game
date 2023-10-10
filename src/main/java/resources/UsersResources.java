@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/users")
-public class UserResources {
+public class UsersResources {
 
     @Context
     UriInfo uriInfo;
