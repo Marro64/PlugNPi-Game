@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import db.ORM;
 import jakarta.ws.rs.core.Response;
 import model.User;
+import model.UserSignup;
 
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public enum UserDao {
         JsonArray userExistsQuery =
                 ORM.executeQuery("SELECT u_id FROM project.account WHERE username = ?",
                         username);
-
+        System.out.println("User exists: " + (userExistsQuery != null && userExistsQuery.size() != 0));
         return userExistsQuery != null && userExistsQuery.size() != 0;
     }
 
@@ -27,7 +28,7 @@ public enum UserDao {
 
         return (JsonObject) userQuery.get(0);
     }
-    public int addUser(User user) {
+    public int addUser(UserSignup user) {
         JsonArray addUserQuerry =  ORM.executeQuery(
                 "INSERT INTO project.account " +
                 "(username, email, password) " +

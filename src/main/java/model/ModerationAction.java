@@ -1,5 +1,8 @@
 package model;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ModerationAction {
     int aid;
     int pid;

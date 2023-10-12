@@ -26,12 +26,18 @@ public class SessionFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext request) {
+        System.out.println("new request!");
         Cookie session = request.getCookies().get(COOKIE_SESSION);
+
+        //TESTING BLOCK FOR API CALLS: REMOVE WHEN YOU WANT TO TEST SESSIONS
+        if (session == null) {
+            return;
+        }
 
         if (session == null) { //No session, user wants to login or signup
             System.out.println("No session");
             System.out.println(request.getUriInfo().getRequestUri().getPath());
-            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session") || request.getUriInfo().getRequestUri().getPath().equals("/actfact/api/users/")) {
+            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || request.getUriInfo().getRequestUri().getPath().equals("/actfact/api/users/")) {
                 if (request.getMethod().equals("POST")) {
                     return; // Allow the request to continue processing
                 }
@@ -42,18 +48,18 @@ public class SessionFilter implements ContainerRequestFilter {
         } else if (verifySession(session.getValue())) { //Valid session to any destination but not login
             //Session is still valid
             httprequest.setAttribute("session",session.getValue());
-            if(!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session")) {
+            if(!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session")) {
                 User user = new User();//TODO Query the user
                 System.out.println("SESSION: " + user.getEmail());
                 httprequest.setAttribute("user", user);
-            } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/logout")) {
+            } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session/logout")) {
                 httprequest.setAttribute("session", session.getValue());
             } else {
                 //TODO remove session on DB
                 //queries.deleteSession(session.getValue()); //Removes existing cookie if the user wants to login again (which will give them a new cookie) TODO REMOVE COOKIE IN JS
             }
             return; // Allow the request to continue processing
-        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/"))) { //Session already there but to login/signup
+        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/"))) { //Session already there but to login/signup
             //Previous check guarantees that an invalid session is removed
             if (request.getMethod().equals("POST")) {
                 System.out.println("login attempt on existing cookie");

@@ -9,8 +9,9 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import model.User;
 import dao.UserDao;
+import model.UserLogin;
+import model.UserSignup;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +29,17 @@ public class UsersResources {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createAccount(User user) {
-       // int u_id = (int) requestContext.getProperty("u_id");
-           // if(UserDao.INSTANCE.UserExists(user.getUsername()))
-            {
-
-            }
-            return " ";
+    public Response createAccount(UserSignup user) {
+        System.out.println(user.getPassword());
+        System.out.println(user.getUsername());
+        if(UserDao.INSTANCE.UserExists(user.getUsername())) {
+            System.out.println("user exists");
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }else {
+            UserDao.INSTANCE.addUser(user);
+            System.out.println("created new user");
+            return Response.ok().build();
+        }
     }
 
 
