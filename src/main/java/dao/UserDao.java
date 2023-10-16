@@ -5,8 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.ORM;
 import jakarta.ws.rs.core.Response;
+import model.ModerationType;
 import model.User;
 import model.UserSignup;
+import model.UserType;
 
 import java.util.Date;
 
@@ -32,7 +34,7 @@ public enum UserDao {
 
 
     public JsonObject getByUsername(String username){
-        JsonArray userQuery = ORM.executeQuery("SELECT u_id, password FROM project.account WHERE username = ?",
+        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.account WHERE username = ?",
                 username);
 
         if (userQuery == null || userQuery.size() == 0) return null;
@@ -56,7 +58,7 @@ public enum UserDao {
     //different method for admin that only they can access.
     public void deleteUser(User user) {
         JsonArray deleteUserQuerry =  ORM.executeQuery(
-                "CASCADE DELETE FROM project.account " +
+                "DELETE FROM project.account " +
                 "WHERE u_id = ?",
                 user.getUid());
     }
@@ -80,11 +82,23 @@ public enum UserDao {
     }
     public void jsonToUser(JsonObject jsonObject, User user )
     {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            user = objectMapper.readValue(jsonObject.toString(), User.class);
-        } catch (Exception e) {
+        user.setUsername(jsonObject.get("username").getAsString());
+        user.setEmail(jsonObject.get("email").getAsString());
+        user.setPassword(jsonObject.get("password").getAsString());
+        user.setU_id(jsonObject.get("u_id").getAsInt());
+        System.out.println("Checking user type next:");
+        user.setUser_type(convertStringToEnum(jsonObject.get("u_type").toString()));
+    }
+
+    public UserType convertStringToEnum(String utype) {
+        System.out.println(utype);
+        if(utype.equals("\"ADMIN\"")) {
+            return UserType.ADMIN;
+        } else if (utype.equals("\"PLAYER\"")) {
+            System.out.println("we have a player");
+            return UserType.PLAYER;
         }
+        return null;
     }
 
 

@@ -3,10 +3,7 @@ package resources;
 import com.google.gson.JsonObject;
 import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -50,12 +47,14 @@ public class UserResource {
      * @return
      */
     @Path("/permissions")
-    @GET
+    @PUT
     public Response switchPermissions() {
-        User admin = (User) req.getAttribute("user");
-        //User user = uQueries.getSingleUser(email);
-        if(admin.getUser_type().equals(UserType.ADMIN)) {
-            //TODO Query to update perms
+//        User admin = (User) req.getAttribute("user");
+        User userAffected = new User();
+        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
+        UserDao.INSTANCE.jsonToUser(jsonObject, userAffected);
+        if(true) {
+            UserDao.INSTANCE.changeUserRole(userAffected);
             return Response.ok().build();
         }else {
             return Response.status(Response.Status.FORBIDDEN).build(); //Used to handle invalid actions (check js)
@@ -69,6 +68,7 @@ public class UserResource {
         System.out.println(username);
         JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
         UserDao.INSTANCE.jsonToUser(jsonObject, user);
+        System.out.println(user.getUsername());
         if(UserDao.INSTANCE.UserExists(user))
         {
             UserDao.INSTANCE.deleteUser(user);
@@ -76,8 +76,5 @@ public class UserResource {
         }else{
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-
-
-
     }
 }
