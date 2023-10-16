@@ -54,7 +54,6 @@ public enum UserDao {
 
 
 
-//TODO find out how this shit works with deletion and storing
     //different method for admin that only they can access.
     public void deleteUser(User user) {
         JsonArray deleteUserQuerry =  ORM.executeQuery(
@@ -72,6 +71,20 @@ public enum UserDao {
 
 
     }
+    public void changeUserRole(User user)
+    {
+        if(user.getUser_type() != null && user.getUser_type() == UserType.PLAYER ) {
+
+            JsonArray updateUserQuerry = ORM.executeQuery(
+                    "UPDATE project.account SET u_type = ?::project.u_type WHERE u_id = ? ",
+                    "ADMIN", user.getUid());
+        } else if (user.getUser_type() != null && user.getUser_type() == UserType.ADMIN) {
+            JsonArray updateUserQuerry = ORM.executeQuery(
+            "UPDATE project.account SET u_type = ?::project.u_type WHERE u_id = ?",
+                    "PLAYER", user.getUid());
+        }
+    }
+
     public JsonObject getUser(int id)
     {
         JsonArray userQuery = ORM.executeQuery("SELECT username, email, password FROM project.account WHERE u_id = ?",
