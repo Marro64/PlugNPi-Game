@@ -1,0 +1,14 @@
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/bin/Debug/net7.0/PiKinect
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/bin/Debug/net7.0/PiKinect.deps.json
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/bin/Debug/net7.0/PiKinect.runtimeconfig.json
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/bin/Debug/net7.0/PiKinect.dll
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/bin/Debug/net7.0/PiKinect.pdb
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.GeneratedMSBuildEditorConfig.editorconfig
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.AssemblyInfoInputs.cache
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.AssemblyInfo.cs
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.csproj.CoreCompileInputs.cache
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.dll
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/refint/PiKinect.dll
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.pdb
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/PiKinect.genruntimeconfig.cache
+/home/marro/project/cs23-26-main/PiKinect/PiKinect/obj/Debug/net7.0/ref/PiKinect.dll
