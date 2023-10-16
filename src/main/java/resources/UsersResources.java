@@ -32,7 +32,10 @@ public class UsersResources {
     public Response createAccount(UserSignup user) {
         System.out.println(user.getPassword());
         System.out.println(user.getUsername());
-        if(UserDao.INSTANCE.UserExists(user.getUsername())) {
+        User newUser = new User();
+        newUser.setEmail(user.getEmail());
+        newUser.setUsername(user.getUsername());
+        if(UserDao.INSTANCE.UserExists(newUser)) {
             System.out.println("user exists");
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }else {

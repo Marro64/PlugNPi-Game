@@ -1,6 +1,11 @@
 package model;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@XmlRootElement
 public class User {
     private int uid;
     private String username;
@@ -49,7 +54,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = encryptPassword(password);
+        this.password = password;
     }
 
     public UserType getUser_type() {
@@ -59,6 +64,16 @@ public class User {
     public void setUser_type(UserType usertype) {
         this.usertype = usertype;
     }
+
+    public String getSalt() {
+        int dotIndex = password.indexOf('.');
+        if (dotIndex != -1) {
+            return password.substring(0, dotIndex + 1);
+        } else {
+            return null;
+        }
+    }
+
 
     @Override
     public String toString() {
@@ -70,10 +85,6 @@ public class User {
                 ", user_type=" + usertype +
                 '}';
     }
-     private String encryptPassword(String plainPassword) {
 
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
-
-    }
 }
 

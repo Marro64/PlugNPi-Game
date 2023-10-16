@@ -12,13 +12,23 @@ import java.util.Date;
 public enum UserDao {
     INSTANCE;
 
-    public boolean UserExists(String username){
-        JsonArray userExistsQuery =
-                ORM.executeQuery("SELECT u_id FROM project.account WHERE username = ?",
-                        username);
+    public boolean UserExists(User user) {
+        String username = user.getUsername();
+        String email = user.getEmail();
+        // Build the SQL query to check if a user with the given username and email exists
+        String query = "SELECT u_id FROM project.account WHERE username = ? OR email = ?";
+
+        // Execute the query with the provided username and email
+        JsonArray userExistsQuery = ORM.executeQuery(query, username, email);
+        System.out.println("size of return: " + userExistsQuery.size());
+
+        // Check if the query returned any results
         System.out.println("User exists: " + (userExistsQuery != null && userExistsQuery.size() != 0));
+
+        // Return true if the query found a matching user, otherwise return false
         return userExistsQuery != null && userExistsQuery.size() != 0;
     }
+
 
     public JsonObject getByUsername(String username){
         JsonArray userQuery = ORM.executeQuery("SELECT u_id, password FROM project.account WHERE username = ?",
@@ -28,6 +38,7 @@ public enum UserDao {
 
         return (JsonObject) userQuery.get(0);
     }
+
     public int addUser(UserSignup user) {
         JsonArray addUserQuerry =  ORM.executeQuery(
                 "INSERT INTO project.account " +

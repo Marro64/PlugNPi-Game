@@ -23,10 +23,10 @@ public class UserResource {
 
     private final String email;
 
-    public UserResource(UriInfo info, HttpServletRequest req, String email) {
+    public UserResource(UriInfo info, HttpServletRequest req, String username) {
         this.info = info;
         this.req =  req;
-        this.email = email;
+        this.username = username;
     }
 
     @GET

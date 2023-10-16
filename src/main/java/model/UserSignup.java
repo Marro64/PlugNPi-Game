@@ -3,6 +3,10 @@ package model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @XmlRootElement
 public class UserSignup {
     private String username;
@@ -32,7 +36,7 @@ public class UserSignup {
     }
 
     public void setPassword(String password) {
-        this.password = encryptPassword(password);
+        this.password = SecurityFactory.createPassword(password);
     }
 
     public String getEmail() {
@@ -41,12 +45,6 @@ public class UserSignup {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    private String encryptPassword(String plainPassword) {
-
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
-
     }
 
 

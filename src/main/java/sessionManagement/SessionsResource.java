@@ -1,12 +1,17 @@
 package sessionManagement;
 
+import com.google.gson.JsonObject;
+import dao.SessionDao;
+import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.*;
+import model.SecurityFactory;
 import model.User;
+import model.UserLogin;
 
 import java.time.LocalDateTime;
 
@@ -25,22 +30,30 @@ public class SessionsResource {
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response tryLogin(User user) {
-        System.out.println("Login for: " + user.getEmail());
-        //Takes user object which already has an auto hasher
-        String hashedPassword = user.getPassword(); //TODO check if this matches up
-        boolean login = true; //TODO have query that validates login and takes password as argument
-        if(login) {
-            //String sessionId = CookieMaker.generateSession(); //generate id
-            LocalDateTime expiry = LocalDateTime.now().plusHours(3); //set time
-            //sQueries.createSession(sessionId,user.getEmail(),expiry); //TODO Insert session into DB
-            //User loggedIn = uQueries.getSingleUser(user.getEmail()); //Also return whether the user is an admin or not
-            User loggedIn = new User();
-            //NewCookie cookie = CookieMaker.createSession(sessionId,expiry);
-            NewCookie cookie = CreateCookie.createSession("test",expiry);
-            return Response.ok(loggedIn).cookie(cookie).build();
+    public Response tryLogin(UserLogin user) {
+        //ALLOW THEM TO LOGIN USING USERNAME OR PASSWORD
+        System.out.println("Login for: " + user.getUsername());
+        String passwordToCheck = user.getPassword(); //this is a normal input, needs to be hashed and salted
+        JsonObject dbUser = UserDao.INSTANCE.getByUsername(user.getUsername());
+
+        if(dbUser != null) {
+            int uid = dbUser.get("u_id").getAsInt();
+            String pw = dbUser.get("password").getAsString();
+            String salt = SecurityFactory.getSalt(pw);
+
+            boolean login = SecurityFactory.encryptPassword(passwordToCheck, salt).equals(pw);
+            if (login) {
+                String sessionId = CreateCookie.generateSession(); //generate id
+                LocalDateTime expiry = LocalDateTime.now().plusHours(3); //set time
+                SessionDao.INSTANCE.addSession(sessionId, uid);
+                User loggedIn = new User();
+                NewCookie cookie = CreateCookie.createSession(sessionId, expiry);
+                return Response.ok(uid).cookie(cookie).build();
+            }
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     /**
@@ -68,13 +81,15 @@ public class SessionsResource {
         String session = (String) httprequest.getAttribute("session");
         System.out.println("SESSION: " + session);
         if(session != null) {
-            //sQueries.deleteSession(session); //Remove session from DB
+            SessionDao.deleteSession(session); //Remove session from DB
             NewCookie cookie = new NewCookie("sessionId", session, "/", null, null, 0, false);
             System.out.println("logout cookie");
-            return Response.ok().cookie(cookie).build();
+            return Response.ok().cookie(cookie).build(); //cancels out the existing cookie
         }else {
             System.out.println("NOT LOGGED IN");
             return Response.ok(Response.Status.UNAUTHORIZED).build(); //Can't log out if you aren't logged in
         }
     }
+
+
 }
