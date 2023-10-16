@@ -31,6 +31,7 @@ public class SessionsResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response tryLogin(UserLogin user) {
+        System.out.println("hi");
         //ALLOW THEM TO LOGIN USING USERNAME OR PASSWORD
         System.out.println("Login for: " + user.getUsername());
         String passwordToCheck = user.getPassword(); //this is a normal input, needs to be hashed and salted
