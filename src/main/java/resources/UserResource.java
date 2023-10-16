@@ -21,7 +21,7 @@ public class UserResource {
     @Context
     private HttpServletRequest req;
 
-    private final String email;
+    private final String username;
 
     public UserResource(UriInfo info, HttpServletRequest req, String username) {
         this.info = info;

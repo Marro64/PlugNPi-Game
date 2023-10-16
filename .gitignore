@@ -1,0 +1,9 @@
+/.idea
+/changelog.docx
+/changelog.pdf
+/*.iml
+/PiKinect/PiKinect
+PiKinect.sln
+/PiKinectC
+/.vscode
+/target
