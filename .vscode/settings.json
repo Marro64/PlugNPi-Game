@@ -1,3 +1,5 @@
 {
-    "dotnet.defaultSolution": "PiKinect.sln"
+    "files.associations": {
+        "libfreenect.h": "c"
+    }
 }

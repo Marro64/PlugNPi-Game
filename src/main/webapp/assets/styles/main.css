@@ -1,0 +1,41 @@
+.step-info::after {
+    background-color: #60a5fa !important;
+}
+
+.step-info::before {
+    background-color: #60a5fa !important;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #60a5fa !important;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    transition: all 200ms ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    background: #3b82f6 !important;
+}
+
+/* Styling for phone number input */
+.iti {
+    width: 100%;
+    display: block;
+}
+
+.iti__flag-container {
+    width: 58px;
+    max-height: 48px;
+}
+
+.iti__selected-flag {
+    padding-left: 16px;
+    transition: all 0.2s ease;
+    border-radius: 5px;
+}
+
+.iti--allow-dropdown input {
+    padding-left: 64px !important;
+}
