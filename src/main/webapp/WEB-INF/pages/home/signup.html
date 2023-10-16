@@ -102,7 +102,7 @@
 <div style="text-align: center;" class="flex flex-col h-screen">
     <!-- Header navigation bar -->
     <div>
-        <plug-navbar></plug-navbar>
+        <plug-navbar />
     </div>
 
     <!-- Page main content part -->
@@ -134,8 +134,8 @@
                         <span class="label-text">Email</span>
                     </label>
 
-                    <input type="text" id="email" name="Email"
-                           class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
+                    <label for="email"></label><input type="text" id="email" name="Email"
+                                                      class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
                 </div>
 
                 <div class="form-group">
@@ -162,7 +162,7 @@
                                 class="text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">terms
                             and conditions</a></p>
 
-                        <input type="checkbox" class="checkbox" id="terms-conditions-checkbox" />
+                        <label for="terms-conditions-checkbox"></label><input type="checkbox" class="checkbox" id="terms-conditions-checkbox" />
                     </div>
 
                     <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
