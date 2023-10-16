@@ -64,6 +64,9 @@ public class UsersResources {
         return users;
     }
 
+
+
+
     @Path("/{username}")
     public UserResource getUser(@PathParam("username") String id) {
         return new UserResource(uriInfo, request, id);

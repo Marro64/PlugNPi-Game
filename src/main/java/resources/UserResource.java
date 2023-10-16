@@ -1,5 +1,7 @@
 package resources;
 
+import com.google.gson.JsonObject;
+import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -63,7 +65,19 @@ public class UserResource {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser() {
-        //TODO Query to delete user.
-        return Response.ok().build();
+        User user = new User();
+        System.out.println(username);
+        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
+        UserDao.INSTANCE.jsonToUser(jsonObject, user);
+        if(UserDao.INSTANCE.UserExists(user))
+        {
+            UserDao.INSTANCE.deleteUser(user);
+            return Response.ok().build();
+        }else{
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 package dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.ORM;
@@ -69,6 +70,25 @@ public enum UserDao {
 
 
     }
+    public JsonObject getUser(int id)
+    {
+        JsonArray userQuery = ORM.executeQuery("SELECT username, email, password FROM project.account WHERE u_id = ?",
+                id);
+        if (userQuery == null || userQuery.size() == 0) return null;
+
+        return (JsonObject) userQuery.get(0);
+    }
+    public void jsonToUser(JsonObject jsonObject, User user )
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            user = objectMapper.readValue(jsonObject.toString(), User.class);
+        } catch (Exception e) {
+        }
+    }
 
 
 }
+
+
+
