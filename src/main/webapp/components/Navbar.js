@@ -33,7 +33,7 @@ class Navbar extends HTMLElement {
                                 </ul>
                             </div>
                         </div>
-                        <!- Profile Icon -->
+                        <!-- Profile Icon -->
                         <div class="flex">
                             <div class="avatar placeholder">
                                 <div class="btn btn-ghost btn-circle bg-neutral-focus text-neutral-content w-12">
