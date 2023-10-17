@@ -5,8 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.ORM;
 import jakarta.ws.rs.core.Response;
+import model.ModerationType;
 import model.User;
 import model.UserSignup;
+import model.UserType;
 
 import java.util.Date;
 
@@ -32,7 +34,7 @@ public enum UserDao {
 
 
     public JsonObject getByUsername(String username){
-        JsonArray userQuery = ORM.executeQuery("SELECT u_id, password FROM project.account WHERE username = ?",
+        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.account WHERE username = ?",
                 username);
 
         if (userQuery == null || userQuery.size() == 0) return null;
@@ -52,40 +54,58 @@ public enum UserDao {
 
 
 
-//TODO find out how this shit works with deletion and storing
     //different method for admin that only they can access.
     public void deleteUser(User user) {
         JsonArray deleteUserQuerry =  ORM.executeQuery(
-                "CASCADE DELETE FROM project.account " +
+                "DELETE FROM project.account " +
                 "WHERE u_id = ?",
                 user.getUid());
     }
     public int updateUser(User user) {
         JsonArray updateUserQuerry = ORM.executeQuery(
-               "UPDATE project.account SET username = ?, email = ?, password = ? ",
-                user.getUsername(), user.getEmail(), user.getPassword()
+               "UPDATE project.account SET username = ?, email = ?, password = ?  WHERE u_id =?",
+                user.getUsername(), user.getEmail(), user.getPassword(), user.getUid()
         );
         int userId = ((JsonObject) updateUserQuerry.get(0)).get("u_id").getAsInt();
             return userId;
 
 
     }
-    public JsonObject getUser(int id)
+    public void changeUserRole(User user)
     {
-        JsonArray userQuery = ORM.executeQuery("SELECT username, email, password FROM project.account WHERE u_id = ?",
-                id);
-        if (userQuery == null || userQuery.size() == 0) return null;
+        if(user.getUser_type() != null && user.getUser_type() == UserType.PLAYER ) {
 
-        return (JsonObject) userQuery.get(0);
-    }
-    public void jsonToUser(JsonObject jsonObject, User user )
-    {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            user = objectMapper.readValue(jsonObject.toString(), User.class);
-        } catch (Exception e) {
+            JsonArray updateUserQuerry = ORM.executeQuery(
+                    "UPDATE project.account SET u_type = ?::project.u_type WHERE u_id = ? ",
+                    "ADMIN", user.getUid());
+        } else if (user.getUser_type() != null && user.getUser_type() == UserType.ADMIN) {
+            JsonArray updateUserQuerry = ORM.executeQuery(
+            "UPDATE project.account SET u_type = ?::project.u_type WHERE u_id = ?",
+                    "PLAYER", user.getUid());
         }
     }
+
+    public void jsonToUser(JsonObject jsonObject, User user )
+    {
+        user.setUsername(jsonObject.get("username").getAsString());
+        user.setEmail(jsonObject.get("email").getAsString());
+        user.setPassword(jsonObject.get("password").getAsString());
+        user.setU_id(jsonObject.get("u_id").getAsInt());
+        System.out.println("Checking user type next:");
+        user.setUser_type(convertStringToEnum(jsonObject.get("u_type").toString()));
+    }
+
+    public UserType convertStringToEnum(String utype) {
+        System.out.println(utype);
+        if(utype.equals("\"ADMIN\"")) {
+            return UserType.ADMIN;
+        } else if (utype.equals("\"PLAYER\"")) {
+            System.out.println("we have a player");
+            return UserType.PLAYER;
+        }
+        return null;
+    }
+
 
 
 }

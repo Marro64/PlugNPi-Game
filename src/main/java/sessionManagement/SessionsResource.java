@@ -31,15 +31,19 @@ public class SessionsResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response tryLogin(UserLogin user) {
-        System.out.println("hi");
         //ALLOW THEM TO LOGIN USING USERNAME OR PASSWORD
         System.out.println("Login for: " + user.getUsername());
         String passwordToCheck = user.getPassword(); //this is a normal input, needs to be hashed and salted
         JsonObject dbUser = UserDao.INSTANCE.getByUsername(user.getUsername());
+        User userObj = new User();
+        UserDao.INSTANCE.jsonToUser(dbUser,userObj);
 
         if(dbUser != null) {
-            int uid = dbUser.get("u_id").getAsInt();
-            String pw = dbUser.get("password").getAsString();
+            //int uid = dbUser.get("u_id").getAsInt();
+            int uid = userObj.getUid();
+            //String pw = dbUser.get("password").getAsString();
+            String pw = user.getPassword();
+            //String salt = SecurityFactory.getSalt(pw);
             String salt = SecurityFactory.getSalt(pw);
 
             boolean login = SecurityFactory.encryptPassword(passwordToCheck, salt).equals(pw);

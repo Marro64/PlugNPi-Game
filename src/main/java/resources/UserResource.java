@@ -3,10 +3,7 @@ package resources;
 import com.google.gson.JsonObject;
 import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -27,7 +24,7 @@ public class UserResource {
 
     public UserResource(UriInfo info, HttpServletRequest req, String username) {
         this.info = info;
-        this.req =  req;
+        this.req = req;
         this.username = username;
     }
 
@@ -38,26 +35,29 @@ public class UserResource {
         //User user = UserDao.instance.getUsers().get(Integer.parseInt(email));
         //String password = uQueries.getPassword(email);
         //user.setPassword(password);
-        if(user == null) {
+        if (user == null) {
             throw new RuntimeException("User not found");
-        }else {
+        } else {
             return user;
         }
     }
 
     /**
      * Admin perms needed for this function
+     *
      * @return
      */
     @Path("/permissions")
-    @GET
+    @PUT
     public Response switchPermissions() {
-        User admin = (User) req.getAttribute("user");
-        //User user = uQueries.getSingleUser(email);
-        if(admin.getUser_type().equals(UserType.ADMIN)) {
-            //TODO Query to update perms
+//        User admin = (User) req.getAttribute("user");
+        User userAffected = new User();
+        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
+        UserDao.INSTANCE.jsonToUser(jsonObject, userAffected);
+        if (true) {
+            UserDao.INSTANCE.changeUserRole(userAffected);
             return Response.ok().build();
-        }else {
+        } else {
             return Response.status(Response.Status.FORBIDDEN).build(); //Used to handle invalid actions (check js)
         }
     }
@@ -69,15 +69,28 @@ public class UserResource {
         System.out.println(username);
         JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
         UserDao.INSTANCE.jsonToUser(jsonObject, user);
-        if(UserDao.INSTANCE.UserExists(user))
-        {
+        System.out.println(user.getUsername());
+        if (UserDao.INSTANCE.UserExists(user)) {
             UserDao.INSTANCE.deleteUser(user);
             return Response.ok().build();
-        }else{
+        } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
+    }
 
-
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateUser(User olduser) {
+        User user = new User();
+        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
+        UserDao.INSTANCE.jsonToUser(jsonObject, user);
+        user.setU_id(olduser.getUid());
+        if (UserDao.INSTANCE.UserExists(user)) {
+            UserDao.INSTANCE.updateUser(user);
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 }

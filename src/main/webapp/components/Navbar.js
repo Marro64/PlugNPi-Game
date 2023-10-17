@@ -14,7 +14,7 @@ class Navbar extends HTMLElement {
                 <!-- Wrapper for middle UT logo -->
                 <div class="flex items-center h-full w-max">
                     <a href="/">
-                        <img src="/assets/images/plug'n'pi-logo.png"  alt=""/>
+                        <img src="/assets/images/plug'n'pi-logo.png"  width="200" height="200"/>
                     </a>
                 </div>
                 <!-- Wrapper for right-hand side -->
@@ -33,7 +33,7 @@ class Navbar extends HTMLElement {
                                 </ul>
                             </div>
                         </div>
-                        <!- Profile Icon -->
+                        <!-- Profile Icon -->
                         <div class="flex">
                             <div class="avatar placeholder">
                                 <div class="btn btn-ghost btn-circle bg-neutral-focus text-neutral-content w-12">
@@ -51,4 +51,4 @@ class Navbar extends HTMLElement {
     }
 }
 
-customElements.define("plug-navbar", Navbar);
+customElements.define("navbar", Navbar);
