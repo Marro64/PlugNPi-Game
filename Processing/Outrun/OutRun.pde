@@ -3,10 +3,10 @@ OutRunGame outRunGame;
 int lastFrame = 0;
 
 void setup() {
-  size(800, 600, P3D);
+  size(1920, 1080, P3D);
   frameRate(60);
   
-  outRunGame = new OutRunGame();
+  outRunGame = new OutRunGame(width, height);
   lastFrame = millis();
 }
 
