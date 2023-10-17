@@ -31,23 +31,19 @@ public class SessionsResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response tryLogin(UserLogin user) {
-        //ALLOW THEM TO LOGIN USING USERNAME OR PASSWORD
         System.out.println("Login for: " + user.getUsername());
         String passwordToCheck = user.getPassword(); //this is a normal input, needs to be hashed and salted
-        JsonObject dbUser = UserDao.INSTANCE.getByUsername(user.getUsername());
+        JsonObject dbUser = UserDao.INSTANCE.getByUsername(user.getUsername()); //get the user from the DB
         User userObj = new User();
         UserDao.INSTANCE.jsonToUser(dbUser,userObj);
 
         if(dbUser != null) {
-            //int uid = dbUser.get("u_id").getAsInt();
             int uid = userObj.getUid();
-            //String pw = dbUser.get("password").getAsString();
-            String pw = user.getPassword();
-            //String salt = SecurityFactory.getSalt(pw);
+            String pw = userObj.getPassword(); //Password stored in the DB
             String salt = SecurityFactory.getSalt(pw);
-
             boolean login = SecurityFactory.encryptPassword(passwordToCheck, salt).equals(pw);
             if (login) {
+                System.out.println("SessionsResource: logging in");
                 String sessionId = CreateCookie.generateSession(); //generate id
                 LocalDateTime expiry = LocalDateTime.now().plusHours(3); //set time
                 SessionDao.INSTANCE.addSession(sessionId, uid);
@@ -55,8 +51,10 @@ public class SessionsResource {
                 NewCookie cookie = CreateCookie.createSession(sessionId, expiry);
                 return Response.ok(uid).cookie(cookie).build();
             }
+            System.out.println("SessionResource: incorrect password");
             return Response.status(Response.Status.UNAUTHORIZED).build();
         } else {
+            System.out.println("SessionsResource: user not found");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

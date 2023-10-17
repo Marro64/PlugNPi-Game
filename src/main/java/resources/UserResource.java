@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import model.SecurityFactory;
 import model.User;
 import model.UserType;
 
@@ -79,15 +80,22 @@ public class UserResource {
 
     }
 
+    /**
+     * Update settings for a given id
+     * @param newSettings
+     * @return
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(User olduser) {
-        User user = new User();
-        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
-        UserDao.INSTANCE.jsonToUser(jsonObject, user);
-        user.setU_id(olduser.getUid());
-        if (UserDao.INSTANCE.UserExists(user)) {
-            UserDao.INSTANCE.updateUser(user);
+    public Response updateUser(User newSettings) {
+        User oldSettings = new User();
+        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username); //change this to req later
+        UserDao.INSTANCE.jsonToUser(jsonObject, oldSettings);
+        newSettings.setU_id(oldSettings.getUid());
+        String hashed = SecurityFactory.createPassword(newSettings.getPassword());
+        newSettings.setPassword(hashed);
+        if (UserDao.INSTANCE.UserExists(oldSettings)) {
+            UserDao.INSTANCE.updateUser(newSettings);
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
