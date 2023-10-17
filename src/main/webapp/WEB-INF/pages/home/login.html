@@ -2,7 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Plug'n'Pi LogIn</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice</title>
+
+    <!-- UT Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/plug'n'pi-icon.png" />
+
+    <!-- DaisyUI tailwind component system and tailwind utility class framework -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Phone number input -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/assets/styles/main.css" />
+
+    <!-- Header custom component -->
+    <script src="/components/Navbar.js" type="text/javascript"></script>
+
+    <!-- Utils JS -->
+    <script src="/utils/parser.js" type="text/javascript"></script>
+    <script src="/utils/formHandler.js" type="text/javascript"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: "Roboto", sans-serif !important;
+        }
+    </style>
+
+    <script>
+        /* References to dom elements */
+        var emailInput;
+        var passwordInput;
+
+        var iti;
+
+        /* intlTelInput error list */
+        const itiErrorList = ["Invalid email", "Invalid country code", "Too short", "Too long", "Invalid user"];
+
+        window.onload = () => {
+            /* Initializing dom element references */
+            emailInput = document.getElementById("email");
+            passwordInput = document.getElementById("password");
+
+        }
+
+        const validateForm = () => {
+            /* Re-setting any displayed form errors */
+            clearFormErrors();
+
+            /* Validate phone number */
+            if (!iti.isValidEmail()) {
+                setFormError(itiErrorList[iti.getValidationError()], emailInput);
+
+                return false;
+            }
+
+            /* Validate password and confirm password */
+            if (passwordInput.value === "") {
+                setFormError(null, passwordInput);
+
+                return false;
+            }
+        }
+
+        const handleFormSubmit = () => {
+            validateForm();
+        }
+    </script>
 </head>
 <body>
 <!-- Wrapper class for navbar and content -->
@@ -27,7 +102,7 @@
                 <div class="text-center">
                     <p class="text-sm text-gray-500">Log in to your municipality voting system account and make your voice count!</p>
                     <!-- change name of signUp file to ./register.html-->
-                    <p class="text-sm text-gray-500">Do not have an account? <a href="./register.html"
+                    <p class="text-sm text-gray-500">Do not have an account? <a href="./signup.html"
                                                                                 class="text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Sign
                         up</a></p>
                 </div>
