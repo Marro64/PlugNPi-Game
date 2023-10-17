@@ -81,10 +81,11 @@ public class UserResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser() {
+    public Response updateUser(User olduser) {
         User user = new User();
         JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
         UserDao.INSTANCE.jsonToUser(jsonObject, user);
+        user.setU_id(olduser.getUid());
         if (UserDao.INSTANCE.UserExists(user)) {
             UserDao.INSTANCE.updateUser(user);
             return Response.ok().build();
