@@ -40,6 +40,7 @@ public enum UserDao {
     }
 
     public int addUser(UserSignup user) {
+        user = InputSanitizer.signupSanitize(user);
         JsonArray addUserQuerry =  ORM.executeQuery(
                 "INSERT INTO project.account " +
                 "(username, email, password) " +

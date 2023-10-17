@@ -34,5 +34,15 @@ public class InputSanitizer {
         return user;
     }
 
+    public static UserSignup signupSanitize(UserSignup user) {
+        if (user == null) {
+            return null;
+        }
+
+        user.setEmail(stringSanitize(user.getEmail()));
+        user.setUsername(user.getUsername());
+        return user;
+    }
+
 
 }
