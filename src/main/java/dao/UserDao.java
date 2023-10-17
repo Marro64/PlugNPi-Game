@@ -5,10 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.ORM;
 import jakarta.ws.rs.core.Response;
-import model.ModerationType;
-import model.User;
-import model.UserSignup;
-import model.UserType;
+import model.*;
 
 import java.util.Date;
 
@@ -62,6 +59,7 @@ public enum UserDao {
                 user.getUid());
     }
     public int updateUser(User user) {
+        user = InputSanitizer.userSanitize(user);
         JsonArray updateUserQuerry = ORM.executeQuery(
                "UPDATE project.account SET username = ?, email = ?, password = ?  WHERE u_id =?",
                 user.getUsername(), user.getEmail(), user.getPassword(), user.getUid()
