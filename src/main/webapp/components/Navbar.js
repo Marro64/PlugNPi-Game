@@ -51,4 +51,4 @@ class Navbar extends HTMLElement {
     }
 }
 
-customElements.define("plug-navbar", Navbar);
+customElements.define("navbar", Navbar);
