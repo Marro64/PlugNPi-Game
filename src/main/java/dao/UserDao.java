@@ -5,10 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.ORM;
 import jakarta.ws.rs.core.Response;
-import model.ModerationType;
-import model.User;
-import model.UserSignup;
-import model.UserType;
+import model.*;
 
 import java.util.Date;
 
@@ -43,6 +40,7 @@ public enum UserDao {
     }
 
     public int addUser(UserSignup user) {
+        user = InputSanitizer.signupSanitize(user);
         JsonArray addUserQuerry =  ORM.executeQuery(
                 "INSERT INTO project.account " +
                 "(username, email, password) " +
@@ -62,9 +60,10 @@ public enum UserDao {
                 user.getUid());
     }
     public int updateUser(User user) {
+        user = InputSanitizer.userSanitize(user);
         JsonArray updateUserQuerry = ORM.executeQuery(
-               "UPDATE project.account SET username = ?, email = ?, password = ? ",
-                user.getUsername(), user.getEmail(), user.getPassword()
+               "UPDATE project.account SET username = ?, email = ?, password = ?  WHERE u_id =?",
+                user.getUsername(), user.getEmail(), user.getPassword(), user.getUid()
         );
         int userId = ((JsonObject) updateUserQuerry.get(0)).get("u_id").getAsInt();
             return userId;
@@ -85,14 +84,6 @@ public enum UserDao {
         }
     }
 
-    public JsonObject getUser(int id)
-    {
-        JsonArray userQuery = ORM.executeQuery("SELECT username, email, password FROM project.account WHERE u_id = ?",
-                id);
-        if (userQuery == null || userQuery.size() == 0) return null;
-
-        return (JsonObject) userQuery.get(0);
-    }
     public void jsonToUser(JsonObject jsonObject, User user )
     {
         user.setUsername(jsonObject.get("username").getAsString());
@@ -113,6 +104,7 @@ public enum UserDao {
         }
         return null;
     }
+
 
 
 }
