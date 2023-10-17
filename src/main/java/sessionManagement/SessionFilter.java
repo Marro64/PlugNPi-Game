@@ -30,7 +30,7 @@ public class SessionFilter implements ContainerRequestFilter {
         Cookie session = request.getCookies().get(COOKIE_SESSION);
 
         //TESTING BLOCK FOR API CALLS: REMOVE WHEN YOU WANT TO TEST SESSIONS
-        if (session == null) {
+        if (true) {
             return;
         }
 
