@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice</title>
+    <title>Sign In</title>
 
     <!-- UT Favicon -->
-    <link rel="icon" type="image/png" href="/assets/images/plug'n'pi-icon.png" />
+    <link rel="icon" type="image/png" href="/assets/images/utwenteFavicon.png" />
 
     <!-- DaisyUI tailwind component system and tailwind utility class framework -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
@@ -40,17 +40,17 @@
 
     <script>
         /* References to dom elements */
-        var emailInput;
+        var emailOrUsernameInput;
         var passwordInput;
 
         var iti;
 
         /* intlTelInput error list */
-        const itiErrorList = ["Invalid email", "Invalid country code", "Too short", "Too long", "Invalid user"];
+        const itiErrorList = ["Invalid email or username", "Invalid password"];
 
         window.onload = () => {
             /* Initializing dom element references */
-            emailInput = document.getElementById("email");
+            emailOrUsernameInput = document.getElementById("email-user");
             passwordInput = document.getElementById("password");
 
         }
@@ -59,10 +59,9 @@
             /* Re-setting any displayed form errors */
             clearFormErrors();
 
-            /* Validate phone number */
-            if (!iti.isValidEmail()) {
-                setFormError(itiErrorList[iti.getValidationError()], emailInput);
-
+            /* Validate email*/
+            if (!iti.isValidEmail() && !isValidUser()) {
+                setFormError(itiErrorList[iti.getValidationError()], emailOrUsernameInput);
                 return false;
             }
 
@@ -84,7 +83,7 @@
 <div class="flex flex-col h-screen">
     <!-- Header navigation bar -->
     <div>
-        <plug-navbar />
+        <navbar />
     </div>
 
     <!-- Page main content part -->
@@ -101,7 +100,7 @@
 
                 <div class="text-center">
                     <p class="text-sm text-gray-500">Log in to your municipality voting system account and make your voice count!</p>
-                    <!-- change name of signUp file to ./register.html-->
+                    <!-- change name of signUp file to ./signup.html-->
                     <p class="text-sm text-gray-500">Do not have an account? <a href="./signup.html"
                                                                                 class="text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Sign
                         up</a></p>
@@ -115,7 +114,7 @@
                         <span class="label-text">Username or Email</span>
                     </label>
 
-                    <input type="text" id="username" name="Username"
+                    <input type="text" id="email-user" name="Username"
                            class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
                 </div>
 
@@ -129,7 +128,7 @@
                 </div>
 
                 <div class="mt-6">
-                    <!-- "handle for submit is a function to handle the input of the log in" -->
+                    <!-- "handle for submit is a function to handle the input of the login" -->
                     <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
                 </div>
             </div>

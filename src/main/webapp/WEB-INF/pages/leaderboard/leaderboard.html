@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plug'n'Pi | Leaderboard</title>
+
+    <!-- UT Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/utwenteFavicon.png" />
+
+    <!-- DaisyUI tailwind component system and tailwind utility class framework -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.6/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/assets/styles/main.css" />
+
+    <!-- Components -->
+    <script src="/components/Navbar.js" type="text/javascript"></script>
+    <!-- Utils -->
+    <script src="/utils/parser.js" type="text/javascript"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: "Roboto", sans-serif !important;
+        }
+    </style>
+
+    <script>
+        // up to u baris
+    </script>
+</head>
+
+<body>
+<!-- Wrapper class for navbar and content -->
+<div class="flex flex-col h-screen">
+    <!-- Header navigation bar -->
+    <div>
+        <navbar />
+    </div>
+
+    <!-- Page main content part -->
+    <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center p-8 items-center">
+        <!-- Main content wrapper -->
+        <div class="w-2/3">
+            <!-- Title and filter buttons section -->
+            <div class="flex items-center justify-between">
+                <h1 class="text-4xl text-gray-700">Leaderboard</h1>
+
+
+                <div class="rounded-md shadow-sm cursor-pointer">
+                    <a aria-current="page"
+                       class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="alltime">
+                        All time
+                    </a>
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="day">
+                        Last 24h
+                    </a>
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="day">
+                        Last 24h (mauricios version)
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Leaderboard table wrapper -->
+            <div class="flex flex-col gap-8">
+                <!-- Table of current user position -->
+                <div id="our-ranking-leaderboard-wrapper">
+                </div>
+
+                <!-- Table of current leaderboard state -->
+                <div class="flex flex-col space-y-3">
+                    <div id="leaderboard-wrapper">
+                        <span class="loading loading-spinner loading-lg"></span>
+                    </div>
+
+                    <a class="text-xs text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Show
+                        more
+                        results</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

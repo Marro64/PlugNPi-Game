@@ -5,7 +5,8 @@ class OutRunGame {
   int cols, rows; // grid variables
   int scale = 20; // dimension of the square grid unit
   
-  int w = 1000, h = 900; //dimensions 
+  int w, h;
+  float ws, hs;
   
   float speed = 0; // grid speed
   float speed_m = 0; // mountain speed
@@ -25,15 +26,21 @@ class OutRunGame {
   int elapsed = millis();
   int score = 0;
 
-  OutRunGame() {
+  OutRunGame(int w, int h) {
+    this.w = w;
+    this.h = h;
+    this.ws = w/800.0;
+    this.hs = h/600.0;
+    
     // Set up font
-    f = createFont("Verdana", 14);
+    f = createFont("Verdana", int(14*hs));
     textFont(f);
     textAlign(LEFT);
     
     // Set up world grid
-    cols = w/scale;
-    rows = h/scale;
+    scale = int(20*ws);
+    cols = int(1000.0*ws)/scale;
+    rows = int(900.0*hs)/scale;
     
     // Set up mountains
     terrain = new float[cols][rows];
@@ -44,12 +51,12 @@ class OutRunGame {
   
   void update(float dt) {
     // Set speeds
-    speed -= 4*dt;
+    speed -= (4*hs)*dt;
     //println(dt);
     if (speed<=-scale){
       speed=0;
     }
-    speed_m -= 0.1*dt;
+    speed_m -= (0.1*hs)*dt;
     
     // Set perlin noise for mountains
     //float y_offset = speed_m;
@@ -70,19 +77,19 @@ class OutRunGame {
       if(++counter == dim){
         counter = 0;
       }   
-      cars[counter] = new Car();
+      cars[counter] = new Car(w, h);
       trig = false;
     }
     for (int i=0; i<dim; i++) {
       if (cars[i]!=null){
         cars[i].update(dt);
-        int[] collision = cars[i].getPosition();
+        float[] collision = cars[i].getPosition();
         // Check collision
-        if (collision[0] == playerPos[posIdx] && collision[1]<380 && collision[1]>330) {
+        if (collision[0] == playerPos[posIdx] && collision[1]<380 && collision[1]>300) {
           score = 0;
           cars[i].hasPassed = true;
         } 
-        if (collision[0] != playerPos[posIdx] && collision[1]>=400 && !cars[i].hasPassed){
+        if (collision[0] != playerPos[posIdx] && collision[1]>=380 && !cars[i].hasPassed){
           score++;
           cars[i].hasPassed = true;
         }
@@ -93,30 +100,30 @@ class OutRunGame {
   void display() {
     // Set background
     background(0);
-    setGradient(-800, -900, -1000, 3500, 1200, color(0,0,130), color(0,0,0));
+    setGradient((int)(-800*ws), (int)(-900*hs), (int)(-1000/600*h), 3500*ws, 1200*hs, color(0,0,130), color(0,0,0));
     
     // Draw fps on screen
     fill(255);
-    text("FPS: " + frameRate, 5, 20);
+    text("FPS: " + frameRate, 5*ws, 20*hs);
     // Draw score
-    text("Score: " + score, width-100, 20);
+    text("Score: " + score, w-100*ws, 20*hs);
   
     // Sun
     noStroke();
     fill(255,100,25);
     pushMatrix();
-    translate(width/2, height/2-100, -400);
-    circle(0, 0, 400);
+    translate(w/2, h/2-100*w/800.0, -400*hs);
+    circle(0, 0, 400*ws);
     popMatrix();
     
     // Translate and rotate world
-    translate(width/2, height/2);
+    translate(w/2, h/2);
     rotateX(PI/2.2); 
     
     // Draw central grid
     stroke(217,25,255);
     pushMatrix();
-    translate(-w/2, -h/2-speed);
+    translate(-int(w/800.0*1000.0)/2, -int(h/600.0*900.0)/2-speed);
     noFill();
     for (int y = 0; y < rows-1; y++) {
       for (int x = border-1; x < cols-border+1; x++) {
@@ -157,8 +164,8 @@ class OutRunGame {
     // Draw player
     fill(255);
     pushMatrix();
-    translate(playerPos[posIdx], 380, 5);
-    box(40, 50, 10);
+    translate((playerPos[posIdx]*ws), (380*hs), 5);
+    box((40*ws), (50*hs), (10*hs));
     popMatrix();
   }
   
