@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice</title>
+    <title>Sign In</title>
 
     <!-- UT Favicon -->
     <link rel="icon" type="image/png" href="/assets/images/utwenteFavicon.png" />
@@ -59,7 +59,7 @@
             /* Re-setting any displayed form errors */
             clearFormErrors();
 
-            /* Validate phone number */
+            /* Validate email*/
             if (!iti.isValidEmail() && !isValidUser()) {
                 setFormError(itiErrorList[iti.getValidationError()], emailOrUsernameInput);
                 return false;
@@ -100,7 +100,7 @@
 
                 <div class="text-center">
                     <p class="text-sm text-gray-500">Log in to your municipality voting system account and make your voice count!</p>
-                    <!-- change name of signUp file to ./register.html-->
+                    <!-- change name of signUp file to ./signup.html-->
                     <p class="text-sm text-gray-500">Do not have an account? <a href="./signup.html"
                                                                                 class="text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Sign
                         up</a></p>
