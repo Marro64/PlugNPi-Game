@@ -78,9 +78,7 @@ public class SessionFilter implements ContainerRequestFilter {
      */
     public boolean verifySession(String session) {
         System.out.println("checking session");
-        //TODO query session in DB
-        //LocalDateTime sessionTime = queries.getSessionTime(session);
-        LocalDateTime sessionTime = null;
+        LocalDateTime sessionTime = queries.getSessionTime(session); //TODO query session time
         System.out.println("finished query");
         LocalDateTime now = LocalDateTime.now();
         if(sessionTime != null  && sessionTime.isAfter(now)) {
@@ -89,9 +87,8 @@ public class SessionFilter implements ContainerRequestFilter {
         } else if (sessionTime != null  && !sessionTime.isAfter(now)) {
             System.out.println("Expired session id");
             //TODO delete session in DB
-            //queries.deleteSession(session);
+            queries.deleteSession(session);
         }
-        //TODO make this return the user perms which is used as context for the respective request
         return false;
     }
 
