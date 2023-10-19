@@ -14,7 +14,7 @@ class Navbar extends HTMLElement {
                 <!-- Wrapper for middle UT logo -->
                 <div class="flex items-center h-full w-max">
                     <a href="/">
-                        <img src="/assets/images/plug'n'pi-logo.png"  width="200" height="200"/>
+                        <img src="/assets/images/plug'n'pi-logo.png"/>
                     </a>
                 </div>
                 <!-- Wrapper for right-hand side -->
