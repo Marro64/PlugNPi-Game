@@ -1,8 +1,12 @@
-import processing.video.*;
 import java.awt.*;
 import gab.opencv.*;
 
+import gohai.glvideo.*;
+import processing.video.*;
+
+//GLCapture video;
 Capture video;
+
 OpenCV opencv;
 
 int capWidth;
@@ -17,18 +21,33 @@ Rectangle[] faces;
 class lanedetection {
   lanedetection(PApplet papplet, int cWidth, int cHeight) {
     showCamera = false;
-    showRectangles = true;
+    showRectangles = false;
     lane = "middle";
     capWidth = cWidth;
     capHeight = cHeight;
-    Dscale = 2*(int)(width/cWidth);
+    Dscale = 3;
+    
     video = new Capture(papplet, capWidth/2, capHeight/2);
+    
+    //String[] devices = GLCapture.list();
+    //println("Devices:");
+    //printArray(devices);
+    //if (0 < devices.length) {
+    //  String[] configs = GLCapture.configs(devices[0]);
+    //  println("Configs:");
+    //  printArray(configs);
+    //}
+    //video = new GLCapture(papplet);
+    
     opencv = new OpenCV(papplet, capWidth/2, capHeight/2);
     opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE);
     video.start();
   }
 
   void update() {
+    //if (video.available()) {
+    //  video.read();
+    //}
     opencv.loadImage(video);
     faces = opencv.detect();
     if (faces.length >0) {
@@ -54,7 +73,7 @@ class lanedetection {
     stroke(0, 255, 0);
     strokeWeight(3);
     for (int i = 0; i < faces.length; i++) {
-      rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
+      //rect((width-faces[i].x)/Dscale, faces[i].y, (width-faces[i].width)/Dscale, faces[i].height);
     }
   }
 
