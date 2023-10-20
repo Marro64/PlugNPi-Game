@@ -16,7 +16,7 @@ Rectangle[] faces;
 
 class lanedetection {
   lanedetection(PApplet papplet, int cWidth, int cHeight) {
-    showCamera = true;
+    showCamera = false;
     showRectangles = true;
     lane = "middle";
     capWidth = cWidth;
@@ -29,8 +29,8 @@ class lanedetection {
   }
 
   void update() {
-    faces = opencv.detect();
     opencv.loadImage(video);
+    faces = opencv.detect();
     if (faces.length >0) {
       detect_lane(faces[0].x);
     }
