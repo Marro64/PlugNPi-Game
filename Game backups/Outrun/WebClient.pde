@@ -1,0 +1,6 @@
+class WebClient {
+  WebClient() {
+    
+  }
+  
+}

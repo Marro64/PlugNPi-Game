@@ -6,10 +6,10 @@ int lastFrame = 0;
 void setup() {
   size(920, 480, P3D);
   frameRate(30);
-  
   LaneDetection = new lanedetection(this, 800, 400);
   outRunGame = new OutRunGame(width, height);
   lastFrame = millis();
+  image(video, 0, 0 );
 }
 
 void draw(){
