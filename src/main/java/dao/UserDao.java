@@ -38,6 +38,15 @@ public enum UserDao {
 
         return (JsonObject) userQuery.get(0);
     }
+    public JsonObject getUser(int id){
+        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.account WHERE u_id = ?",
+                id);
+
+        if (userQuery == null || userQuery.size() == 0) return null;
+
+        return (JsonObject) userQuery.get(0);
+    }
+
 
     public JsonObject getByUserid(int uid){
         JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.account WHERE u_id = ?",
