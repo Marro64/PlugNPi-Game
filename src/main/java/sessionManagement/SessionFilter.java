@@ -1,5 +1,8 @@
 package sessionManagement;
 
+import com.google.gson.JsonObject;
+import dao.SessionDao;
+import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -8,6 +11,7 @@ import jakarta.ws.rs.ext.Provider;
 import model.User;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Provider
 public class SessionFilter implements ContainerRequestFilter {
@@ -35,8 +39,8 @@ public class SessionFilter implements ContainerRequestFilter {
         }
 
         if (session == null) { //No session, user wants to login or signup
-            System.out.println("No session");
-            System.out.println(request.getUriInfo().getRequestUri().getPath());
+            System.out.println("SessionFilter: No session");
+            System.out.println("SessionFilter " + request.getUriInfo().getRequestUri().getPath());
             if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || request.getUriInfo().getRequestUri().getPath().equals("/actfact/api/users/")) {
                 if (request.getMethod().equals("POST")) {
                     return; // Allow the request to continue processing
@@ -49,20 +53,22 @@ public class SessionFilter implements ContainerRequestFilter {
             //Session is still valid
             httprequest.setAttribute("session",session.getValue());
             if(!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session")) {
-                User user = new User();//TODO Query the user
-                System.out.println("SESSION: " + user.getEmail());
+                JsonObject queried = UserDao.INSTANCE.getUserFromSession(session.getValue());
+                User user = new User();
+                UserDao.INSTANCE.jsonToUser(queried,user);
+                System.out.println("SessionFilter: SESSION: " + user.getUsername());
                 httprequest.setAttribute("user", user);
             } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session/logout")) {
                 httprequest.setAttribute("session", session.getValue());
             } else {
                 //TODO remove session on DB
-                //queries.deleteSession(session.getValue()); //Removes existing cookie if the user wants to login again (which will give them a new cookie) TODO REMOVE COOKIE IN JS
+                SessionDao.INSTANCE.deleteSession(session.getValue()); //Removes existing cookie if the user wants to login again (which will give them a new cookie)
             }
             return; // Allow the request to continue processing
-        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/"))) { //Session already there but to login/signup
+        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")))) { //Session already there but to login/signup
             //Previous check guarantees that an invalid session is removed
             if (request.getMethod().equals("POST")) {
-                System.out.println("login attempt on existing cookie");
+                System.out.println("SessionFilter: login/signup attempt on existing cookie");
                 return; // Allow new login attempt
             }
         }
@@ -77,21 +83,20 @@ public class SessionFilter implements ContainerRequestFilter {
      * @return true if session is valid
      */
     public boolean verifySession(String session) {
-        System.out.println("checking session");
-        //TODO query session in DB
-        //LocalDateTime sessionTime = queries.getSessionTime(session);
-        LocalDateTime sessionTime = null;
-        System.out.println("finished query");
+        System.out.println("SessionFilter: checking session");
+
+        String sessionTimeString = SessionDao.INSTANCE.getSessiontime(session).get("expires").getAsString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString);
+
         LocalDateTime now = LocalDateTime.now();
-        if(sessionTime != null  && sessionTime.isAfter(now)) {
-            System.out.println("valid sessionid");
+        if(sessionTime.isAfter(now)) {
+            System.out.println("SessionFilter: valid sessionid");
             return true;
-        } else if (sessionTime != null  && !sessionTime.isAfter(now)) {
-            System.out.println("Expired session id");
-            //TODO delete session in DB
-            //queries.deleteSession(session);
+        } else if (!sessionTime.isAfter(now)) {
+            System.out.println("SessionFilter: Expired session id");
+            SessionDao.INSTANCE.deleteSession(session);
         }
-        //TODO make this return the user perms which is used as context for the respective request
         return false;
     }
 

@@ -84,7 +84,7 @@ public class SessionsResource {
         String session = (String) httprequest.getAttribute("session");
         System.out.println("SESSION: " + session);
         if(session != null) {
-            SessionDao.deleteSession(session); //Remove session from DB
+            SessionDao.INSTANCE.deleteSession(session); //Remove session from DB
             NewCookie cookie = new NewCookie("sessionId", session, "/", null, null, 0, false);
             System.out.println("logout cookie");
             return Response.ok().cookie(cookie).build(); //cancels out the existing cookie

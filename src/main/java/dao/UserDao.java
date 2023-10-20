@@ -38,6 +38,24 @@ public enum UserDao {
 
         return (JsonObject) userQuery.get(0);
     }
+    public JsonObject getUser(int id){
+        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.account WHERE u_id = ?",
+                id);
+
+        if (userQuery == null || userQuery.size() == 0) return null;
+
+        return (JsonObject) userQuery.get(0);
+    }
+
+
+    public JsonObject getByUserid(int uid){
+        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.account WHERE u_id = ?",
+                uid);
+
+        if (userQuery == null || userQuery.size() == 0) return null;
+
+        return (JsonObject) userQuery.get(0);
+    }
 
     public int addUser(UserSignup user) {
         user = InputSanitizer.signupSanitize(user);
@@ -82,6 +100,14 @@ public enum UserDao {
             "UPDATE project.account SET u_type = ?::project.u_type WHERE u_id = ?",
                     "PLAYER", user.getUid());
         }
+    }
+
+    public JsonObject getUserFromSession(String session){
+        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.session s , project.account a WHERE s.session_key = ? AND s.u_id = a.u_id",
+                session);
+        if (userQuery == null || userQuery.size() == 0) return null;
+
+        return (JsonObject) userQuery.get(0);
     }
 
     public void jsonToUser(JsonObject jsonObject, User user )

@@ -8,14 +8,13 @@ import db.ORM;
 import model.User;
 import model.UserSignup;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public enum SessionDao {
     INSTANCE;
 
-    public static void deleteSession(String session) {
-        //TODO check if session is unique, otherwise also add u_id as param
-
-    }
-
+    private final HashMap<String,Integer> sessions = new HashMap<>();
     public int addSession(String session, int u_id) {
         JsonArray addUserQuery =  ORM.executeQuery(
                 "INSERT INTO project.session " +
@@ -26,20 +25,34 @@ public enum SessionDao {
         return userId;
     }
 
-    public JsonObject getUser(String session) {
-        JsonArray userQuery = ORM.executeQuery("SELECT * FROM project.session WHERE session_Id = ?",
+    public JsonObject getSessiontime(String session) {
+        JsonArray userQuery = ORM.executeQuery("SELECT expires FROM project.session WHERE session_key = ?",
                 session);
         if (userQuery == null || userQuery.size() == 0) return null;
 
         return (JsonObject) userQuery.get(0);
     }
 
-    public void jsonToUser(JsonObject jsonObject, User user )
-    {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            user = objectMapper.readValue(jsonObject.toString(), User.class);
-        } catch (Exception e) {
-        }
+    public void deleteSession(String session) {
+        JsonArray deleteUserQuerry =  ORM.executeQuery(
+                "DELETE FROM project.session " +
+                        "WHERE session_key = ?",
+                session);
     }
+
+    public void addPiSession(String pid, int uid) {
+        sessions.put(pid,uid);
+    }
+
+    public void resetSession(String pid) {
+        sessions.put(pid,-1);
+    }
+
+    public HashMap<String,Integer> getSessions() {
+        return sessions;
+    }
+
+
+
+
 }
