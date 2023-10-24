@@ -16,7 +16,7 @@ public class UserTest {
     private UserSignup user;
     @BeforeEach
     public void setUp() {
-        this.user = new UserSignup("BenShapiro","testUser@jew.com", "password");
+        this.user = new UserSignup("BenShapiro","bing@pi.com", "password");
     }
 
     /**
