@@ -1,5 +1,6 @@
 package resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -40,7 +41,7 @@ public class LeaderboardsResource {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadAScore(Score score) {
+    public Response uploadAScore(@JsonProperty String session, Score score) {
         //Verify whether score upload matches up with the session
         User user = new User(); //TODO fetch user from sessionId
         if(user.getUid() == score.getUid()) {
