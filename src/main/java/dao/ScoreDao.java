@@ -59,18 +59,5 @@ public enum ScoreDao {
                 "ORDER BY distance DESC\n" +
                 "LIMIT 5;");
     }
-    public int uploadScore(Score score)
-    {
-        JsonArray addScoreQuery =  ORM.executeQuery(
-                "INSERT INTO project.score " +
-                        "(u_id, distance) " +
-                        "VALUES (?, ?)",
-                score.getUid(), score.getDistance());
-        int scoreId = ((JsonObject) addScoreQuery.get(0)).get("s_id").getAsInt();
-        return scoreId;
-    }
-
-
-
 
 }
