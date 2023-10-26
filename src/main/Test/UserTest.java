@@ -1,15 +1,11 @@
-import Exceptions.CustomException;
+import sessionManagement.Exceptions.CustomException;
 import model.User;
 import model.UserSignup;
-import model.UserType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
-import java.sql.SQLException;
 import dao.UserDao;
-import static model.UserType.ADMIN;
-import static model.UserType.PLAYER;
+
 import static org.junit.jupiter.api.Assertions.*;
 public class UserTest {
 
@@ -33,6 +29,5 @@ public class UserTest {
             UserDao.INSTANCE.deleteUser(retrievedUser);
             assertNull(UserDao.INSTANCE.getUser(userID));
     }
-
 
 }
