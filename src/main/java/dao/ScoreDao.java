@@ -26,8 +26,17 @@ public enum ScoreDao {
 
         int userId = ((JsonObject) userQuery.get(0)).get("u_id").getAsInt();
         return userId;
-
     }
+
+    public void addScore(Score score) {
+        JsonArray addUserQuerry =  ORM.executeQuery(
+                "INSERT INTO project.score " +
+                        "(u_id, distance) " +
+                        "VALUES (?, ?)",
+                score.getUid(),score.getDistance());
+    }
+
+
 
 
 }
