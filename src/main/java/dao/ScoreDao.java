@@ -18,7 +18,14 @@ public enum ScoreDao {
                     "GROUP BY a.u_id" , user.getUid());
         int userId = ((JsonObject) userQuery.get(0)).get("u_id").getAsInt();
         return userId;
+    }
 
+    public void addScore(Score score) {
+        JsonArray addUserQuerry =  ORM.executeQuery(
+                "INSERT INTO project.score " +
+                        "(u_id, distance) " +
+                        "VALUES (?, ?)",
+                score.getUid(),score.getDistance());
     }
     public void getTop100AllTime()
     {
@@ -62,6 +69,8 @@ public enum ScoreDao {
         int scoreId = ((JsonObject) addScoreQuery.get(0)).get("s_id").getAsInt();
         return scoreId;
     }
+
+
 
 
 }

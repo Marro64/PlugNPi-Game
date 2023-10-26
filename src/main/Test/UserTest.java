@@ -12,8 +12,13 @@ public class UserTest {
     private UserSignup user;
     @BeforeEach
     public void setUp() {
-        this.user = new UserSignup("BenShapiro","testUser@jew.com", "password");
+        this.user = new UserSignup("BenShapiro","bing@pi.com", "password");
     }
+
+    /**
+     * Test for creating a user and deleting it.
+     * Ben Shapiro should not be in the DB!
+     */
     @Test
     public void completeTest() {
             int userID = UserDao.INSTANCE.addUser(user);
@@ -22,10 +27,7 @@ public class UserTest {
             assertEquals(user.getEmail(), retrievedUser.getEmail());
             assertEquals(user.getUsername(), retrievedUser.getUsername());
             UserDao.INSTANCE.deleteUser(retrievedUser);
-            assertThrows(CustomException.class, () -> {
-                UserDao.INSTANCE.getUser(userID);
-            }, "User with that id does not exist");
-
+            assertNull(UserDao.INSTANCE.getUser(userID));
     }
 
 }
