@@ -12,6 +12,7 @@ import jakarta.ws.rs.core.*;
 import model.SecurityFactory;
 import model.User;
 import model.UserLogin;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDateTime;
 
@@ -41,8 +42,9 @@ public class SessionsResource {
         if(dbUser != null) {
             int uid = userObj.getUid();
             String pw = userObj.getPassword(); //Password stored in the DB
-            String salt = SecurityFactory.getSalt(pw);
-            boolean login = SecurityFactory.encryptPassword(passwordToCheck, salt).equals(pw);
+            //String salt = SecurityFactory.getSalt(pw);
+            //boolean login = SecurityFactory.encryptPassword(passwordToCheck, salt).equals(pw);
+            boolean login = BCrypt.checkpw(passwordToCheck,pw);
             if (login) {
                 System.out.println("SessionsResource: logging in");
                 String sessionId = CreateCookie.generateSession(); //generate id
