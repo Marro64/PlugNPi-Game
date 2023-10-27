@@ -114,9 +114,12 @@ class OutRunGame {
   void display() {    
     // Draw fps on screen
     fill(255);
-    text("FPS: " + frameRate, 5*ws, 20*hs);
+    textAlign(RIGHT, TOP); 
+    text("FPS: " + frameRate, w-10*ws, 10*hs);
     // Draw score
-    text("Score: " + score, w-100*ws, 20*hs);
+    text("Score: " + score, w-10*ws, 40*hs);
+    
+    pushMatrix();
     
     // Translate and rotate world
     translate(w/2, h/2);
@@ -168,6 +171,8 @@ class OutRunGame {
     pushMatrix();
     translate((playerPos[posIdx]*ws), (380*hs), 5);
     box((40*ws), (50*hs), (10*hs));
+    popMatrix();
+    
     popMatrix();
   }
   
