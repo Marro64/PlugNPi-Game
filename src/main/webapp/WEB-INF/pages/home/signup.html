@@ -32,67 +32,90 @@
 
         <script>
             /* References to dom elements */
-            var emailInput;
-            var usernameInput;
+            var username;
+            var email;
             var passwordInput;
             var passwordConfirmInput;
-            var termsConditionsCheckbox;
 
             var iti;
+            var toast;
 
             /* intlTelInput error list */
-            const itiErrorList = ["Invalid email", "Invalid user", "Invalid characters", "Too short", "Too long", "Invalid user"];
+            const itiErrorList = ["Invalid username", "Invalid email", "Too short", "Too long", "Invalid email"];
 
             window.onload = () => {
                 /* Initializing dom element references */
-                usernameInput = document.getElementById("username-input");
-                emailInput = document.getElementById("email-input");
+                username = document.getElementById("username-input");
+                email = document.getElementById("email-input")
                 passwordInput = document.getElementById("password-input");
                 passwordConfirmInput = document.getElementById("confirm-password-input");
                 termsConditionsCheckbox = document.getElementById("terms-conditions-checkbox");
 
-                iti = window.intlTelInput(emailInput);
             }
 
             const validateForm = () => {
                 /* Re-setting any displayed form errors */
                 clearFormErrors();
 
-                if(!iti.isValidUser()){
-                    setFormError(itiErrorList[iti.getValidationError()], usernameInput);
-                    return false;
+                /* Validating all input fields to be 'completed' with input values */
+                const inputFields = Array.from(document.querySelectorAll("input"));
+
+                for (const field of inputFields) {
+                    if (field.value === "") {
+                        setFormError(null, field);
+                        return false;
+                    }
                 }
 
-                if (!iti.isValidEmail()) {
-                    setFormError(itiErrorList[iti.getValidationError()], emailInput);
-
-                    return false;
-                }
-
-                /* Validate password and confirm password */
-                if (passwordInput.value === "") {
-                    setFormError(null, passwordInput);
-
-                    return false;
-                }
-
-                if (passwordConfirmInput.value === "") {
-                    setFormError(null, passwordConfirmInput);
-
+                /* Additional specific validations */
+                if (!iti.isValidNumber()) {
+                    setFormError(itiErrorList[iti.getValidationError()], username);
                     return false;
                 }
 
                 if (passwordInput.value !== passwordConfirmInput.value) {
                     setFormError("Passwords do not match!", passwordConfirmInput);
+                    return false;
                 }
 
                 if (!termsConditionsCheckbox.checked) {
                     setFormError("You must agree to terms and conditions!", termsConditionsCheckbox);
+                    return false;
                 }
+
+                return true;
             }
 
-            const handleFormSubmit = () => {
-                validateForm();
+            const handleFormSubmit = async (event) => {
+                if (!validateForm()) return;
+
+                const data = {
+                    "email": email.value,
+                    "username": username.value,
+                    "password": passwordInput.value
+                };
+
+                event.target.getElementsByTagName("span")[0].classList.toggle("hidden");x
+
+                const registerCall = await APIRegisterCall(data);
+
+                event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
+
+                /* Request was successfuly, if we get back the token */
+                if (registerCall.value) {
+                    /* Save the access token to localstorage and redirect the user to main page */
+                    localStorage.setItem("access-token", registerCall.value);
+                    toast.fire({
+                        icon: "success",
+                        title: "Successfully registered, redirecting!"
+                    })
+                    setTimeout(() => {
+                        document.location.href = "/";
+                    }, 1500);
+                } else {
+                    /* Set the form error */
+                    setFormError(registerCall?.message, username);
+                }
             }
         </script>
     </head>
