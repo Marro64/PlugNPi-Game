@@ -1,15 +1,17 @@
 OutRunGame outRunGame;
 lanedetection LaneDetection;
+WebClient webClient;
 
 int lastFrame = 0;
 
 void setup() {
   size(920, 480, P3D);
-  frameRate(30);
-  LaneDetection = new lanedetection(this, 800, 400);
+  //LaneDetection = new lanedetection(this, 800, 400);
   outRunGame = new OutRunGame(width, height);
+  webClient = new WebClient(this); 
   lastFrame = millis();
-  image(video, 0, 0 );
+  //image(video, 0, 0 );
+  frameRate(30);
 }
 
 void draw(){
@@ -25,12 +27,15 @@ void draw(){
   
   float dt = (millis()-lastFrame)/1000.0*60;
   lastFrame = millis();
-  println(dt);
+  //println(dt);
   outRunGame.update(dt);
-  LaneDetection.update();
+  //LaneDetection.update();
+  webClient.update();
+  
   outRunGame.displayBackground();
-  LaneDetection.display();
+  //LaneDetection.display();
   outRunGame.display();
+  webClient.display();
 }
 
 
