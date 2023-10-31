@@ -62,14 +62,20 @@ Have to send a UserSignup object with a String username and String password and 
 Handle not acceptable if the username/email already exists
  */
 const APIRegisterCall = async (data) => {
-    const request = await fetch(`${BASE_URL}/auth/register`, {
+    const request = await fetch(`${BASE_URL}/api/users`, {
         method: "POST",
         body: JSON.stringify(data),
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
         },
-    });
+    }).then(
+        request => {
+            if (request.ok) {
+                return request.json();
+            }
+        }
+    ).catch(e => console.error(e));
 
     return request.json();
 }
@@ -84,8 +90,8 @@ If you get an OK you send the user back to the login page
 If you somehow manage to logout without being logged in, you get an unauthorized (handle that somehow)
  */
 const APILogoutCall = async () => {
-    const response = await fetch(`${BASE_URL}/auth/logout`, {
-        method: "POST",
+    const response = await fetch(`${BASE_URL}/session/logout`, {
+        method: "GET",
         credentials: "include",
     });
 
