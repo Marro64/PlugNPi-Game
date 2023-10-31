@@ -29,6 +29,7 @@ public class SessionsResource {
      *
      * @return the response
      */
+    @Path("/login")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response tryLogin(UserLogin user) {
