@@ -62,8 +62,8 @@
             clearFormErrors();
 
             /* Validate email*/
-            if (!iti.isValidEmail() && !isValidUser()) {
-                setFormError(itiErrorList[iti.getValidationError()], emailOrUsernameInput);
+            if (!isValidUser(emailOrUsernameInput)) {
+                setFormError(itiErrorList[0], emailOrUsernameInput);
                 return false;
             }
 
