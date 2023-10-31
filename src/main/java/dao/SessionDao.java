@@ -39,6 +39,9 @@ public enum SessionDao {
                         "WHERE session_key = ?",
                 session);
     }
+    public  void sessionExists(String session){
+
+    }
 
     public void addPiSession(String pid, int uid) {
         sessions.put(pid,uid);

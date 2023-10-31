@@ -66,6 +66,4 @@ public class PiResource {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
-
-
 }

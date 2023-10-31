@@ -48,7 +48,9 @@
         /* intlTelInput error list */
         const itiErrorList = ["Invalid email or username", "Invalid password"];
 
+
         window.onload = () => {
+
             /* Initializing dom element references */
             emailOrUsernameInput = document.getElementById("email-user");
             passwordInput = document.getElementById("password");
@@ -60,8 +62,8 @@
             clearFormErrors();
 
             /* Validate email*/
-            if (!iti.isValidEmail() && !isValidUser()) {
-                setFormError(itiErrorList[iti.getValidationError()], emailOrUsernameInput);
+            if (!isValidUser(emailOrUsernameInput)) {
+                setFormError(itiErrorList[0], emailOrUsernameInput);
                 return false;
             }
 
@@ -73,8 +75,37 @@
             }
         }
 
-        const handleFormSubmit = () => {
-            validateForm();
+        const handleFormSubmit = async (event) => {
+            if (!validateForm()) return;
+
+
+            /*
+Have to send a UserSignup object with a String username and String password and String email so {"username":"xxx","email":"xxx","password":"xxx"}
+Handle not acceptable if the username/email already exists
+ */
+            const data ={
+                "username": emailOrUsernameInput.value(),
+                "password": passwordInput.value()
+            };
+
+            event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
+
+            const loginCall = await APILoginCall(data);
+
+
+
+            event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
+
+            /* Request was successfuly, if we get back the token */
+            if (loginCall.value) {
+                setTimeout(() => {
+                    document.location.href = "/";
+                }, 1500);
+            } else {
+                /* Set the form error */
+                setFormError(loginCall?.message, passwordInput);
+            }
+
         }
     </script>
 </head>

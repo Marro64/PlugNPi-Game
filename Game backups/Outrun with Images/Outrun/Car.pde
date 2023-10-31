@@ -26,7 +26,7 @@ class Car {
 
   // Custom method for drawing the object
   void display() {
-    stroke(255);
+    //stroke(255);
     fill(0, 70, 25);
     pushMatrix();
     noStroke();
@@ -39,9 +39,9 @@ class Car {
     vertex( 1, 1, -1, 1, 1);
     vertex(-1, 1, -1, 0, 1);
     endShape();
-    beginShape(QUADS);
-    texture(carImage);
-    endShape();
+    //beginShape(QUADS);
+    //texture(carImage);
+    //endShape();
     popMatrix();
   }
 
