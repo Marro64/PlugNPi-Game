@@ -12,7 +12,6 @@ class Navbar extends HTMLElement {
         // TODO: Generate this automatically once localstorage is set up
         const isAuthenticated = localStorage.getItem("access-token") !== null;
         const initials = "V6";
-        const { count, total } = getCartCountAndTotal();
 
         this.innerHTML = `
             <div class="relative flex flex-row h-20 bg-gradient-to-t from-[#1e2328] to-[#191e23] justify-between px-10 py-2 z-50">
@@ -57,8 +56,8 @@ class Navbar extends HTMLElement {
                             </svg>
                         </label>
                     ` : `
-                        <button class="btn btn-ghost"><a href="./login.html">Log in</a></button>
-                        <button class="btn btn-info bg-blue-400 hover:bg-blue-500 border-none"><a href="./register.html">Sign up</a></button>
+                        <button class="btn btn-ghost"><a href="/pages/home/login.html">Log in</a></button>
+                        <button class="btn btn-info bg-blue-400 hover:bg-blue-500 border-none"><a href="/pages/home/signup.html">Sign up</a></button>
                     `}
                 </div>
             </div>
