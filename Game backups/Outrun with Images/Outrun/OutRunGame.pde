@@ -170,12 +170,14 @@ class OutRunGame {
     //  endShape();
     //}
     //popMatrix();
-
-    for (int i=0; i<dim; i++) {
+    
+    hint(ENABLE_DEPTH_SORT);
+    for (int i=dim-1; i>=0; i--) {
       if (cars[i]!=null) {
-        cars[i].display();
+        cars[i].display();  
       }
     }
+    hint(DISABLE_DEPTH_SORT);
 
     // Draw player
     fill(255);

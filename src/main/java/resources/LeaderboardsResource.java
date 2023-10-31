@@ -1,6 +1,7 @@
 package resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dao.ScoreDao;
 import dao.SessionDao;
@@ -29,17 +30,14 @@ public class LeaderboardsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Integer> getScores(@QueryParam("date") String time) {
-        //TODO create query for all scores
-        List<Integer> allScores = new ArrayList<>();
+    public JsonArray getScores(@QueryParam("date") String time) {
+        JsonArray allScores = new JsonArray();
         if(time.equals("daily")) {
-            allScores = null;
+            allScores = ScoreDao.INSTANCE.getTopLast24();
         } else if (time.equals("weekly")) {
-            allScores = null;
-        } else if (time.equals("yearly")) {
-            allScores = null;
+            allScores = ScoreDao.INSTANCE.getTopLastWeek();
         } else if (time.equals("all-time")) {
-            allScores = null;
+            allScores = ScoreDao.INSTANCE.getAllScores();
         }
         return allScores;
     }
@@ -53,7 +51,6 @@ public class LeaderboardsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadAScore(PiScore score) {
         //Verify whether score upload matches up with the session
-        //TODO convert into score object
         String pid = score.getPid();
         int uid = SessionDao.INSTANCE.getSessions().get(pid);
         Score dbScore = new Score(uid,score.getDistance());
