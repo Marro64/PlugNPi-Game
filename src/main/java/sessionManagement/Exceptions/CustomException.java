@@ -1,4 +1,4 @@
-package Exceptions;
+package sessionManagement.Exceptions;
 
 public class CustomException extends Exception {
     private String name;

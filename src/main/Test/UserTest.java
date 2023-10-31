@@ -1,4 +1,4 @@
-import Exceptions.CustomException;
+import sessionManagement.Exceptions.CustomException;
 import model.User;
 import model.UserSignup;
 import org.junit.jupiter.api.BeforeEach;

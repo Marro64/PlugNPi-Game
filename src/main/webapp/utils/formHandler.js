@@ -21,3 +21,11 @@ const setFormError = (error, child) => {
     /* Marking the input field as error causing */
     child.classList.add("input-error", "input-bordered");
 }
+
+const isValidUser = (user) =>{
+    if(user.toString().length < 4){ // more parameters and check if the user exists
+        return false;
+    }
+
+    return true;
+}
