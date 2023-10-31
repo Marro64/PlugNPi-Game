@@ -52,14 +52,16 @@ public class PiResource {
      * User is guaranteed to exist because they have already managed to log in.
      * //TODO the pi has to know who is playing
      */
-    @POST
-    public Response connectAccount(ConnectionRequest req) {
+    @Path("/link")
+    @GET
+    public Response connectAccount(@QueryParam("session") String session, @QueryParam("connect") boolean connect) {
+        System.out.println("working on link");
         User user = (User) httpreq.getAttribute("user");
-        if(SessionDao.INSTANCE.getSessions().containsKey(req.getSession()) && SessionDao.INSTANCE.getSessions().get(req.getSession())==-1 && req.isConnect()) { //Pi must already exist, no one should be connected
-            SessionDao.INSTANCE.addSession(req.getSession(), user.getUid());
+        if(SessionDao.INSTANCE.getSessions().containsKey(session) && SessionDao.INSTANCE.getSessions().get(session)==-1 && connect) { //Pi must already exist, no one should be connected
+            SessionDao.INSTANCE.addSession(session, user.getUid());
             return Response.ok(user).build(); //Return the user object to the pi !!! TODO Should we also return the same session?
-        }else if(SessionDao.INSTANCE.getSessions().containsKey(req.getSession()) && !req.isConnect()) { //TODO make it disconnect after a while
-            SessionDao.INSTANCE.deleteSession(req.getSession());
+        }else if(SessionDao.INSTANCE.getSessions().containsKey(session) && !connect) { //TODO make it disconnect after a while
+            SessionDao.INSTANCE.deleteSession(session);
             return Response.ok().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
