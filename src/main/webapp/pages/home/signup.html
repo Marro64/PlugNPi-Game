@@ -49,7 +49,6 @@
                 email = document.getElementById("email-input")
                 passwordInput = document.getElementById("password-input");
                 passwordConfirmInput = document.getElementById("confirm-password-input");
-                termsConditionsCheckbox = document.getElementById("terms-conditions-checkbox");
 
             }
 
@@ -68,18 +67,23 @@
                 }
 
                 /* Additional specific validations */
-                if (!iti.isValidNumber()) {
+                if (!isValidUser(username)) {
                     setFormError(itiErrorList[iti.getValidationError()], username);
+                    return false;
+                }
+
+                if (!isValidEmail(email)) {
+                    setFormError(itiErrorList[iti.getValidationError()], username);
+                    return false;
+                }
+
+                if (!isValidPassword(passwordInput)){
+                    setFormError("Password isn't good enough", passwordInput);
                     return false;
                 }
 
                 if (passwordInput.value !== passwordConfirmInput.value) {
                     setFormError("Passwords do not match!", passwordConfirmInput);
-                    return false;
-                }
-
-                if (!termsConditionsCheckbox.checked) {
-                    setFormError("You must agree to terms and conditions!", termsConditionsCheckbox);
                     return false;
                 }
 
