@@ -24,7 +24,7 @@ const setFormError = (error, child) => {
 
 const isValidUser = (user) =>{
     console.log(user.toString() + ""+user.toString().length)
-    return user.toString().length >= 4 && user.toString().length < 15;
+    return user.toString().length >= 4 && user.toString().length < 20;
 }
 
 const isValidEmail = (email) => {
