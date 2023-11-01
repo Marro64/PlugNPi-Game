@@ -1,10 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Play</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play</title>
+
+  <!-- UT Favicon -->
+  <link rel="icon" type="image/png" href="images/utwenteFavicon.png" />
+
+  <!-- DaisyUI tailwind component system and tailwind utility class framework -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Phone number input -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
+
+  <!-- Utils JS -->
+  <script src="javascript/formHandler.js" type="text/javascript"></script>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: "Roboto", sans-serif !important;
+    }
+  </style>
+  <script>
+
+  </script>
 </head>
 <body>
+<div class="container-fluid">
+  <div class="text-center">
+    <img src=
+                 "https://chart.googleapis.com/chart?cht=qr&chl=Hello+World&chs=160x160&chld=L|0"
+         class="qr-code img-thumbnail img-responsive" />
+  </div>
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="button" class=
+                "btn btn-default" id="generate">
+          Generate
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src=
+                "https://code.jquery.com/jquery-3.5.1.js">
+</script>
 
+<script>
+  // Function to HTML encode the text
+  // This creates a new hidden element,
+  // inserts the given text into it
+  // and outputs it out as HTML
+  function htmlEncode(value) {
+    return $('<div/>').text(value)
+            .html();
+  }
+
+  $(function () {
+
+    // Specify an onclick function
+    // for the generate button
+    $('#generate').click(function () {
+
+      // Generate the link that would be
+      // used to generate the QR Code
+      // with the given data
+      let finalURL =
+              'https://chart.googleapis.com/chart?cht=qr&chl=' +
+              htmlEncode($('#content').val()) +
+              '&chs=160x160&chld=L|0'
+
+      // Replace the src of the image with
+      // the QR code image
+      $('.qr-code').attr('src', finalURL);
+    });
+  });
+</script>
 </body>
 </html>
