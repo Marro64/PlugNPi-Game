@@ -56,8 +56,8 @@ class Navbar extends HTMLElement {
                             </svg>
                         </label>
                     ` : `
-                        <button class="btn btn-ghost"><a href="/pages/home/login.html">Log in</a></button>
-                        <button class="btn btn-info bg-blue-400 hover:bg-blue-500 border-none"><a href="/pages/home/signup.html">Sign up</a></button>
+                        <button class="btn btn-ghost"><a href="/login.html">Log in</a></button>
+                        <button class="btn btn-info bg-blue-400 hover:bg-blue-500 border-none"><a href="/signup.html">Sign up</a></button>
                     `}
                 </div>
             </div>

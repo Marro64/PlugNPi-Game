@@ -7,17 +7,20 @@
         <title>Sign Up</title>
 
         <!-- UT Favicon -->
-        <link rel="icon" type="image/png" href="/assets/images/utwenteFavicon.png" />
+        <link rel="icon" type="image/png" href="images/utwenteFavicon.png" />
 
         <!-- DaisyUI tailwind component system and tailwind utility class framework -->
         <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.tailwindcss.com"></script>
 
         <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="/assets/styles/main.css" />
+        <link rel="stylesheet" type="text/css" href="styles/main.css" />
 
         <!-- Header custom component -->
-        <script src="/components/Navbar.js" type="text/javascript"></script>
+        <script src="javascript/Navbar.js" type="text/javascript"></script>
+
+        <!-- Import form handler -->
+        <script src="javascript/formHandler.js" type="text/javascript"></script>
 
         <!-- Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,7 +117,7 @@
                         title: "Successfully registered, redirecting!"
                     })
                     setTimeout(() => {
-                        document.location.href = "/";
+                        document.location.href = "";
                     }, 1500);
                 } else {
                     /* Set the form error */
@@ -144,7 +147,7 @@
                     <!-- Logo wrapper -->
                     <div class="flex flex-col items-center justify-center gap-2">
 
-                        <img src="/assets/images/plugnpi-logo.png" width="200" height="200" />
+                        <img src="images/plugnpi-logo.png" width="200" height="200"  alt="logo"/>
 
                         <div class="text-center">
                             <h1 class="text-4xl text-gray-700 font-thin">Get started with your</h1>
