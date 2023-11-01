@@ -60,8 +60,7 @@ const APILoginCall = async (data) => {
     } else if (response.status === 404) {
         const errorMessage = "No such user exists.";
         return {success: false, message: errorMessage};
-    } else if (response.status == 200){
-        await response.json()
+    } else if (response.status === 200){
         return {success: true, message: await response.text()};
     }
 }
@@ -72,22 +71,20 @@ Have to send a UserSignup object with a String username and String password and 
 Handle not acceptable if the username/email already exists
  */
 const APIRegisterCall = async (data) => {
-    const request = await fetch(`${BASE_URL}/users`, {
+    const response = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         body: JSON.stringify(data),
-        credentials: "include",
         headers: {
             "Content-Type": "application/json",
-        },
-    }).then(
-        request => {
-            if (request.ok) {
-                return request.json();
-            }
         }
-    ).catch(e => console.error(e));
+    });
 
-    return request.json();
+    if (response.status === 400) {
+        const errorMessage = "That Username or Email already exists.";
+        return {success: false, message: errorMessage};
+    } else if (response.status === 200){
+        return {success: true, message: await response.text()};
+    }
 }
 
 /*

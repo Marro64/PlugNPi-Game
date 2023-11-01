@@ -40,11 +40,8 @@
             var passwordInput;
             var passwordConfirmInput;
 
-            var iti;
             var toast;
 
-            /* intlTelInput error list */
-            const itiErrorList = ["Invalid username", "Invalid email", "Too short", "Too long", "Invalid email"];
 
             window.onload = () => {
                 /* Initializing dom element references */
@@ -71,12 +68,12 @@
 
                 /* Additional specific validations */
                 if (!isValidUser(username)) {
-                    setFormError(itiErrorList[iti.getValidationError()], username);
+                    setFormError("Obama does not like your username.", username);
                     return false;
                 }
 
                 if (!isValidEmail(email)) {
-                    setFormError(itiErrorList[iti.getValidationError()], username);
+                    setFormError("Trump does not like your email.", username);
                     return false;
                 }
 
@@ -109,19 +106,18 @@
                 event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
 
                 /* Request was successfuly, if we get back the token */
-                if (registerCall.value) {
+                if (registerCall.success) {
                     /* Save the access token to localstorage and redirect the user to main page */
-                    localStorage.setItem("access-token", registerCall.value);
                     toast.fire({
                         icon: "success",
                         title: "Successfully registered, redirecting!"
                     })
                     setTimeout(() => {
-                        document.location.href = "";
+                        document.location.href = "login.html";
                     }, 1500);
                 } else {
                     /* Set the form error */
-                    setFormError(registerCall?.message, username);
+                    setFormError(registerCall.message, username);
                 }
             }
 

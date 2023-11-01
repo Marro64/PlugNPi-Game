@@ -96,16 +96,14 @@ Handle not acceptable if the username/email already exists
 
             event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
 
-            /* Request was successfuly, if we get back the token */
-            if (loginCall.value) {
-                setTimeout(() => {
-                    document.location.href = "leaderboard.html"; //TODO ref
-                }, 1500);
+            /* Request was successful, if we get back the token */
+            if (loginCall.success) {
+                // Redirect to the leaderboard on successful login
+                document.location.href = "leaderboard.html";
             } else {
-                /* Set the form error */
-                setFormError(loginCall?.message, passwordInput);
+                // Display the error message in the formError
+                setFormError(loginCall.message, passwordInput);
             }
-
         }
     </script>
 </head>
