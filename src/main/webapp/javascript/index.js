@@ -1,6 +1,6 @@
 /* TODO: Implement Helper method for retrieving both json response and status code */
 
-const BASE_URL = "http://localhost:8080/plugnpi";
+const BASE_URL = "http://localhost:8080/plugnpi/api";
 
 /* Request and response interceptor */
 // const { fetch: originalFetch } = window;
