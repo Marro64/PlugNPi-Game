@@ -105,8 +105,6 @@
 
                 const registerCall = await APIRegisterCall(data);
 
-                event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
-
                 /* Request was successfuly, if we get back the token */
                 if (registerCall.success) {
                     /* Save the access token to localstorage and redirect the user to main page */
