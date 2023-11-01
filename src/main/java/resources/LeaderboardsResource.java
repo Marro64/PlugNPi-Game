@@ -34,11 +34,13 @@ public class LeaderboardsResource {
         JsonArray allScores = new JsonArray();
         if(time.equals("daily")) {
             allScores = ScoreDao.INSTANCE.getTopLast24();
+        } else if (time.equals("daily-m")) {
+            //TODO MAURICIO QUERY
         } else if (time.equals("weekly")) {
             allScores = ScoreDao.INSTANCE.getTopLastWeek();
         } else if (time.equals("all-time")) {
             allScores = ScoreDao.INSTANCE.getAllScores();
-        }
+        } 
         return allScores;
     }
 

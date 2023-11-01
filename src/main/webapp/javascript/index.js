@@ -110,8 +110,8 @@ const APILogoutCall = async () => {
     }
 }
 
-const APIGetLeaderboardCall = async (by) => {
-    const request = await fetch(`${BASE_URL}/leaderboard?by=${by}`);
+const APIGetLeaderboardCall = async (time) => {
+    const request = await fetch(`${BASE_URL}/leaderboard?time=${time}`);
 
     return request.json();
 }
