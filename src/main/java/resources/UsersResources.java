@@ -37,7 +37,7 @@ public class UsersResources {
         newUser.setUsername(user.getUsername());
         if(UserDao.INSTANCE.UserExists(newUser)) {
             System.out.println("user exists");
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }else {
             UserDao.INSTANCE.addUser(user);
             System.out.println("created new user");

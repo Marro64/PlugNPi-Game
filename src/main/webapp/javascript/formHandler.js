@@ -23,9 +23,17 @@ const setFormError = (error, child) => {
 }
 
 const isValidUser = (user) =>{
-    if(user.toString().length < 4){ // more parameters and check if the user exists
-        return false;
-    }
+    return user.toString().length >= 4 && user.toString().length < 15;
+}
 
-    return true;
+const isValidEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+};
+
+const isValidPassword = (passwordInput) => {
+    return RegExp(passwordInput.toString());
 }
