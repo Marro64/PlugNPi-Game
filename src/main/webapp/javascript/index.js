@@ -46,7 +46,7 @@ Handle an unauthorized response for invalid logins
 Handle a NOT FOUND response for users that are not found
  */
 const APILoginCall = async (data) => {
-    const response = await fetch(`${BASE_URL}/pages/home/login`, {
+    const response = await fetch(`${BASE_URL}/session`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -54,15 +54,25 @@ const APILoginCall = async (data) => {
         }
     });
 
-    return response.json();
+    if (response.status === 401) {
+        const errorMessage = "Invalid credentials.";
+        return {success: false, message: errorMessage};
+    } else if (response.status === 404) {
+        const errorMessage = "No such user exists.";
+        return {success: false, message: errorMessage};
+    } else if (response.status == 200){
+        await response.json()
+        return {success: true, message: await response.text()};
+    }
 }
+
 
 /*
 Have to send a UserSignup object with a String username and String password and String email so {"username":"xxx","email":"xxx","password":"xxx"}
 Handle not acceptable if the username/email already exists
  */
 const APIRegisterCall = async (data) => {
-    const request = await fetch(`${BASE_URL}/pages/home/signup`, {
+    const request = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         body: JSON.stringify(data),
         credentials: "include",
@@ -90,13 +100,11 @@ If you get an OK you send the user back to the login page
 If you somehow manage to logout without being logged in, you get an unauthorized (handle that somehow)
  */
 const APILogoutCall = async () => {
-    const response = await fetch(`${BASE_URL}/session/logout`, {
+    const response = await fetch(`${BASE_URL}/session`, {
         method: "GET",
-        credentials: "include",
     });
 
     if (response.status === 200) {
-        localStorage.clear("access-token");
         window.location.href = "..";
     }
 }
