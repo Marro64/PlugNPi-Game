@@ -1,3 +1,5 @@
+import jakarta.ws.rs.core.Response;
+import resources.UserResource;
 import sessionManagement.Exceptions.CustomException;
 import model.User;
 import model.UserSignup;
@@ -10,20 +12,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserTest {
 
     private UserSignup user;
+    private User retrievedUser;
+    private int userID;
     @BeforeEach
     public void setUp() {
-        this.user = new UserSignup("BenShapiro","bing@pi.com", "password");
+        this.user = new UserSignup("BenShapiro","bing@live.nl", "N0tMyR34lP4$$word");
+        userID = UserDao.INSTANCE.addUser(user);
+        retrievedUser = new User();
+        UserDao.INSTANCE.jsonToUser(UserDao.INSTANCE.getUser(userID),retrievedUser );
     }
 
     /**
      * Test for creating a user and deleting it.
-     * Ben Shapiro should not be in the DB!
+     * BenShapiro should not be in the DB!
      */
     @Test
-    public void completeTest() {
-            int userID = UserDao.INSTANCE.addUser(user);
-            User retrievedUser = new User();
-            UserDao.INSTANCE.jsonToUser(UserDao.INSTANCE.getUser(userID),retrievedUser );
+    public void registrationTest() {
             assertEquals(user.getEmail(), retrievedUser.getEmail());
             assertEquals(user.getUsername(), retrievedUser.getUsername());
             UserDao.INSTANCE.deleteUser(retrievedUser);
