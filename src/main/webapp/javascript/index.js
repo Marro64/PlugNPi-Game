@@ -97,7 +97,7 @@ const APILogoutCall = async () => {
 
     if (response.status === 200) {
         localStorage.clear("access-token");
-        window.location.href = "/";
+        window.location.href = "..";
     }
 }
 
