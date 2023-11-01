@@ -46,7 +46,8 @@ Handle an unauthorized response for invalid logins
 Handle a NOT FOUND response for users that are not found
  */
 const APILoginCall = async (data) => {
-    const response = await fetch(`${BASE_URL}/session`, {
+    console.log("login call");
+    const response = await fetch(`${BASE_URL}/session/login`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -55,12 +56,15 @@ const APILoginCall = async (data) => {
     });
 
     if (response.status === 401) {
+        console.log("invalid creds")
         const errorMessage = "Invalid credentials.";
         return {success: false, message: errorMessage};
     } else if (response.status === 404) {
+        console.log("no user exists")
         const errorMessage = "No such user exists.";
         return {success: false, message: errorMessage};
     } else if (response.status === 200){
+        console.log("valid login")
         return {success: true, message: await response.text()};
     }
 }
