@@ -39,3 +39,14 @@ input[type=range]::-webkit-slider-thumb:hover {
 .iti--allow-dropdown input {
     padding-left: 64px !important;
 }
+
+.mauricios-button{
+    background-color: #FFC0CB; /* Green */
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}

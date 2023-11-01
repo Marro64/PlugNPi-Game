@@ -23,11 +23,7 @@ const setFormError = (error, child) => {
 }
 
 const isValidUser = (user) =>{
-    if(user.toString().length < 4){ // more parameters and check if the user exists
-        return false;
-    }
-
-    return true;
+    return user.toString().length >= 4 && user.toString().length < 15;
 }
 
 const isValidEmail = (email) => {
