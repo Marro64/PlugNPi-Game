@@ -1,6 +1,7 @@
 RunnerGame RunnerGame;
 lanedetection LaneDetection;
 GameMenu gameMenu;
+WebClient webClient;
 
 boolean isConnected;
 boolean displayLocalHighscore;
@@ -21,8 +22,11 @@ void setup() {
   //setup lane Detection
   LaneDetection = new lanedetection(this, 600, 400);
 
-  //creat game
+  //create game
   RunnerGame = new RunnerGame(width, height);
+  
+  //create client for server communication
+  webClient = new WebClient(this);
 
   //load first video frame?
   lastFrame = millis();
@@ -49,13 +53,15 @@ void draw() {
 
     //display the game
     RunnerGame.displayBackground();
-    RunnerGame.display();
+    RunnerGame.display(LaneDetection.passvideo());
     LaneDetection.display();
   }
 
   if (gameState == 2) {// make connection
     //update connection ore sth
+    webClient.update();
     //display QR code
+    webClient.display();
   }
 
   if (gameState == 99) {//reset game and return Highscore
