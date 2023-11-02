@@ -51,9 +51,13 @@ void setup() {
 
 void draw() {
 
-  if (gameState == 0) {//run the game menu
+  if (gameState == 0) {//Main menu of the game, the game waits for a connection or offline play is pressed
     //display logo and menu select 'offline play or connect'
     gameMenu.display(mouseX, mouseY);
+    //update connection ore sth
+    webClient.update();
+    //display QR code
+    webClient.display();
 
     if (!isConnected) {//display if game is connected or not
       displayNotconnected();
@@ -70,13 +74,13 @@ void draw() {
     RunnerGame.displayBackground();
     RunnerGame.display(LaneDetection.passvideo());
     LaneDetection.display();
+
+    if (isConnected) {
+      gameState = 99;
+    }
   }
 
   if (gameState == 2) {// make connection
-    //update connection ore sth
-    webClient.update();
-    //display QR code
-    webClient.display();
   }
 
   if (gameState == 99) {//reset game and return Highscore
@@ -134,7 +138,7 @@ void displayNotconnected() {
   popMatrix();
 }
 
-  void playDopaminesfx() {
+void playDopaminesfx() {
   for (AudioPlayer dopamine : dopamineSound) {
     dopamine.rewind();
   }

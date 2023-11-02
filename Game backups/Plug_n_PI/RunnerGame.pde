@@ -5,7 +5,8 @@ class RunnerGame {
   int scale = 1; //scale of the game
   float gameW;
   float gameH;
-
+  float startSpeed;
+  float acceleration;
   float speed = 0; // game speed
   int maxDistMoved = 32;
 
@@ -42,7 +43,7 @@ class RunnerGame {
     startSpeed = 1;
     speed = startSpeed;
     acceleration = 0.1;
-    
+
     gameW = w;
     gameH = h;
 
@@ -85,8 +86,6 @@ class RunnerGame {
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           endscore = score;
           reset();
-          backgroundMusic.rewind();
-          backgroundMusic.play();
           playFailsfx();
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
@@ -179,6 +178,8 @@ class RunnerGame {
   }
 
   void reset() {
+    backgroundMusic.rewind();
+    backgroundMusic.play();
     endscore = score;
     score = 0;//reset score
     if (endscore > gameHighScore) gameHighScore = endscore;
