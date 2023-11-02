@@ -23,7 +23,8 @@ const setFormError = (error, child) => {
 }
 
 const isValidUser = (user) =>{
-    return user.toString().length >= 4 && user.toString().length < 15;
+    console.log(user.toString() + ""+user.toString().length)
+    return user.toString().length >= 4 && user.toString().length < 20;
 }
 
 const isValidEmail = (email) => {
@@ -35,5 +36,10 @@ const isValidEmail = (email) => {
 };
 
 const isValidPassword = (passwordInput) => {
-    return RegExp(passwordInput.toString());
+    // Define a regular expression pattern for valid passwords
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,}$/;
+
+    // Use the test method to check if passwordInput matches the pattern
+    return passwordPattern.test(passwordInput);
 }
+

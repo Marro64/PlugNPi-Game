@@ -26,6 +26,7 @@
     <!-- Utils JS -->
     <script src="javascript/parser.js" type="text/javascript"></script>
     <script src="javascript/formHandler.js" type="text/javascript"></script>
+    <script src="javascript/index.js" type="text/javascript"></script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,11 +44,6 @@
         var emailOrUsernameInput;
         var passwordInput;
 
-        var iti;
-
-        /* intlTelInput error list */
-        const itiErrorList = ["Invalid email or username", "Invalid password"];
-
 
         window.onload = () => {
 
@@ -59,42 +55,44 @@
 
         const validateForm = () => {
             /* Re-setting any displayed form errors */
-            clearFormErrors();
+            clearFormErrors()
 
+            let bool = true;
             /* Validate email*/
-            if (!isValidUser(emailOrUsernameInput)) {
-                setFormError(itiErrorList[0], emailOrUsernameInput);
-                return false;
+            console.log("checking username valid")
+            if (!isValidUser(emailOrUsernameInput.value)) {
+                console.log("trying form error")
+                setFormError("Biden does not like your username.", emailOrUsernameInput);
+                console.log("is invalid user")
+                bool = false;
             }
 
+            console.log("checking password valid")
             /* Validate password and confirm password */
             if (passwordInput.value === "") {
-                setFormError(null, passwordInput);
-
-                return false;
+                console.log("trying invalid password form error thingy")
+                setFormError("password cannot be empty.", passwordInput);
+                console.log("is invalid password")
+                bool = false;
             }
+            return bool;
         }
 
-        const handleFormSubmit = async (event) => {
-            if (!validateForm()) return;
-
-
+        const handleFormSubmit = async () => {
+            if (!validateForm()) {
+                console.log("invalid form")
+                return;
+            }
             /*
 Have to send a UserSignup object with a String username and String password and String email so {"username":"xxx","email":"xxx","password":"xxx"}
 Handle not acceptable if the username/email already exists
  */
             const data ={
-                "username": emailOrUsernameInput.value(),
-                "password": passwordInput.value()
+                "username": emailOrUsernameInput.value,
+                "password": passwordInput.value
             };
-
-            event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
-
+            console.log("calling login api call")
             const loginCall = await APILoginCall(data);
-
-
-
-            event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
 
             /* Request was successful, if we get back the token */
             if (loginCall.success) {
@@ -141,7 +139,13 @@ Handle not acceptable if the username/email already exists
 
                     <input type="text" id="email-user" placeholder="mauricio_kicks_a$$$" name="Username"
                            class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
+
+                    <!-- Container for the error message -->
+                    <div class="form-error">
+                        <p class="text-xs text-red-500 mt-1 ml-1"></p>
+                    </div>
                 </div>
+
 
                 <div class="form-group">
                     <label class="label">

@@ -22,6 +22,9 @@
         <!-- Import form handler -->
         <script src="javascript/formHandler.js" type="text/javascript"></script>
 
+        <script src="javascript/parser.js" type="text/javascript"></script>
+        <script src="javascript/index.js" type="text/javascript"></script>
+
         <!-- Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,8 +42,6 @@
             var email;
             var passwordInput;
             var passwordConfirmInput;
-
-            var toast;
 
 
             window.onload = () => {
@@ -66,31 +67,33 @@
                     }
                 }
 
+                let bool = true;
+
                 /* Additional specific validations */
-                if (!isValidUser(username)) {
+                if (!isValidUser(username.value)) {
                     setFormError("Obama does not like your username.", username);
-                    return false;
+                    bool =false;
                 }
 
-                if (!isValidEmail(email)) {
-                    setFormError("Trump does not like your email.", username);
-                    return false;
+                if (!isValidEmail(email.value)) {
+                    setFormError("Trump does not like your email.", email);
+                    bool =false;
                 }
 
-                if (!isValidPassword(passwordInput)){
+                if (!isValidPassword(passwordInput.value)){
                     setFormError("Password isn't good enough", passwordInput);
-                    return false;
+                    bool =false;
                 }
 
                 if (passwordInput.value !== passwordConfirmInput.value) {
                     setFormError("Passwords do not match!", passwordConfirmInput);
-                    return false;
+                    bool =false;
                 }
 
-                return true;
+                return bool;
             }
 
-            const handleFormSubmit = async (event) => {
+            const handleFormSubmit = async () => {
                 if (!validateForm()) return;
 
                 const data = {
@@ -99,19 +102,12 @@
                     "password": passwordInput.value
                 };
 
-                event.target.getElementsByTagName("span")[0].classList.toggle("hidden");x
 
                 const registerCall = await APIRegisterCall(data);
-
-                event.target.getElementsByTagName("span")[0].classList.toggle("hidden");
 
                 /* Request was successfuly, if we get back the token */
                 if (registerCall.success) {
                     /* Save the access token to localstorage and redirect the user to main page */
-                    toast.fire({
-                        icon: "success",
-                        title: "Successfully registered, redirecting!"
-                    })
                     setTimeout(() => {
                         document.location.href = "login.html";
                     }, 1500);
