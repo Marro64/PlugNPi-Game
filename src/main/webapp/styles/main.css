@@ -124,3 +124,15 @@ input[type=range]::-webkit-slider-thumb:hover {
     background-color: #FA9E57;
     accent-color: slategray;
 }
+
+.mauricios-color-bg{
+    background-color: dimgrey;
+}
+
+.mauricios-color-bg-v2{
+    background-color: #555555;
+}
+
+.height{
+    height: 50000px;
+}
