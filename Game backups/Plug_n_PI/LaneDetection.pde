@@ -70,13 +70,19 @@ class lanedetection {
   }
 
   void displayIndicator() {
+    float indicatorTHICCness = 30;
+    float indicatorOffset = indicatorTHICCness/2 + 15;
     pushMatrix();
     hint(DISABLE_DEPTH_TEST);
-    fill(200);
-    rect(width/2, height-15, capWidth, 10);
-    fill(255, 0, 0);
+    //fill(164,163,245);
+    fill(255);
+    rect(width/2, height-indicatorOffset, capWidth, indicatorTHICCness);//this is the bar
+    fill(120,119,179);
+    rect(width/2 + capWidth/6, height-indicatorOffset, 10, indicatorTHICCness);//these are the indicator marks
+    rect(width/2 - capWidth/6, height-indicatorOffset, 10, indicatorTHICCness);
+    fill(254, 39, 136);
     if (faces.length >0) {
-      rect(width/2 + float(capWidth)/2 - (faces[0].x + faces[0].width/2)*Cscale, height -15, 10, 10);
+      rect(width/2 + float(capWidth)/2 - (faces[0].x + faces[0].width/2)*Cscale, height -indicatorOffset, 10, indicatorTHICCness);
     }
     hint(ENABLE_DEPTH_TEST);
     popMatrix();
@@ -109,8 +115,13 @@ class lanedetection {
   String getlane() {
     return lane;
   }
-  
-  Capture passvideo(){
+
+  Capture passvideo() {
     return video;
+  }
+  
+  void toggleIndicator(){
+    if (showIndicator) showIndicator = false;
+    else showIndicator = true;
   }
 }

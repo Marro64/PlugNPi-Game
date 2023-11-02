@@ -19,8 +19,8 @@ class Train {
     trainTop = TrainTop;
   }
 
-  void update(float dt) {
-    distMoved -= speed*dt;
+  void update(float dt, float gameSpeed) {
+    distMoved -= speed*gameSpeed*dt;
     posY = startY-distMoved;
   }
 

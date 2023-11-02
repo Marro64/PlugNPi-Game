@@ -1,7 +1,11 @@
+import processing.sound.*;
 RunnerGame RunnerGame;
 lanedetection LaneDetection;
 GameMenu gameMenu;
 WebClient webClient;
+
+SoundFile dopamineSound;
+SoundFile failSound;
 
 boolean isConnected;
 boolean displayLocalHighscore;
@@ -23,8 +27,10 @@ void setup() {
   LaneDetection = new lanedetection(this, 600, 400);
 
   //create game
+  dopamineSound = new SoundFile(this, "Sounds/fart-01.mp3");
+  failSound = new SoundFile(this, "Sounds/fart-01.mp3");
   RunnerGame = new RunnerGame(width, height);
-  
+
   //create client for server communication
   webClient = new WebClient(this);
 
@@ -95,6 +101,9 @@ void keyPressed() {//check for keyboard inputs for keyboard controls
   if (key == 'd' || keyCode == RIGHT) {
     RunnerGame.moveDelta(1);
   }
+  if (key == 'i') {
+    LaneDetection.toggleIndicator();
+  }
 }
 
 void mouseClicked() {
@@ -117,4 +126,11 @@ void displayNotconnected() {
   fill(255, 0, 0);
   ellipse(10, 10, 15, 15);
   popMatrix();
+}
+
+void playDopaminesfx(){
+  dopamineSound.play();
+}
+void playFailsfx(){
+  failSound.play();
 }

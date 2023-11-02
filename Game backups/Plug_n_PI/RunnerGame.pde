@@ -1,12 +1,16 @@
+import processing.sound.*;
+
 class RunnerGame {
   PGraphics blur;
-
   int cols, rows; // grid variables
   int scale = 1; //scale of the game
   float gameW;
   float gameH;
+  float speed;
+  float startSpeed;
+  float acceleration;
 
-  float speed = 0; // game speed
+  float distMoved = 0; // game distMoved
   int maxDistMoved = 32;
 
   int border = 250; // define the width of the outer edges
@@ -37,6 +41,11 @@ class RunnerGame {
   GroundGrid groundGrid;
 
   RunnerGame(int w, int h) {
+    //setup game variables
+    startSpeed = 1;
+    speed = startSpeed;
+    acceleration = 0.1;
+    
     gameW = w;
     gameH = h;
 
@@ -56,11 +65,11 @@ class RunnerGame {
   }
 
   void update(float dt) {
-    // Set speeds
-    speed -= (4*scale)*dt;
+    // Set distMoveds
+    distMoved -= (speed*scale)*dt;
     //println(dt);
-    if (speed<=-maxDistMoved) {
-      speed=0;
+    if (distMoved<=-maxDistMoved) {
+      distMoved=0;
     }
 
     trigger();
@@ -75,19 +84,22 @@ class RunnerGame {
 
     for (Train train : trains) {
       if (train != null) {
-        train.update(dt);
+        train.update(dt, speed);
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           endscore = score;
           reset();
+          playFailsfx();
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           score++;
+          speed += acceleration;
+          playDopaminesfx();
         }
       }
     }
 
     //groundgrid
-    groundGrid.update(speed);
+    groundGrid.update(distMoved);
   }
 
   void displayBackground() {
@@ -134,7 +146,7 @@ class RunnerGame {
   }
 
   void trigger() {
-    if (millis() > elapsed + trainSpawnTime) {
+    if (millis() > elapsed + trainSpawnTime*(1/speed)) {
       trig = true;
       elapsed = millis();
     }
@@ -178,6 +190,7 @@ class RunnerGame {
   void reset() {
     endscore = score;
     score = 0;//reset score
+    speed = startSpeed;
     if (endscore > gameHighScore) gameHighScore = endscore;
     for (Train train : trains) {//reset trains
       if (train != null) {

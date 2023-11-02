@@ -20,7 +20,7 @@ class Button {
     stroke(lineColor);
     rectMode(CENTER);
     if (isInbox(mX, mY)) {
-      strokeWeight(5);
+      strokeWeight(4);
       fill(HighlightColor);
     } else {
       strokeWeight(2);
