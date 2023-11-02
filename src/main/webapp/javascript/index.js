@@ -1,50 +1,34 @@
 /* TODO: Implement Helper method for retrieving both json response and status code */
+let BASE_URL = null
+function getLinkBase() {
+    let useIp = false;
+    if (useIp) {
+        // Use a web service to get the client's IP address
+        $.get("https://jsonip.com/", function(response) { //TODO find a nice way to instantly get the IP
+            //const clientIp = response.ip;
+            const clientIp = '192.168.2.5'
+            BASE_URL = `http://${clientIp}:8080/plugnpi/api`; // Set BASE_URL using the retrieved IP address
+            console.log(BASE_URL); // Log BASE_URL after it's set
+            // Place any code that depends on BASE_URL here
+        }, "json");
+    } else {
+        BASE_URL = "http://localhost:8080/plugnpi/api";
+    }
+}
 
-const BASE_URL = "http://localhost:8080/plugnpi/api";
+getLinkBase()
+// You can call the getLinkBase function to retrieve the IP address and set BASE_URL.
 
-/* Request and response interceptor */
-// const { fetch: originalFetch } = window;
-// window.fetch = async (...args) => {
-//     const [resource, options = {}] = args;
-//
-//     if (!resource.includes(BASE_URL)) return await originalFetch(resource, options);
-//
-//     const token = localStorage.getItem("access-token");
-//
-//     /* Adding access token to request headers */
-//     if (token !== null && token !== undefined) {
-//         options.headers = options.headers || {};
-//         options.headers["Authorization"] = `Bearer ${token}`;
-//     }
-//
-//     const response = await originalFetch(resource, options);
-//
-//     /* Unauthorized, try to refresh the access token */
-//     if (response.status === 401 && localStorage.getItem("access-token")) {
-//         const refreshResponse = await originalFetch(`${BASE_URL}/auth/refresh`,
-//             { method: "POST", credentials: "include" }
-//         );
-//
-//         const refreshToken = await refreshResponse.json();
-//
-//         /* Update the access token  */
-//         if (refreshToken?.value) {
-//             localStorage.setItem("access-token", refreshToken.value);
-//
-//             /* Re-fetch the resource again */
-//             return await fetch(resource, options);
-//         }
-//     }
-//
-//     /* TODO: Intercept response to see if access token has expired */
-//     return response;
-// }
+// After calling getLinkBase, you can use BASE_URL within your code.
+
+
 
 /*
 Have to send a UserLogin object with a String username and String password so {"username":"xxx","password":"xxx"}
 Handle an unauthorized response for invalid logins
 Handle a NOT FOUND response for users that are not found
  */
+
 const APILoginCall = async (data) => {
     console.log("login call");
     const response = await fetch(`${BASE_URL}/session/login`, {
@@ -110,8 +94,8 @@ const APILogoutCall = async () => {
     }
 }
 
-const APIGetLeaderboardCall = async (time) => {
-    const request = await fetch(`${BASE_URL}/leaderboard?time=${time}`);
+const APIGetLeaderboardCall = async (date) => {
+    const request = await fetch(`${BASE_URL}/leaderboard?time=${date}`);
 
     return request.json();
 }
