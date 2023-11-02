@@ -42,6 +42,7 @@
             var email;
             var passwordInput;
             var passwordConfirmInput;
+            var termsOfService;
 
 
             window.onload = () => {
@@ -50,6 +51,7 @@
                 email = document.getElementById("email-input")
                 passwordInput = document.getElementById("password-input");
                 passwordConfirmInput = document.getElementById("confirm-password-input");
+                termsOfService = document.getElementById("terms-conditions-checkbox");
 
             }
 
@@ -68,6 +70,11 @@
                 }
 
                 let bool = true;
+
+                if(!termsOfService.value){
+                    setFormError("You must agree to the Terms of Service to create an account", termsOfService);
+                    bool = false;
+                }
 
                 /* Additional specific validations */
                 if (!isValidUser(username.value)) {
@@ -202,12 +209,13 @@
                         </div>
 
                         <div class="space-y-4 mt-4">
+
                             <div class="form-control flex flex-row items-center justify-between flex-wrap">
-                                <p class="text-sm basis-3/4">I have read and agree to the <a
+                                <p class="text-sm basis-3/4" onclick="window.location.href='TOS.html'">I have read and agree to the <a
                                         class="text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">terms
                                     and conditions</a></p>
 
-                                <label for="terms-conditions-checkbox"></label><input type="checkbox" class="checkbox" id="terms-conditions-checkbox" />
+                                <label for="terms-conditions-checkbox"></label><input type="checkbox" id="terms-conditions-checkbox" />
                             </div>
 
                             <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
