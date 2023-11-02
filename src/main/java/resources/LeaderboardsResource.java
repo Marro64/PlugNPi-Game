@@ -34,30 +34,28 @@ public class LeaderboardsResource {
     public JsonArray getScores(@QueryParam("date") String time) {
         JsonArray allScores = new JsonArray();
         if (time.equals("daily")) {
-            while (true) {
+            int size = ScoreDao.INSTANCE.getTopLast24().size();
+            while (size > 0) {
                 JsonArray array = ScoreDao.INSTANCE.getTopLast24();
-                if (array == null) {
-                    break;
-                }
                 allScores.add(array);
+                size--;
             }
-        } else if (time.equals("daily-m")) {
+        }
+        else if (time.equals("daily-m")) {
             //TODO MAURICIO QUERY
         } else if (time.equals("weekly")) {
-            while (true) {
+            int size = ScoreDao.INSTANCE.getTopLastWeek().size();
+            while (size > 0) {
                 JsonArray array = ScoreDao.INSTANCE.getTopLastWeek();
-                if (array == null) {
-                    break;
-                }
                 allScores.add(array);
+                size --;
             }
         } else if (time.equals("all-time")) {
-            while (true) {
+            int size = ScoreDao.INSTANCE.getAllScores().size();
+            while (size > 0) {
                 JsonArray array = ScoreDao.INSTANCE.getAllScores();
-                if (array == null) {
-                    break;
-                }
                 allScores.add(array);
+                size--;
             }
         }
         return allScores;

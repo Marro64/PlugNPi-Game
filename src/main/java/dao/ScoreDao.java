@@ -63,7 +63,7 @@ public enum ScoreDao {
     public JsonArray getAllScores()
     {
         return ORM.executeQuery("SELECT\n" +
-                "    a.username,\n" +
+                "    ar.usename,\n" +
                 "    s.distance,\n" +
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
