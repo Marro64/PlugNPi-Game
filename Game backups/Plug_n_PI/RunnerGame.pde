@@ -64,7 +64,7 @@ class RunnerGame {
     }
 
     trigger();
-    
+
     if (trig == true) {
       if (++counter == dim) {
         counter = 0;
@@ -79,7 +79,7 @@ class RunnerGame {
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           endscore = score;
           reset();
-        } else if(train.posY > gameH*0.6 && !train.hasPassed) {
+        } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           score++;
         }
@@ -103,7 +103,7 @@ class RunnerGame {
     popMatrix();
   }
 
-  void display() {
+  void display(Capture video) {
     pushMatrix();
     // Draw fps on screen
     fill(255);
@@ -129,7 +129,7 @@ class RunnerGame {
     }
 
     // Draw player
-    displayPlayer();
+    displayPlayer(video);
     popMatrix();
   }
 
@@ -154,13 +154,25 @@ class RunnerGame {
     }
   }
 
-  void displayPlayer() {
-    fill(255);
-    strokeWeight(10);
-    pushMatrix();
+  void displayPlayer(Capture video) {
+
+    beginShape(QUADS);
+    texture(video);
+    textureMode(NORMAL);
+    //front
     translate(laneXpos[posIdx], gameH*0.6, 5);
-    box((40), (50), (10));
-    popMatrix();
+    scale(25);
+    vertex(-1, 1, 1, 0, 0);
+    vertex( 1, 1, 1, 1, 0);
+    vertex( 1, 1, -1, 1, 1);
+    vertex(-1, 1, -1, 0, 1);
+    endShape();
+    //fill(255);
+    //strokeWeight(10);
+    //pushMatrix();
+    //translate(laneXpos[posIdx], gameH*0.6, 5);
+    //box((40), (50), (10));
+    //popMatrix();
   }
 
   void reset() {

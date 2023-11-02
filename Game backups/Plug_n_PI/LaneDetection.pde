@@ -20,7 +20,7 @@ Rectangle[] faces;
 
 class lanedetection {
   lanedetection(PApplet papplet, int cWidth, int cHeight) {
-    showCamera = true;
+    showCamera = false;
     showRectangles = false;
     lane = "middle";
     capWidth = cWidth;
@@ -38,7 +38,7 @@ class lanedetection {
     opencv.loadImage(video);
     faces = opencv.detect();
     if (faces.length >0) {
-      detect_lane(faces[0].x);
+      detect_lane(faces[0].x + faces[0].width/2);
     }
   }
 
@@ -77,7 +77,7 @@ class lanedetection {
     rect(width/2, height-15, capWidth, 10);
     fill(255, 0, 0);
     if (faces.length >0) {
-      rect(width/2 + float(capWidth)/2 - (faces[0].x)*Cscale, height -15, 10, 10);
+      rect(width/2 + float(capWidth)/2 - (faces[0].x + faces[0].width/2)*Cscale, height -15, 10, 10);
     }
     hint(ENABLE_DEPTH_TEST);
     popMatrix();
@@ -109,5 +109,9 @@ class lanedetection {
 
   String getlane() {
     return lane;
+  }
+  
+  Capture passvideo(){
+    return video;
   }
 }

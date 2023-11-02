@@ -49,7 +49,7 @@ void draw() {
 
     //display the game
     RunnerGame.displayBackground();
-    RunnerGame.display();
+    RunnerGame.display(LaneDetection.passvideo());
     LaneDetection.display();
   }
 
