@@ -17,6 +17,7 @@ import model.Score;
 import model.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Path("/leaderboard")
@@ -33,33 +34,18 @@ public class LeaderboardsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray getScores(@QueryParam("date") String time) {
         JsonArray allScores = new JsonArray();
-        if (time.equals("daily")) {
-            int size = ScoreDao.INSTANCE.getTopLast24().size();
-            while (size > 0) {
-                JsonArray array = ScoreDao.INSTANCE.getTopLast24();
-                allScores.add(array);
-                size--;
-            }
-        }
-        else if (time.equals("daily-m")) {
+        if(time.equals("daily")) {
+            allScores = ScoreDao.INSTANCE.getTopLast24();
+        } else if (time.equals("daily-m")) {
             //TODO MAURICIO QUERY
         } else if (time.equals("weekly")) {
-            int size = ScoreDao.INSTANCE.getTopLastWeek().size();
-            while (size > 0) {
-                JsonArray array = ScoreDao.INSTANCE.getTopLastWeek();
-                allScores.add(array);
-                size --;
-            }
+            allScores = ScoreDao.INSTANCE.getTopLastWeek();
         } else if (time.equals("all-time")) {
-            int size = ScoreDao.INSTANCE.getAllScores().size();
-            while (size > 0) {
-                JsonArray array = ScoreDao.INSTANCE.getAllScores();
-                allScores.add(array);
-                size--;
-            }
+            allScores = ScoreDao.INSTANCE.getAllScores();
         }
         return allScores;
     }
+
 
     /**
      * Upload a piscore from the pi and upload the score to the database

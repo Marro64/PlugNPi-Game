@@ -62,8 +62,8 @@ public enum ScoreDao {
     }
     public JsonArray getAllScores()
     {
-        return ORM.executeQuery("SELECT\n" +
-                "    ar.usename,\n" +
+        JsonArray objects =  ORM.executeQuery("SELECT\n" +
+                "    a.username,\n" +
                 "    s.distance,\n" +
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
@@ -73,6 +73,13 @@ public enum ScoreDao {
                 "    ORDER BY u_id, distance DESC)\n" +
                 "AND s.u_id = a.u_id\n" +
                 "ORDER BY distance DESC\n");
+        System.out.println(objects);
+        try {
+            System.out.println(objects.size());
+        }catch (NullPointerException e) {
+            System.out.println("LMAO NO ENTRY");
+        }
+        return objects;
     }
     public JsonArray getTopLastWeek()
     {
