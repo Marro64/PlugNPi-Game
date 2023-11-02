@@ -1,7 +1,14 @@
+import ddf.minim.*;
+
+Minim minim;
 RunnerGame RunnerGame;
 lanedetection LaneDetection;
 GameMenu gameMenu;
 WebClient webClient;
+
+AudioPlayer[] dopamineSound;
+AudioPlayer failSound;
+AudioPlayer backgroundMusic;
 
 boolean isConnected;
 boolean displayLocalHighscore;
@@ -24,7 +31,15 @@ void setup() {
 
   //create game
   RunnerGame = new RunnerGame(width, height);
-  
+
+  minim = new Minim(this);
+  dopamineSound = new AudioPlayer[3];
+  dopamineSound[0] = minim.loadFile("Sounds/dopamine(1).wav");
+  dopamineSound[1] = minim.loadFile("Sounds/dopamine(2).wav");
+  dopamineSound[2] = minim.loadFile("Sounds/dopamine(3).wav");
+  failSound = minim.loadFile("Sounds/fail1.wav");
+  backgroundMusic = minim.loadFile("Sounds/backgroundSong.mp3");
+
   //create client for server communication
   webClient = new WebClient(this);
 
@@ -36,9 +51,13 @@ void setup() {
 
 void draw() {
 
-  if (gameState == 0) {//run the game menu
+  if (gameState == 0) {//Main menu of the game, the game waits for a connection or offline play is pressed
     //display logo and menu select 'offline play or connect'
     gameMenu.display(mouseX, mouseY);
+    //update connection ore sth
+    webClient.update();
+    //display QR code
+    webClient.display();
 
     if (!isConnected) {//display if game is connected or not
       displayNotconnected();
@@ -55,13 +74,13 @@ void draw() {
     RunnerGame.displayBackground();
     RunnerGame.display(LaneDetection.passvideo());
     LaneDetection.display();
+
+    if (isConnected) {
+      gameState = 99;
+    }
   }
 
   if (gameState == 2) {// make connection
-    //update connection ore sth
-    webClient.update();
-    //display QR code
-    webClient.display();
   }
 
   if (gameState == 99) {//reset game and return Highscore
@@ -117,4 +136,15 @@ void displayNotconnected() {
   fill(255, 0, 0);
   ellipse(10, 10, 15, 15);
   popMatrix();
+}
+
+void playDopaminesfx() {
+  for (AudioPlayer dopamine : dopamineSound) {
+    dopamine.rewind();
+  }
+  dopamineSound[int(random(0, 3))].play();
+}
+void playFailsfx() {
+  failSound.rewind();
+  failSound.play();
 }

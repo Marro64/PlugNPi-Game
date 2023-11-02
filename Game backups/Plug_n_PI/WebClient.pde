@@ -9,7 +9,7 @@ class WebClient {
   int fontSize = 20;
   
   Client client;
-  String host = "localhost";
+  String host = "145.126.2.121";
   int port = 8080; 
   boolean waitingForData = false;
   
@@ -55,7 +55,7 @@ class WebClient {
     println("Content: " + content);
     switch(dataType) {
       case "session":
-        updateQRCode(content);
+        updateSessionID(content);
         println("Received session code.\n");
         break;
       default:
@@ -64,7 +64,7 @@ class WebClient {
   }
   
   void updateSessionID(String sessionID) {
-    String connectURL = "http://" + host + ":" + port + "/player/index&sessionID=" + sessionID;
+    String connectURL = "http://" + host + ":" + port + "/plugnpi/api/pi/link?session=" + sessionID + "&connect=true";
     updateQRCode(connectURL);
   }
   
@@ -75,18 +75,21 @@ class WebClient {
   void updateQRCode(String content) {
     QRCodeContent = content;
     QRCode = zxing4p.generateQRCode(content, 128, 128);
+    println("Set QR code to \"" + content + "\".\n");
   }
   
   void webRequest(String request) {
     client.write(request + "\n");
     client.write("Host: " + host + "\n\n");
     waitingForData = true;
+    println("Send: \"" + request + "\".\n"); 
   }
   
   void display() {
     textSize(fontSize);
     textAlign(LEFT, TOP);
     text(QRCodeContent, 0, 10);
+    imageMode(CORNER);
     image(QRCode, 0, 10+2*fontSize);
   }
 }
