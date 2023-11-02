@@ -60,19 +60,24 @@ public enum ScoreDao {
                 "ORDER BY distance DESC\n");
 
     }
-    public JsonArray getAllScores()
+    public JsonObject getAllScores()
     {
-        return ORM.executeQuery("SELECT\n" +
-                "    a.username,\n" +
-                "    s.distance,\n" +
-                "    s.date_of_record\n" +
-                "FROM project.score s, project.account a\n" +
-                "WHERE s.s_id IN (\n" +
-                "    SELECT DISTINCT ON (u_id) s_id\n" +
-                "    FROM project.score\n" +
-                "    ORDER BY u_id, distance DESC)\n" +
-                "AND s.u_id = a.u_id\n" +
-                "ORDER BY distance DESC\n");
+        JsonArray combinedJson = ORM.executeQuery("SELECT jsonb_agg(subquery.json_object) " +
+                "FROM (" +
+                "    SELECT jsonb_build_object(" +
+                "        'username', a.username, " +
+                "        'distance', s.distance, " +
+                "        'date_of_record', s.date_of_record " +
+                "    ) as json_object " +
+                "    FROM project.score s " +
+                "    JOIN project.account a ON s.u_id = a.u_id " +
+                "    WHERE s.s_id IN (" +
+                "        SELECT DISTINCT ON (u_id) s_id " +
+                "        FROM project.score " +
+                "        ORDER BY u_id, distance DESC " +
+                "    )" +
+                ") subquery");
+        return (JsonObject) combinedJson.get(0);
     }
     public JsonArray getTopLastWeek()
     {

@@ -31,36 +31,19 @@ public class LeaderboardsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getScores(@QueryParam("date") String time) {
+    public JsonObject getScores(@QueryParam("date") String time) {
         JsonArray allScores = new JsonArray();
-        if (time.equals("daily")) {
-            while (true) {
-                JsonArray array = ScoreDao.INSTANCE.getTopLast24();
-                if (array == null) {
-                    break;
-                }
-                allScores.add(array);
-            }
+        JsonObject scores = new JsonObject();
+        if(time.equals("daily")) {
+            allScores = ScoreDao.INSTANCE.getTopLast24();
         } else if (time.equals("daily-m")) {
             //TODO MAURICIO QUERY
         } else if (time.equals("weekly")) {
-            while (true) {
-                JsonArray array = ScoreDao.INSTANCE.getTopLastWeek();
-                if (array == null) {
-                    break;
-                }
-                allScores.add(array);
-            }
+            allScores = ScoreDao.INSTANCE.getTopLastWeek();
         } else if (time.equals("all-time")) {
-            while (true) {
-                JsonArray array = ScoreDao.INSTANCE.getAllScores();
-                if (array == null) {
-                    break;
-                }
-                allScores.add(array);
-            }
+            scores = ScoreDao.INSTANCE.getAllScores();
         }
-        return allScores;
+        return scores;
     }
 
     /**
