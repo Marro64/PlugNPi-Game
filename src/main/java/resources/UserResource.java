@@ -21,14 +21,17 @@ public class UserResource {
     @Context
     private HttpServletRequest req;
 
-    private final String username;
+    private  String username;
 
     public UserResource(UriInfo info, HttpServletRequest req, String username) {
         this.info = info;
         this.req = req;
         this.username = username;
     }
+    public UserResource()
+    {
 
+    }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserDetails() {

@@ -18,7 +18,7 @@ public class LeaderboardsResource {
     private HttpServletRequest req;
 
     /**
-     * Have different filters for date, return
+     * Have different filters for date, return the correct leaderboard
      *
      * @return
      */
@@ -26,14 +26,16 @@ public class LeaderboardsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getScores(@QueryParam("date") String time) {
         JsonArray allScores = new JsonArray();
-        if(time.equals("daily")) {
+        if(time.equals("daily") && !ScoreDao.INSTANCE.getTopLast24().isEmpty())  {
             allScores = ScoreDao.INSTANCE.getTopLast24();
         } else if (time.equals("daily-m")) {
             //TODO MAURICIO QUERY
-        } else if (time.equals("weekly")) {
+        } else if (time.equals("weekly") && !ScoreDao.INSTANCE.getTopLastWeek().isEmpty()) {
             allScores = ScoreDao.INSTANCE.getTopLastWeek();
-        } else if (time.equals("all-time")) {
+        } else if (time.equals("all-time") && !ScoreDao.INSTANCE.getAllScores().isEmpty()) {
             allScores = ScoreDao.INSTANCE.getAllScores();
+        } else {
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
         return Response.ok(allScores.toString()).build();
     }
