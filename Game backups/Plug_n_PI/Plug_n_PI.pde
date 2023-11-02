@@ -1,21 +1,15 @@
-<<<<<<< Updated upstream
-=======
 import ddf.minim.*;
 
 Minim minim;
->>>>>>> Stashed changes
 RunnerGame RunnerGame;
 lanedetection LaneDetection;
 GameMenu gameMenu;
 WebClient webClient;
 
-<<<<<<< Updated upstream
-=======
 AudioPlayer[] dopamineSound;
 AudioPlayer failSound;
 AudioPlayer backgroundMusic;
 
->>>>>>> Stashed changes
 boolean isConnected;
 boolean displayLocalHighscore;
 int localHighscore = 0;
@@ -36,18 +30,16 @@ void setup() {
   LaneDetection = new lanedetection(this, 600, 400);
 
   //create game
-<<<<<<< Updated upstream
-=======
+  RunnerGame = new RunnerGame(width, height);
+
   minim = new Minim(this);
   dopamineSound = new AudioPlayer[3];
   dopamineSound[0] = minim.loadFile("Sounds/dopamine(1).wav");
   dopamineSound[1] = minim.loadFile("Sounds/dopamine(2).wav");
-    dopamineSound[2] = minim.loadFile("Sounds/dopamine(3).wav");
+  dopamineSound[2] = minim.loadFile("Sounds/dopamine(3).wav");
   failSound = minim.loadFile("Sounds/fail1.wav");
   backgroundMusic = minim.loadFile("Sounds/backgroundSong.mp3");
->>>>>>> Stashed changes
-  RunnerGame = new RunnerGame(width, height);
-  
+
   //create client for server communication
   webClient = new WebClient(this);
 
@@ -141,11 +133,9 @@ void displayNotconnected() {
   ellipse(10, 10, 15, 15);
   popMatrix();
 }
-<<<<<<< Updated upstream
-=======
 
-void playDopaminesfx() {
-  for(AudioPlayer dopamine : dopamineSound){
+  void playDopaminesfx() {
+  for (AudioPlayer dopamine : dopamineSound) {
     dopamine.rewind();
   }
   dopamineSound[int(random(0, 3))].play();
@@ -154,4 +144,3 @@ void playFailsfx() {
   failSound.rewind();
   failSound.play();
 }
->>>>>>> Stashed changes

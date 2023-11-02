@@ -37,14 +37,12 @@ class RunnerGame {
   GroundGrid groundGrid;
 
   RunnerGame(int w, int h) {
-<<<<<<< Updated upstream
-=======
+
     //setup game variables
     startSpeed = 1;
     speed = startSpeed;
     acceleration = 0.1;
-
->>>>>>> Stashed changes
+    
     gameW = w;
     gameH = h;
 
@@ -87,12 +85,9 @@ class RunnerGame {
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           endscore = score;
           reset();
-<<<<<<< Updated upstream
-=======
           backgroundMusic.rewind();
           backgroundMusic.play();
           playFailsfx();
->>>>>>> Stashed changes
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           score++;
