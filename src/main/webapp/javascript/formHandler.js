@@ -22,6 +22,16 @@ const setFormError = (error, child) => {
     child.classList.add("input-error", "input-bordered");
 }
 
+const setFormSuccess = (error, child) => {
+    error = error ?? `${child.getAttribute("name")} can not be empty!`;
+
+    /* Getting reference to the childrens parent wrapper div and appending error code */
+    child.parentNode.appendChild(parseHTML(`<div class="form-error"><p class="text-xs text-blue-500 mt-1 ml-1">${error}</p></div>`));
+
+    /* Marking the input field as error causing */
+    child.classList.add("input-error", "input-bordered");
+}
+
 const isValidUser = (user) =>{
     console.log(user.toString() + ""+user.toString().length)
     return user.toString().length >= 4 && user.toString().length < 20;
@@ -43,3 +53,10 @@ const isValidPassword = (passwordInput) => {
     return passwordPattern.test(passwordInput);
 }
 
+const isValidSession = (session) => {
+    // Define the pattern for a valid session (UUID)
+    const sessionPattern = /^[0-9a-fA-F-]+$/;
+
+    // Test if the input matches the pattern
+    return sessionPattern.test(session);
+};

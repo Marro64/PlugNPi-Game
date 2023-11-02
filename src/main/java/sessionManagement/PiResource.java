@@ -65,6 +65,6 @@ public class PiResource {
             SessionDao.INSTANCE.resetSession(session);
             return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

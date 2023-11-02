@@ -94,6 +94,20 @@ const APILogoutCall = async () => {
     }
 }
 
+const APIConnectToPi = async (session) => {
+    const response = await fetch(`${BASE_URL}/pi/link?session=${session}&connect=true`, {
+        method: "GET",
+    });
+
+    if (response.status === 200) {
+        const message = "Successfully connected to a Pi."
+        return {success: true, message: message};
+    }else if(response.status === 204) {
+        const errorMessage = "No such session exists.";
+        return {success: true, message: errorMessage};
+    }
+}
+
 const APIGetLeaderboardCall = async (date) => {
     const request = await fetch(`${BASE_URL}/leaderboard?time=${date}`);
 

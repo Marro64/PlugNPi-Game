@@ -21,8 +21,10 @@
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
 
   <!-- Utils JS -->
+  <script src="javascript/parser.js" type="text/javascript"></script>
   <script src="javascript/formHandler.js" type="text/javascript"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="javascript/index.js" type="text/javascript"></script>
 
   <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +37,48 @@
     }
   </style>
   <script>
+    /* References to dom elements */
+    var url;
+    window.onload = () => {
+      /* Initializing dom element references */
+      url = document.getElementById("url");
+    }
 
+    const validateForm = () => {
+      /* Re-setting any displayed form errors */
+      clearFormErrors()
+
+      let bool = true;
+      /* Validate email*/
+      console.log("checking url valid")
+      if (!isValidSession(url.value)) {
+        setFormError("Kim Jong Un does not like your URL.", url);
+        bool = false;
+      }
+      return bool;
+    }
+
+    const handleFormSubmit = async () => {
+      if (!validateForm()) {
+        console.log("invalid form")
+        return;
+      }
+      /*
+Have to send a UserSignup object with a String username and String password and String email so {"username":"xxx","email":"xxx","password":"xxx"}
+Handle not acceptable if the username/email already exists
+*/
+      console.log("calling url api call")
+      const urlCall = await APIConnectToPi(url.value);
+
+      /* Request was successful, if we get back the token */
+      if (urlCall.success) {
+        // Redirect to the leaderboard on successful login
+        setFormSuccess(urlCall.message, url)
+      } else {
+        // Display the error message in the formError
+        setFormError(urlCall.message, url);
+      }
+    }
   </script>
 </head>
 <body>
@@ -50,56 +93,71 @@
            class="qr-code img-thumbnail img-responsive center border"/>
     </div>
 
+    <div class="flex flex-col">
+      <div class="form-group">
+        <label class="label">
+          <span class="label-text">Enter the session ID for the Pi</span>
+        </label>
 
-    <label class="label">
-      <span class="label-text">Enter the session ID for the Pi</span>
-    </label>
+        <input type="text" id="url" placeholder="im sorry mauricio" name="URL"
+               class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
 
-    <input type="text" id="email-user" placeholder="why is mauricio so awesome?" name="Username"
-           class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
-
-
-        <div class="col-sm-offset-2 col-sm-10 button-padding">
-          <button type="button" class=
-                  "btn btn-default " id="generate">
-            Generate
-          </button>
+        <!-- Container for the error message -->
+        <div class="form-error">
+          <p class="text-xs text-red-500 mt-1 ml-1"></p>
         </div>
+      </div>
+
+      <div class="mt-6">
+        <!-- "handle for submit is a function to handle the input of the login" -->
+        <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
+      </div>
+    </div>
+<!--    <input type="text" id="email-user" placeholder="why is mauricio so awesome?" name="Username"-->
+<!--           class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />-->
+
+
+<!--        <div class="col-sm-offset-2 col-sm-10 button-padding">-->
+<!--          <button type="button" class=-->
+<!--                  "btn btn-default " id="generate">-->
+<!--            Generate-->
+<!--          </button>-->
+<!--        </div>-->
   </div>
   <script src=
                   "https://code.jquery.com/jquery-3.5.1.js">
   </script>
 
-  <script>
-    // Function to HTML encode the text
-    // This creates a new hidden element,
-    // inserts the given text into it
-    // and outputs it out as HTML
-    function htmlEncode(value) {
-      return $('<div/>').text(value)
-              .html();
-    }
+<!--  <script>-->
+<!--    // Function to HTML encode the text-->
+<!--    // This creates a new hidden element,-->
+<!--    // inserts the given text into it-->
+<!--    // and outputs it out as HTML-->
+<!--    function htmlEncode(value) {-->
+<!--      return $('<div/>').text(value)-->
+<!--              .html();-->
+<!--    }-->
 
-    $(function () {
+<!--    $(function () {-->
 
-      // Specify an onclick function
-      // for the generate button
-      $('#generate').click(function () {
+<!--      // Specify an onclick function-->
+<!--      // for the generate button-->
+<!--      $('#generate').click(function () {-->
 
-        // Generate the link that would be
-        // used to generate the QR Code
-        // with the given data
-        let finalURL =
-                'https://chart.googleapis.com/chart?cht=qr&chl=' +
-                htmlEncode($('#content').val()) +
-                '&chs=160x160&chld=L|0'
+<!--        // Generate the link that would be-->
+<!--        // used to generate the QR Code-->
+<!--        // with the given data-->
+<!--        let finalURL =-->
+<!--                'https://chart.googleapis.com/chart?cht=qr&chl=' +-->
+<!--                htmlEncode($('#content').val()) +-->
+<!--                '&chs=160x160&chld=L|0'-->
 
-        // Replace the src of the image with
-        // the QR code image
-        $('.qr-code').attr('src', finalURL);
-      });
-    });
-  </script>
+<!--        // Replace the src of the image with-->
+<!--        // the QR code image-->
+<!--        $('.qr-code').attr('src', finalURL);-->
+<!--      });-->
+<!--    });-->
+<!--  </script>-->
   <div><h1></h1>></div>
   <div><h1></h1>></div>
   <div><h1></h1>></div>
