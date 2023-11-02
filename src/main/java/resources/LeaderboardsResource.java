@@ -1,12 +1,8 @@
 package resources;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import dao.ScoreDao;
 import dao.SessionDao;
-import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -14,11 +10,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.PiScore;
 import model.Score;
-import model.User;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Path("/leaderboard")
 public class LeaderboardsResource {
@@ -28,11 +19,12 @@ public class LeaderboardsResource {
 
     /**
      * Have different filters for date, return
+     *
      * @return
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getScores(@QueryParam("date") String time) {
+    public String getScores(@QueryParam("date") String time) {
         JsonArray allScores = new JsonArray();
         if(time.equals("daily")) {
             allScores = ScoreDao.INSTANCE.getTopLast24();
@@ -43,7 +35,7 @@ public class LeaderboardsResource {
         } else if (time.equals("all-time")) {
             allScores = ScoreDao.INSTANCE.getAllScores();
         }
-        return allScores;
+        return allScores.toString();
     }
 
 
