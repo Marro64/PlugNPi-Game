@@ -12,6 +12,7 @@ import model.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Provider
 public class SessionFilter implements ContainerRequestFilter {
@@ -34,14 +35,14 @@ public class SessionFilter implements ContainerRequestFilter {
         Cookie session = request.getCookies().get(COOKIE_SESSION);
 
         //TESTING BLOCK FOR API CALLS: REMOVE WHEN YOU WANT TO TEST SESSIONS
-        if (true) {
-            return;
-        }
+//        if (true) {
+//            return;
+//        }
 
         if (session == null) { //No session, user wants to login or signup
             System.out.println("SessionFilter: No session");
             System.out.println("SessionFilter " + request.getUriInfo().getRequestUri().getPath());
-            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || request.getUriInfo().getRequestUri().getPath().equals("/actfact/api/users/")) {
+            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")) {
                 if (request.getMethod().equals("POST")) {
                     return; // Allow the request to continue processing
                 }
@@ -52,20 +53,20 @@ public class SessionFilter implements ContainerRequestFilter {
         } else if (verifySession(session.getValue())) { //Valid session to any destination but not login
             //Session is still valid
             httprequest.setAttribute("session",session.getValue());
-            if(!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session")) {
+            if(!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login")) {
                 JsonObject queried = UserDao.INSTANCE.getUserFromSession(session.getValue());
                 User user = new User();
                 UserDao.INSTANCE.jsonToUser(queried,user);
                 System.out.println("SessionFilter: SESSION: " + user.getUsername());
                 httprequest.setAttribute("user", user);
-            } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session/logout")) {
+            } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/logout")) {
                 httprequest.setAttribute("session", session.getValue());
             } else {
                 //TODO remove session on DB
                 SessionDao.INSTANCE.deleteSession(session.getValue()); //Removes existing cookie if the user wants to login again (which will give them a new cookie)
             }
             return; // Allow the request to continue processing
-        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/session") || (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")))) { //Session already there but to login/signup
+        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") || (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")))) { //Session already there but to login/signup
             //Previous check guarantees that an invalid session is removed
             if (request.getMethod().equals("POST")) {
                 System.out.println("SessionFilter: login/signup attempt on existing cookie");
@@ -86,8 +87,8 @@ public class SessionFilter implements ContainerRequestFilter {
         System.out.println("SessionFilter: checking session");
 
         String sessionTimeString = SessionDao.INSTANCE.getSessiontime(session).get("expires").getAsString();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH);
+        LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString, formatter);
 
         LocalDateTime now = LocalDateTime.now();
         if(sessionTime.isAfter(now)) {

@@ -73,8 +73,6 @@ public enum ScoreDao {
                 "    ORDER BY u_id, distance DESC)\n" +
                 "AND s.u_id = a.u_id\n" +
                 "ORDER BY distance DESC\n");
-
-
     }
     public JsonArray getTopLastWeek()
     {

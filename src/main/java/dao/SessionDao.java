@@ -1,28 +1,21 @@
 package dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.json.Json;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.ORM;
-import model.User;
-import model.UserSignup;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public enum SessionDao {
     INSTANCE;
 
     private final HashMap<String,Integer> sessions = new HashMap<>();
-    public int addSession(String session, int u_id) {
-        JsonArray addUserQuery =  ORM.executeQuery(
+    public void addSession(String session, int u_id) {
+        JsonArray addSessionQuery =  ORM.executeQuery(
                 "INSERT INTO project.session " +
                         "(session_key, u_id) " +
                         "VALUES (?, ?)",
                 session, u_id);
-        int userId = ((JsonObject) addUserQuery.get(0)).get("u_id").getAsInt();
-        return userId;
     }
 
     public JsonObject getSessiontime(String session) {
@@ -44,10 +37,12 @@ public enum SessionDao {
     }
 
     public void addPiSession(String pid, int uid) {
+        System.out.println("SESSIONDAO; PID: " + pid + " UID: " + uid);
         sessions.put(pid,uid);
     }
 
     public void resetSession(String pid) {
+        System.out.println("SESSIONDAO CLEARING; PID: " + pid);
         sessions.put(pid,-1);
     }
 

@@ -39,14 +39,23 @@
 </head>
 <body>
 <div>
-  <button class="mauricios-button" onclick="window.location.href='leaderboard.html';">Back to leaderboard</button>
+  <button class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Back to leaderboard</button>
 </div>
 <div class="mauricios-container">
-  <div class="text-center">
+  <div class="mauricios-center">
     <img src=
                  "https://chart.googleapis.com/chart?cht=qr&chl=Hello+World&chs=160x160&chld=L|0"
-         class="qr-code img-thumbnail img-responsive" />
+         class="qr-code img-thumbnail img-responsive center"/>
   </div>
+
+
+  <label class="label">
+    <span class="label-text">Enter the session ID for the Pi</span>
+  </label>
+
+  <input type="text" id="email-user" placeholder="why is mauricio so awesome?" name="Username"
+         class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm font-medium" />
+
       <div class="col-sm-offset-2 col-sm-10">
         <button type="button" class=
                 "btn btn-default" id="generate">

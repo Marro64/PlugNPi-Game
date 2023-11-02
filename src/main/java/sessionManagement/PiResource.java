@@ -58,10 +58,10 @@ public class PiResource {
         System.out.println("working on link");
         User user = (User) httpreq.getAttribute("user");
         if(SessionDao.INSTANCE.getSessions().containsKey(session) && SessionDao.INSTANCE.getSessions().get(session)==-1 && connect) { //Pi must already exist, no one should be connected
-            SessionDao.INSTANCE.addSession(session, user.getUid());
+            SessionDao.INSTANCE.addPiSession(session, user.getUid());
             return Response.ok(user).build(); //Return the user object to the pi !!! TODO Should we also return the same session?
         }else if(SessionDao.INSTANCE.getSessions().containsKey(session) && !connect) { //TODO make it disconnect after a while
-            SessionDao.INSTANCE.deleteSession(session);
+            SessionDao.INSTANCE.resetSession(session);
             return Response.ok().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
