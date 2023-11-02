@@ -89,6 +89,7 @@ class RunnerGame {
           playFailsfx();
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
+          playDopaminesfx();
           score++;
         }
       }
