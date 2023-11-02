@@ -45,10 +45,12 @@ public enum SessionDao {
 
     public void addPiSession(String pid, int uid) {
         sessions.put(pid,uid);
+        System.out.println("SESSIONDAO; " + "PID: " + pid + " UID: " + uid);
     }
 
     public void resetSession(String pid) {
         sessions.put(pid,-1);
+        System.out.println("SESSIONDAO; " + " RESET/PID: " + pid);
     }
 
     public HashMap<String,Integer> getSessions() {

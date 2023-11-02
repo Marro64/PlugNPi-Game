@@ -12,6 +12,7 @@ import model.ConnectionRequest;
 import model.User;
 
 import javax.print.attribute.standard.Media;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -58,11 +59,11 @@ public class PiResource {
         System.out.println("working on link");
         User user = (User) httpreq.getAttribute("user");
         if(SessionDao.INSTANCE.getSessions().containsKey(session) && SessionDao.INSTANCE.getSessions().get(session)==-1 && connect) { //Pi must already exist, no one should be connected
-            SessionDao.INSTANCE.addSession(session, user.getUid());
-            return Response.ok(user).build(); //Return the user object to the pi !!! TODO Should we also return the same session?
+            SessionDao.INSTANCE.addPiSession(session, user.getUid());
+            return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build(); //TODO show pi ur running it on
         }else if(SessionDao.INSTANCE.getSessions().containsKey(session) && !connect) { //TODO make it disconnect after a while
-            SessionDao.INSTANCE.deleteSession(session);
-            return Response.ok().build();
+            SessionDao.INSTANCE.resetSession(session);
+            return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }

@@ -24,7 +24,7 @@ public class LeaderboardsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getScores(@QueryParam("date") String time) {
+    public Response getScores(@QueryParam("date") String time) {
         JsonArray allScores = new JsonArray();
         if(time.equals("daily")) {
             allScores = ScoreDao.INSTANCE.getTopLast24();
@@ -35,7 +35,7 @@ public class LeaderboardsResource {
         } else if (time.equals("all-time")) {
             allScores = ScoreDao.INSTANCE.getAllScores();
         }
-        return allScores.toString();
+        return Response.ok(allScores.toString()).build();
     }
 
 
