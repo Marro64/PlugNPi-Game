@@ -37,6 +37,14 @@ class RunnerGame {
   GroundGrid groundGrid;
 
   RunnerGame(int w, int h) {
+<<<<<<< Updated upstream
+=======
+    //setup game variables
+    startSpeed = 1;
+    speed = startSpeed;
+    acceleration = 0.1;
+
+>>>>>>> Stashed changes
     gameW = w;
     gameH = h;
 
@@ -79,6 +87,12 @@ class RunnerGame {
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           endscore = score;
           reset();
+<<<<<<< Updated upstream
+=======
+          backgroundMusic.rewind();
+          backgroundMusic.play();
+          playFailsfx();
+>>>>>>> Stashed changes
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           score++;
@@ -98,7 +112,7 @@ class RunnerGame {
     noStroke();
     fill(254, 195, 8);
     pushMatrix();
-    translate(gameW/2, gameH/2-80*gameW/800.0, -gameH/2);
+    translate(gameW/2, gameH/2-80*gameW/800.0, -gameH/2 + 100);
     circle(0, 0, gameW/4);
     popMatrix();
   }
@@ -167,12 +181,6 @@ class RunnerGame {
     vertex( 1, 1, -1, 1, 1);
     vertex(-1, 1, -1, 0, 1);
     endShape();
-    //fill(255);
-    //strokeWeight(10);
-    //pushMatrix();
-    //translate(laneXpos[posIdx], gameH*0.6, 5);
-    //box((40), (50), (10));
-    //popMatrix();
   }
 
   void reset() {
