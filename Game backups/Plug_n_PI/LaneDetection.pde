@@ -1,7 +1,6 @@
 import java.awt.*;
 import gab.opencv.*;
 
-import gohai.glvideo.*;
 import processing.video.*;
 
 Capture video;
