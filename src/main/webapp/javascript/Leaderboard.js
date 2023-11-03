@@ -2,17 +2,11 @@ class Leaderboard extends HTMLElement {
     constructor() {
         super();
     }
-
     /* Invoked each time the custom element is appended into a document-connected element. */
     connectedCallback() {
         /* Leaderboard data must be a json object */
-        const leaderboardData = leaderboardElement.getAttribute('leaderboardData');
-        if (leaderboardData) {
-            const leaderboardDataDecoded = JSON.parse(leaderboardData);
-            console.log(leaderboardDataDecoded);
-        } else {
-            console.error("No leaderboard data available.");
-        }
+        const leaderboardData = this.attributes.leaderboardData?.value;
+        const leaderboardDataDecoded = JSON.parse(leaderboardData);
 
         /* Wrapper div for the whole table */
         const wrapperDiv = document.createElement("div");
@@ -31,15 +25,15 @@ class Leaderboard extends HTMLElement {
 
         const headerCellPosition = document.createElement("th");
         headerCellPosition.classList.add("w-12", "px-6", "py-3");
-        headerCellPosition.innerHTML = "Username";
+        headerCellPosition.innerHTML = "username";
 
         const headerCellPerson = document.createElement("th");
         headerCellPerson.classList.add("w-64", "px-6", "py-3");
-        headerCellPerson.innerHTML = "Score";
+        headerCellPerson.innerHTML = "distance";
 
         const headerCellEarned = document.createElement("th");
         headerCellEarned.classList.add("px-6", "py-3");
-        headerCellEarned.innerHTML = "Date";
+        headerCellEarned.innerHTML = "date_of_record";
 
         tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned);
         tableHead.appendChild(tableHeadRow);
@@ -64,7 +58,7 @@ class Leaderboard extends HTMLElement {
             if (rank <= 3) {
                 bodyCellPosition.insertAdjacentHTML("beforeend", `
                     <svg xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-jewish-star-filled ${rank == 1 ? `text-amber-300` : rank == 2 ? `text-gray-300` : `text-amber-700`} fill-current"
+                        class="icon icon-tabler icon-tabler-jewish-star-filled ${rank === 1 ? `text-amber-300` : rank === 2 ? `text-gray-300` : `text-amber-700`} fill-current"
                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

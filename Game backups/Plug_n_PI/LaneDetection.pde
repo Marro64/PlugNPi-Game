@@ -14,6 +14,7 @@ String lane;
 boolean showCamera;
 boolean showRectangles;
 boolean showIndicator = true;
+float indicatorTHICCness;
 
 Rectangle[] faces;
 
@@ -26,6 +27,7 @@ class lanedetection {
     capHeight = cHeight;
     Cscale = 4;
 
+    indicatorTHICCness = 30;
     video = new Capture(papplet, capWidth/Cscale, capHeight/Cscale);
 
     opencv = new OpenCV(papplet, capWidth/Cscale, capHeight/Cscale);
@@ -72,11 +74,14 @@ class lanedetection {
   void displayIndicator() {
     pushMatrix();
     hint(DISABLE_DEPTH_TEST);
-    fill(200);
-    rect(width/2, height-15, capWidth, 10);
+    fill(220);
+    rect(width/2, height-indicatorTHICCness/2 -10, capWidth, indicatorTHICCness);
+    fill(255);
+    rect(width/2 + capWidth/6, height-indicatorTHICCness/2 -10, 10, indicatorTHICCness);
+    rect(width/2 - capWidth/6, height-indicatorTHICCness/2 -10, 10, indicatorTHICCness);
     fill(255, 0, 0);
     if (faces.length >0) {
-      rect(width/2 + float(capWidth)/2 - (faces[0].x + faces[0].width/2)*Cscale, height -15, 10, 10);
+      rect(width/2 + float(capWidth)/2 - (faces[0].x + faces[0].width/2)*Cscale, height -indicatorTHICCness/2 -10, 10, indicatorTHICCness);
     }
     hint(ENABLE_DEPTH_TEST);
     popMatrix();
@@ -109,8 +114,8 @@ class lanedetection {
   String getlane() {
     return lane;
   }
-  
-  Capture passvideo(){
+
+  Capture passvideo() {
     return video;
   }
 }
