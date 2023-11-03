@@ -57,19 +57,38 @@ public class PiResource {
     @Path("/link")
     public Response connectAccount(@QueryParam("session") String session, @QueryParam("connect") boolean connect) {
         User user = (User) httpreq.getAttribute("user");
-        if (SessionDao.INSTANCE.getSessions().containsKey(session) &&
-                SessionDao.INSTANCE.getSessions().get(session) == -1 && connect) {
-            if(user == null) {
-                // User is not logged in, store the API call data and redirect to login page
-                return Response.seeOther(URI.create("http://localhost:8080/plugnpi/login.html?fromQR="+session))
-                        .build();
+        if (SessionDao.INSTANCE.getSessions().containsKey(session) && connect) {
+            if(SessionDao.INSTANCE.getSessions().get(session) == -1) {
+                if (user == null) {
+                    // User is not logged in, store the API call data and redirect to login page
+                    System.out.println("Attempting to connect " + session + " to user account, but user is not logged in.");
+                    System.out.println("Responding with a redirect to login page.");
+                    return Response.seeOther(URI.create("http://localhost:8080/plugnpi/login.html?fromQR=" + session))
+                            .build();
+                }
+                System.out.println("Connecting " + session + " to user account " + user.getUid());
+                System.out.println("Responding with a redirect to the leaderboard.");
+                SessionDao.INSTANCE.addPiSession(session, user.getUid());
+                return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+            } else if(SessionDao.INSTANCE.getSessions().get(session) > -1) {
+                System.out.println("Session " + session + " already has a user connected.");
+                System.out.println("Responding with a redirect to the leaderboard.");
+                return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+            } else {
+                System.out.println("Session " + session + " is invalid or corrupted.");
+                System.out.println("Responding 500.");
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
-            SessionDao.INSTANCE.addPiSession(session, user.getUid());
-            return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+
         } else if (SessionDao.INSTANCE.getSessions().containsKey(session) && !connect) {
+            System.out.println("Disconnecting session " + session);
+            System.out.println("Responding with a redirect to the leaderboards.");
             SessionDao.INSTANCE.resetSession(session);
             return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
         }
-        return Response.status(Response.Status.NO_CONTENT).build();
+
+        System.out.println("Invalid request, is the session ID valid and did you include the connect variable?");
+        System.out.println("Responding 400.");
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 }
