@@ -78,7 +78,7 @@ void draw() {
   }
 
   if (gameState == 2) {//game logged in
-    gameMenu.displayPlayerConnected();
+    gameMenu.displayPlayerConnected(mouseX, mouseY);
   }
 
   if (gameState == 99) {//reset game and return Highscore
