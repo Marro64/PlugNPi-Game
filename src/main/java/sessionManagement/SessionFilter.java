@@ -43,7 +43,7 @@ public class SessionFilter implements ContainerRequestFilter {
             System.out.println("SessionFilter: No session");
             System.out.println("SessionFilter " + request.getUriInfo().getRequestUri().getPath());
             if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") ||
-                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/") ||
+                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users") ||
                     request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi") ||
                     request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link")) {
                 if (request.getMethod().equals("POST") || request.getMethod().equals("GET")) {
