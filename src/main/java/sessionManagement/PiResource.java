@@ -63,17 +63,17 @@ public class PiResource {
                     // User is not logged in, store the API call data and redirect to login page
                     System.out.println("Attempting to connect " + session + " to user account, but user is not logged in.");
                     System.out.println("Responding with a redirect to login page.");
-                    return Response.seeOther(URI.create("http://localhost:8080/plugnpi/login.html?fromQR=" + session))
+                    return Response.seeOther(URI.create("/plugnpi/login.html?fromQR=" + session))
                             .build();
                 }
                 System.out.println("Connecting " + session + " to user account " + user.getUid());
                 System.out.println("Responding with a redirect to the leaderboard.");
                 SessionDao.INSTANCE.addPiSession(session, user.getUid());
-                return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+                return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
             } else if(SessionDao.INSTANCE.getSessions().get(session) > -1) {
                 System.out.println("Session " + session + " already has a user connected.");
                 System.out.println("Responding with a redirect to the leaderboard.");
-                return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+                return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
             } else {
                 System.out.println("Session " + session + " is invalid or corrupted.");
                 System.out.println("Responding 500.");
@@ -84,7 +84,7 @@ public class PiResource {
             System.out.println("Disconnecting session " + session);
             System.out.println("Responding with a redirect to the leaderboards.");
             SessionDao.INSTANCE.resetSession(session);
-            return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+            return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
         }
 
         System.out.println("Invalid request, is the session ID valid and did you include the connect variable?");

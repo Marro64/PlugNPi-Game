@@ -23,6 +23,7 @@
     <script src="javascript/parser.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/index.js" type="text/javascript"></script>
+    <script src="javascript/Leaderboard.js" type="text/javascript"></script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,8 +36,110 @@
         }
     </style>
 
-    <script>
+<!--    <script>-->
+<!--        let leaderboardElement;-->
+<!--        let leaderboardData;-->
 
+<!--        const loadLeaderboard = (date) => {-->
+<!--            // Simulate an API call or replace this with your actual API call-->
+<!--            const fakeAPIData = { /* Your data here */ };-->
+
+<!--            leaderboardElement = document.getElementById("leaderboardElement");-->
+<!--            leaderboardElement.setAttribute("leaderboardData", JSON.stringify(fakeAPIData));-->
+<!--        }-->
+
+<!--        // You can call loadLeaderboard with a specific date-->
+<!--        loadLeaderboard('all-time');-->
+<!--    </script>-->
+
+<!--    <script>-->
+<!--        function initialize() {-->
+<!--            leaderboardElement = document.getElementById("leaderboardElement");-->
+<!--            leaderboardData = leaderboardElement.getAttribute("leaderboardData");-->
+
+<!--            if (leaderboardData) {-->
+<!--                const leaderboardDataDecoded = JSON.parse(leaderboardData);-->
+<!--                console.log(leaderboardDataDecoded);-->
+<!--            } else {-->
+<!--                console.error("No leaderboard data available.");-->
+<!--            }-->
+<!--        }-->
+
+<!--        window.onload = initialize;-->
+<!--    </script>-->
+
+    <script>
+        // /* Proxy method for intercepting the moment when url parameters change */
+        // window.history.replaceState = new Proxy(window.history.replaceState, {
+        //     apply: (target, thisArg, argArray) => {
+        //         const result = target.apply(thisArg, argArray);
+        //
+        //         /* Re-fetch leaderboard method */
+        //         fetchLeaderboardAndPopulate();
+        //
+        //         return result;
+        //     },
+        // });
+
+        /* Method for fetching leaderboard and populating dom */
+        const fetchLeaderboardAndPopulate = async (date) => {
+            // const urlParams = new URLSearchParams(window.location.search);
+            //
+            // /* Initializing default values */
+            // const by = urlParams.get("by") ?? "year";
+
+            const ourRankingWrapper = document.getElementById("our-ranking-leaderboard-wrapper");
+            const leaderboardWrapper = document.getElementById("leaderboard-wrapper");
+            const leaderboardWrapperLoader = leaderboardWrapper.getElementsByTagName("span")[0];
+
+            /* Removing our ranking table */
+            ourRankingWrapper.innerHTML = "";
+
+            /* Removing all children elements from total leaderboard except the loading spinner */
+            while (leaderboardWrapper.childNodes.length > 2) {
+                leaderboardWrapper.removeChild(leaderboardWrapper.lastChild);
+            }
+
+            /* Displaying the loading spinner */
+            leaderboardWrapperLoader.classList.remove("hidden");
+
+            /* Updating the correct leaderboard by button style */
+            /* TODO: Refactor buttons to their own components */
+            // document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
+            //     if (element.getAttribute("data-by") === by) {
+            //         element.classList.add("text-blue-500");
+            //         element.classList.remove("text-gray-900");
+            //     } else {
+            //         element.classList.add("text-gray-900");
+            //         element.classList.remove("text-blue-500");
+            //     }
+            // });
+
+            /* Issueing request */
+            const leaderboard = await APIGetLeaderboardCall(date);
+
+            /* Hidding the loading spinner */
+            leaderboardWrapperLoader.classList.add("hidden");
+
+            /* Populating the dom */
+            ourRankingWrapper.appendChild(
+                parseHTML(`<voice-leaderboard leaderboardData='${JSON.stringify(leaderboard.our_ranking)}'></voice-leaderboard>`));
+
+            leaderboardWrapper.appendChild(
+                parseHTML(`<voice-leaderboard leaderboardData='${JSON.stringify(leaderboard.table_ranking)}'></voice-leaderboard>`));
+        }
+
+        window.onload = () => {
+            /* Initializing leaderboard on page load */
+            fetchLeaderboardAndPopulate('all-time');
+
+            /* Registering event listeners for leaderboard by parameter filters */
+            document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
+                element.addEventListener("click", () => {
+                    setParams("by", element.getAttribute("data-by"));
+                })
+            });
+        }
     </script>
 </head>
 
@@ -62,16 +165,19 @@
                 <div class="rounded-md shadow-sm cursor-pointer">
                     <a aria-current="page"
                        class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="all-time">
+                       data-by="all-time"
+                       onclick=fetchLeaderboardAndPopulate('all-time');>
                         All time
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="daily">
+                       data-by="daily"
+                       onclick=fetchLeaderboardAndPopulate('daily');>
                         Last 24h
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="daily-m">
-                        Last 24h (mauricios version)
+                       data-by="daily-m"
+                       onclick=fetchLeaderboardAndPopulate('daily-m');>
+                        Last 24h (mauricio's version)
                     </a>
                 </div>
                 <!-- Do not mind this button, you'll regret it -->
@@ -92,6 +198,7 @@
                 <!-- Table of current leaderboard state -->
                 <div class="flex flex-col space-y-3">
                     <div id="leaderboard-wrapper">
+                        <leaderboard-table id="leaderboardElement"></leaderboard-table>
                         <span class="loading loading-spinner loading-lg"></span>
                     </div>
 

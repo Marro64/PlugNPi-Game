@@ -99,7 +99,8 @@ Handle not acceptable if the username/email already exists
             /* Request was successful, if we get back the token */
             if (loginCall.success) {
                 // Redirect to the leaderboard on successful login
-                if(!(document.getElementById("apiCallData").value == null)) { //User probably tried to access via a QR
+                if(document.getElementById("apiCallData").value !== "") { //User probably tried to access via a QR
+                    console.log('calling api call for QR why tf')
                     const url = document.getElementById("apiCallData").value
                     const urlCall = await APIConnectToPi(url);
                     if (urlCall.success) {
