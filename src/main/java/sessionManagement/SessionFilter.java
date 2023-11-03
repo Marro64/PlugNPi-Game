@@ -45,7 +45,8 @@ public class SessionFilter implements ContainerRequestFilter {
             if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") ||
                     request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users") ||
                     request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi") ||
-                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link")) {
+                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link") ||
+                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/getUsername")) {
                 if (request.getMethod().equals("POST") || request.getMethod().equals("GET")) {
                     return; // Allow the request to continue processing
                 }
@@ -92,19 +93,16 @@ public class SessionFilter implements ContainerRequestFilter {
         System.out.println("SessionFilter: checking session");
 
         String sessionTimeString = SessionDao.INSTANCE.getSessiontime(session).get("expires").getAsString();
-        if(sessionTimeString != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH);
-            LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH);
+        LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString, formatter);
 
-            LocalDateTime now = LocalDateTime.now();
-            if (sessionTime.isAfter(now)) {
-                System.out.println("SessionFilter: valid sessionid");
-                return true;
-            } else if (!sessionTime.isAfter(now)) {
-                System.out.println("SessionFilter: Expired session id");
-                SessionDao.INSTANCE.deleteSession(session);
-            }
-            return false;
+        LocalDateTime now = LocalDateTime.now();
+        if(sessionTime.isAfter(now)) {
+            System.out.println("SessionFilter: valid sessionid");
+            return true;
+        } else if (!sessionTime.isAfter(now)) {1
+            System.out.println("SessionFilter: Expired session id");
+            SessionDao.INSTANCE.deleteSession(session);
         }
         return false;
     }

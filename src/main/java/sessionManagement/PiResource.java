@@ -2,7 +2,9 @@ package sessionManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dao.SessionDao;
+import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -45,6 +47,21 @@ public class PiResource {
         SessionDao.INSTANCE.addPiSession(id,-1); //When you want to connect check whether the id exists, and update the uid
         return indicator;
     }
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/getUsername")
+    public String returnUsername(@QueryParam("session") String session) {
+        int userID = SessionDao.INSTANCE.getSessions().get(session);
+        User sesssionUser = new User();
+        JsonObject jsonObject = UserDao.INSTANCE.getUser(userID);
+        if(jsonObject != null) {
+            UserDao.INSTANCE.jsonToUser(jsonObject, sesssionUser);
+            String output = "username: "+ sesssionUser.getUsername() + "\n";
+            System.out.println("Responding with 200 and " + output);
+            return output;
+        }
+        return null;
+    }
 
     /**
      * The user scans a QR code/enters code and makes a request to the server to link the account to the pi.
@@ -57,10 +74,14 @@ public class PiResource {
     @Path("/link")
     public Response connectAccount(@QueryParam("session") String session, @QueryParam("action") String action) {
         User user = (User) httpreq.getAttribute("user");
-        if (SessionDao.INSTANCE.getSessions().containsKey(session)) {
-            if (action.equals("connect")) {
-                if (SessionDao.INSTANCE.getSessions().get(session) == -1) {
-                    if (user == null) {
+        if (SessionDao.INSTANCE.getSessions().containsKey(session))
+        {
+            if (action == null || action.equals("connect"))
+            {
+                if (SessionDao.INSTANCE.getSessions().get(session) == -1)
+                {
+                    if (user == null)
+                    {
                         // User is not logged in, store the API call data and redirect to login page
                         System.out.println("Attempting to connect " + session + " to user account, but user is not logged in.");
                         System.out.println("Responding with a redirect to login page.");
@@ -71,26 +92,36 @@ public class PiResource {
                     System.out.println("Responding with a redirect to the leaderboard.");
                     SessionDao.INSTANCE.addPiSession(session, user.getUid());
                     return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
-                } else if (SessionDao.INSTANCE.getSessions().get(session) > -1) {
+                }
+                else if (SessionDao.INSTANCE.getSessions().get(session) > -1)
+                {
                     System.out.println("Session " + session + " already has a user connected.");
                     System.out.println("Responding with a redirect to the leaderboard.");
                     return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
-                } else {
+                }
+                else
+                {
                     System.out.println("Session " + session + " is invalid or corrupted.");
                     System.out.println("Responding 500.");
                     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
                 }
 
-            } else if (action.equals("disconnect")) {
+            }
+            else if (action.equals("disconnect"))
+            {
                 System.out.println("Disconnecting session " + session);
                 System.out.println("Responding with a redirect to the leaderboards.");
                 SessionDao.INSTANCE.resetSession(session);
                 return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
-            } else if (action.equals("request_user")) {
+            }
+            else if (action.equals("request_user"))
+            {
                 System.out.println("Request for user connected to " + session);
-                System.out.println("Responding with 200 and username.");
-                return Response.status(Response.Status.OK).entity("username: "+user.getUsername()).build();
-            } else {
+                int userID = SessionDao.INSTANCE.getSessions().get(session);
+//                returnUsername(userID); //TODO make a new separate link
+            }
+            else
+            {
                 System.out.println("Invalid request action.");
                 System.out.println("Responding with 400.");
                 return Response.status(Response.Status.BAD_REQUEST).build();
