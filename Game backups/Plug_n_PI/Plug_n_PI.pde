@@ -13,6 +13,7 @@ AudioPlayer backgroundMusic;
 boolean isConnected;
 boolean displayLocalHighscore;
 int localHighscore = 0;
+String connectedUserName;
 
 int gameState = 0;
 int lastFrame = 0;
@@ -50,12 +51,14 @@ void setup() {
 }
 
 void draw() {
+  float dt = (millis()-lastFrame)/1000.0*60;
+  lastFrame = millis();
 
   if (gameState == 0) {//Main menu of the game, the game waits for a connection or offline play is pressed
     //display logo and menu select 'offline play or connect'
     gameMenu.display(mouseX, mouseY);
     //update connection ore sth
-    webClient.update();
+    webClient.update(dt);
     //display QR code
     webClient.display();
 
@@ -66,24 +69,20 @@ void draw() {
 
   if (gameState == 1) {//run the game
     //get delta time and update game
-    float dt = (millis()-lastFrame)/1000.0*60;
-    lastFrame = millis();
     update(dt);
 
     //display the game
     RunnerGame.displayBackground();
     RunnerGame.display(LaneDetection.passvideo());
     LaneDetection.display();
-
-    if (isConnected) {
-      gameState = 99;
-    }
   }
 
-  if (gameState == 2) {// make connection
+  if (gameState == 2) {//game logged in
+    gameMenu.displayPlayerConnected();
   }
 
   if (gameState == 99) {//reset game and return Highscore
+    gameMenu.displayReturningHighscore();
     //int endScore = Pigame.giveScore();
     //if (endScore > localHighscore){
     //  displayLocalHighscore = true;

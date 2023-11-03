@@ -42,7 +42,7 @@ class RunnerGame {
     //setup game variables
     startSpeed = 1;
     speed = startSpeed;
-    acceleration = 0.1;
+    acceleration = 10;
 
     gameW = w;
     gameH = h;
@@ -87,6 +87,9 @@ class RunnerGame {
           endscore = score;
           reset();
           playFailsfx();
+          if (isConnected) {
+            gameState =99;
+          }
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           playDopaminesfx();
