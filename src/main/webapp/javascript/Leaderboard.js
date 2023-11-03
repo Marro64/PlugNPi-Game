@@ -6,8 +6,13 @@ class Leaderboard extends HTMLElement {
     /* Invoked each time the custom element is appended into a document-connected element. */
     connectedCallback() {
         /* Leaderboard data must be a json object */
-        const leaderboardData = this.attributes.leaderboardData?.value;
-        const leaderboardDataDecoded = JSON.parse(leaderboardData);
+        const leaderboardData = leaderboardElement.getAttribute('leaderboardData');
+        if (leaderboardData) {
+            const leaderboardDataDecoded = JSON.parse(leaderboardData);
+            console.log(leaderboardDataDecoded);
+        } else {
+            console.error("No leaderboard data available.");
+        }
 
         /* Wrapper div for the whole table */
         const wrapperDiv = document.createElement("div");
@@ -26,15 +31,15 @@ class Leaderboard extends HTMLElement {
 
         const headerCellPosition = document.createElement("th");
         headerCellPosition.classList.add("w-12", "px-6", "py-3");
-        headerCellPosition.innerHTML = "Position";
+        headerCellPosition.innerHTML = "Username";
 
         const headerCellPerson = document.createElement("th");
         headerCellPerson.classList.add("w-64", "px-6", "py-3");
-        headerCellPerson.innerHTML = "Person";
+        headerCellPerson.innerHTML = "Score";
 
         const headerCellEarned = document.createElement("th");
         headerCellEarned.classList.add("px-6", "py-3");
-        headerCellEarned.innerHTML = "Earned points";
+        headerCellEarned.innerHTML = "Date";
 
         tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned);
         tableHead.appendChild(tableHeadRow);
@@ -90,4 +95,4 @@ class Leaderboard extends HTMLElement {
     }
 }
 
-customElements.define("leaderboard", Leaderboard);
+customElements.define("leaderboard-table", Leaderboard);
