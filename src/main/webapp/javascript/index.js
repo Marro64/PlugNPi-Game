@@ -31,7 +31,7 @@ Handle a NOT FOUND response for users that are not found
 
 const APILoginCall = async (data) => {
     console.log("login call");
-    const response = await fetch(`${BASE_URL}/session/login`, {
+    const response = await fetch(`/plugnpi/api/session/login`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -59,7 +59,7 @@ Have to send a UserSignup object with a String username and String password and 
 Handle not acceptable if the username/email already exists
  */
 const APIRegisterCall = async (data) => {
-    const response = await fetch(`${BASE_URL}/users`, {
+    const response = await fetch(`/plugnpi/api/users`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -85,7 +85,7 @@ If you get an OK you send the user back to the login page
 If you somehow manage to logout without being logged in, you get an unauthorized (handle that somehow)
  */
 const APILogoutCall = async () => {
-    const response = await fetch(`${BASE_URL}/session`, {
+    const response = await fetch(`/plugnpi/api/session`, {
         method: "GET",
     });
 
@@ -95,7 +95,7 @@ const APILogoutCall = async () => {
 }
 
 const APIConnectToPi = async (session) => {
-    const response = await fetch(`${BASE_URL}/pi/link?session=${session}&connect=true`, {
+    const response = await fetch(`/plugnpi/api/pi/link?session=${session}&connect=true`, {
         method: "GET",
     });
 
@@ -109,7 +109,7 @@ const APIConnectToPi = async (session) => {
 }
 
 const APIGetLeaderboardCall = async (date) => {
-    const request = await fetch(`${BASE_URL}/leaderboard?time=${date}`);
+    const request = await fetch(`/plugnpi/api/leaderboard?time=${date}`);
 
     return request.json();
 }
