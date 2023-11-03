@@ -42,8 +42,8 @@ class Leaderboard extends HTMLElement {
         const tableBody = document.createElement("tbody");
 
         /* Going over all leaderboard data entries */
-        leaderboardDataDecoded.forEach((data) => {
-            const rank = data.rank;
+        leaderboardDataDecoded.forEach((data,index) => {
+            const rank = index + 1;
 
             /* Creating table body row */
             const tr = document.createElement("tr");
@@ -71,11 +71,11 @@ class Leaderboard extends HTMLElement {
 
             const bodyCellPerson = document.createElement("td");
             bodyCellPerson.classList.add("px-6", "py-4");
-            bodyCellPerson.innerHTML = data.name;
+            bodyCellPerson.innerHTML = data.username;
 
             const bodyCellPoints = document.createElement("td");
             bodyCellPoints.classList.add("px-6", "py-4");
-            bodyCellPoints.innerHTML = data.points;
+            bodyCellPoints.innerHTML = data.distance;
 
             tr.append(bodyCellPosition, bodyCellPerson, bodyCellPoints);
             tableBody.appendChild(tr);

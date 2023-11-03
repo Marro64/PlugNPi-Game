@@ -1,9 +1,16 @@
 package model;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class PiScore {
 
     String pid; //Pi ID
     int distance;
+
+    public PiScore() {
+        
+    }
 
     public PiScore(String pid, int distance) {
         this.pid = pid;

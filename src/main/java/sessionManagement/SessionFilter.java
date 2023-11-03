@@ -92,16 +92,19 @@ public class SessionFilter implements ContainerRequestFilter {
         System.out.println("SessionFilter: checking session");
 
         String sessionTimeString = SessionDao.INSTANCE.getSessiontime(session).get("expires").getAsString();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH);
-        LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString, formatter);
+        if(sessionTimeString != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH);
+            LocalDateTime sessionTime = LocalDateTime.parse(sessionTimeString, formatter);
 
-        LocalDateTime now = LocalDateTime.now();
-        if(sessionTime.isAfter(now)) {
-            System.out.println("SessionFilter: valid sessionid");
-            return true;
-        } else if (!sessionTime.isAfter(now)) {
-            System.out.println("SessionFilter: Expired session id");
-            SessionDao.INSTANCE.deleteSession(session);
+            LocalDateTime now = LocalDateTime.now();
+            if (sessionTime.isAfter(now)) {
+                System.out.println("SessionFilter: valid sessionid");
+                return true;
+            } else if (!sessionTime.isAfter(now)) {
+                System.out.println("SessionFilter: Expired session id");
+                SessionDao.INSTANCE.deleteSession(session);
+            }
+            return false;
         }
         return false;
     }
