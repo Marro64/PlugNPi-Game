@@ -53,15 +53,20 @@ public class PiResource {
      * User is guaranteed to exist because they have already managed to log in.
      * //TODO the pi has to know who is playing
      */
-    @Path("/link")
     @GET
+    @Path("/link")
     public Response connectAccount(@QueryParam("session") String session, @QueryParam("connect") boolean connect) {
-        System.out.println("working on link");
         User user = (User) httpreq.getAttribute("user");
-        if(SessionDao.INSTANCE.getSessions().containsKey(session) && SessionDao.INSTANCE.getSessions().get(session)==-1 && connect) { //Pi must already exist, no one should be connected
+        if (SessionDao.INSTANCE.getSessions().containsKey(session) &&
+                SessionDao.INSTANCE.getSessions().get(session) == -1 && connect) {
+            if(user == null) {
+                // User is not logged in, store the API call data and redirect to login page
+                return Response.seeOther(URI.create("http://localhost:8080/plugnpi/login.html?fromQR="+session))
+                        .build();
+            }
             SessionDao.INSTANCE.addPiSession(session, user.getUid());
-            return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build(); //TODO show pi ur running it on
-        }else if(SessionDao.INSTANCE.getSessions().containsKey(session) && !connect) { //TODO make it disconnect after a while
+            return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+        } else if (SessionDao.INSTANCE.getSessions().containsKey(session) && !connect) {
             SessionDao.INSTANCE.resetSession(session);
             return Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
         }

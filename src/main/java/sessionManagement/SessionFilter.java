@@ -38,11 +38,13 @@ public class SessionFilter implements ContainerRequestFilter {
 //        if (true) {
 //            return;
 //        }
-
         if (session == null) { //No session, user wants to login or signup
             System.out.println("SessionFilter: No session");
             System.out.println("SessionFilter " + request.getUriInfo().getRequestUri().getPath());
-            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi")) {
+            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") ||
+                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/") ||
+                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi") ||
+                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link")) {
                 if (request.getMethod().equals("POST") || request.getMethod().equals("GET")) {
                     return; // Allow the request to continue processing
                 }

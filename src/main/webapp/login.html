@@ -22,12 +22,14 @@
 
     <!-- Header custom component -->
     <script src="javascript/Navbar.js" type="text/javascript"></script>
+    <script src="javascript/Navbar.js" type="text/javascript"></script>
 
     <!-- Utils JS -->
     <script src="javascript/parser.js" type="text/javascript"></script>
     <script src="javascript/formHandler.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/index.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,10 +96,20 @@ Handle not acceptable if the username/email already exists
             };
             console.log("calling login api call")
             const loginCall = await APILoginCall(data);
-
             /* Request was successful, if we get back the token */
             if (loginCall.success) {
                 // Redirect to the leaderboard on successful login
+                if(!(document.getElementById("apiCallData").value == null)) { //User probably tried to access via a QR
+                    const url = document.getElementById("apiCallData").value
+                    const urlCall = await APIConnectToPi(url);
+                    if (urlCall.success) {
+                        // Redirect to the leaderboard on successful login
+                        toastr.success("Successfully connected to a Pi.")
+                    } else {
+                        // Display the error message in the formError
+                        toastr.error("Could not connect to a Pi, please try again in the Play tab.");
+                    }
+                }
                 document.location.href = "leaderboard.html";
             } else {
                 // Display the error message in the formError
@@ -105,8 +117,21 @@ Handle not acceptable if the username/email already exists
             }
         }
     </script>
+
+    <script>
+    // Check for the 'fromQR' query parameter
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromQR = urlParams.get('fromQR');
+
+        if (fromQR !== null) {
+            document.getElementById("apiCallData").value = fromQR;
+        }
+    });
+    </script>
 </head>
 <body>
+<input type="hidden" id="apiCallData" value="" />
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen height">
 
