@@ -14,6 +14,9 @@ class WebClient {
   String host = "145.126.2.121";
   int port = 8080;
   boolean waitingForData = false;
+  
+  String sessionID = "";
+  String username = "None"; 
 
   WebClient(PApplet papplet) {
     zxing4p = new ZXING4P();
@@ -23,13 +26,18 @@ class WebClient {
   }
 
   void update(float dt) {
-    CycleTime += dt;
-    if (CycleTime > completeCycleTime) {
-      CycleTime = 0;
-      if (waitingForData && !client.active())
-      {
-        receiveData();
+    if(!waitingForData && !client.active())
+    {
+      CycleTime += dt;
+      if (CycleTime > completeCycleTime) {
+        CycleTime = 0;
+        webRequest("GET /plugnpi/api/pi/link?session=" + sessionID + "&action=request_user HTTP/1.0");
       }
+    }
+    
+    if (waitingForData && !client.active())
+    {
+      receiveData();
     }
   }
 
@@ -64,13 +72,21 @@ class WebClient {
       updateSessionID(content);
       println("Received session code.\n");
       break;
+    case "username":
+      username = content;
+      connectedUserName = content;
+      isConnected = true;
+      gameState = 2;
+      println("Received username: " + content);
+      break;    
     default:
       println("Data Type not recognised.\n");
     }
   }
 
-  void updateSessionID(String sessionID) {
-    String connectURL = "http://" + host + ":" + port + "/plugnpi/api/pi/link?session=" + sessionID + "&connect=true";
+  void updateSessionID(String newSessionID) {
+    sessionID = newSessionID;
+    String connectURL = "http://" + host + ":" + port + "/plugnpi/api/pi/link?session=" + sessionID + "&action=connect";
     updateQRCode(connectURL);
   }
 
