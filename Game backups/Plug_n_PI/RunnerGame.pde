@@ -9,6 +9,7 @@ class RunnerGame {
   float acceleration;
   float speed = 0; // game speed
   int maxDistMoved = 32;
+  float distMoved = 0;
 
   int border = 250; // define the width of the outer edges
 
@@ -20,7 +21,7 @@ class RunnerGame {
 
   // trains
   float trainStartY = -300;
-  float trainSpawnTime = 1500;
+  float trainSpawnTime = 5000;
 
   int dim = 5;
   Train[] trains;
@@ -40,9 +41,9 @@ class RunnerGame {
   RunnerGame(int w, int h) {
 
     //setup game variables
-    startSpeed = 1;
+    startSpeed = 3;
     speed = startSpeed;
-    acceleration = 0.1;
+    acceleration = 0.05;
 
     gameW = w;
     gameH = h;
@@ -64,10 +65,10 @@ class RunnerGame {
 
   void update(float dt) {
     // Set speeds
-    speed -= (4*scale)*dt;
+    distMoved -= speed*dt;
     //println(dt);
-    if (speed<=-maxDistMoved) {
-      speed=0;
+    if (distMoved <=-maxDistMoved) {
+      distMoved=0;
     }
 
     trigger();
@@ -82,21 +83,25 @@ class RunnerGame {
 
     for (Train train : trains) {
       if (train != null) {
-        train.update(dt);
+        train.update(dt, speed);
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           endscore = score;
           reset();
           playFailsfx();
+          if (isConnected) {
+            gameState =99;
+          }
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           playDopaminesfx();
+          speed += acceleration;
           score++;
         }
       }
     }
 
     //groundgrid
-    groundGrid.update(speed);
+    groundGrid.update(distMoved);
   }
 
   void displayBackground() {
@@ -143,7 +148,7 @@ class RunnerGame {
   }
 
   void trigger() {
-    if (millis() > elapsed + trainSpawnTime) {
+    if (millis() > elapsed + trainSpawnTime*(1/speed)) {
       trig = true;
       elapsed = millis();
     }
@@ -181,6 +186,7 @@ class RunnerGame {
   void reset() {
     backgroundMusic.rewind();
     backgroundMusic.play();
+    speed = startSpeed;
     endscore = score;
     score = 0;//reset score
     if (endscore > gameHighScore) gameHighScore = endscore;
