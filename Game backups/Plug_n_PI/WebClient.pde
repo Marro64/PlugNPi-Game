@@ -17,28 +17,30 @@ class WebClient {
   
   String sessionID = "";
   String username = "None"; 
+  
+  PApplet papplet;
 
   WebClient(PApplet papplet) {
+    this.papplet = papplet;
     zxing4p = new ZXING4P();
-    client = new Client(papplet, host, port);
     webRequest("GET /plugnpi/api/pi HTTP/1.0");
     updateQRCode();
   }
 
   void update(float dt) {
-    if(!waitingForData && !client.active())
+    if(!waitingForData && !client.active()) //<>//
     {
       CycleTime += dt;
       if (CycleTime > completeCycleTime) {
         CycleTime = 0;
-        webRequest("GET /plugnpi/api/pi/link?session=" + sessionID + "&action=request_user HTTP/1.0");
+        webRequest("GET /plugnpi/api/pi/getUsername?session=" + sessionID + " HTTP/1.0");
       }
     }
     
-    if (waitingForData && !client.active())
-    {
+    //if (waitingForData && !client.active())
+    //{
       receiveData();
-    }
+    //}
   }
 
   void receiveData() {
@@ -48,12 +50,13 @@ class WebClient {
       if (output == null)
       {
         println("Output was null");
-        client.clear();
+        //client.clear();
         break;
       }
       output = output.trim();
       parseString(output);
     }
+    waitingForData = false;
   }
 
   void parseString(String data) {
@@ -101,6 +104,7 @@ class WebClient {
   }
 
   void webRequest(String request) {
+    client = new Client(papplet, host, port);
     client.write(request + "\n");
     client.write("Host: " + host + "\n\n");
     waitingForData = true;
