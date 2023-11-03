@@ -95,7 +95,7 @@ const APILogoutCall = async () => {
 }
 
 const APIConnectToPi = async (session) => {
-    const response = await fetch(`/plugnpi/api/pi/link?session=${session}&connect=true`, {
+    const response = await fetch(`/plugnpi/api/pi/link?session=${session}&action=connect`, {
         method: "GET",
     });
 
