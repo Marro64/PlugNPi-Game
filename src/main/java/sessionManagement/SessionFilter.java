@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.ext.Provider;
 import model.User;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -54,11 +55,11 @@ public class SessionFilter implements ContainerRequestFilter {
             return;
         } else if (verifySession(session.getValue())) { //Valid session to any destination but not login
             //Session is still valid
-            httprequest.setAttribute("session",session.getValue());
-            if(!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login")) {
+            httprequest.setAttribute("session", session.getValue());
+            if (!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login")) {
                 JsonObject queried = UserDao.INSTANCE.getUserFromSession(session.getValue());
                 User user = new User();
-                UserDao.INSTANCE.jsonToUser(queried,user);
+                UserDao.INSTANCE.jsonToUser(queried, user);
                 System.out.println("SessionFilter: SESSION: " + user.getUsername());
                 httprequest.setAttribute("user", user);
             } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/logout")) {
@@ -68,14 +69,16 @@ public class SessionFilter implements ContainerRequestFilter {
                 SessionDao.INSTANCE.deleteSession(session.getValue()); //Removes existing cookie if the user wants to login again (which will give them a new cookie)
             }
             return; // Allow the request to continue processing
-        } else if (session != null && (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") || (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")))) { //Session already there but to login/signup
+        } else if (!verifySession(session.getValue()) && request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link")) {
+            return;
+        } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")) { //Session already there but to login/signup
             //Previous check guarantees that an invalid session is removed
             if (request.getMethod().equals("POST")) {
                 System.out.println("SessionFilter: login/signup attempt on existing cookie");
                 return; // Allow new login attempt
             }
         }
-        Response unauthorized = Response.status(Response.Status.UNAUTHORIZED).entity("Edge case, not valid.").build();
+        Response unauthorized = Response.seeOther(URI.create("/plugnpi/login.html")).build();
         request.abortWith(unauthorized);
     }
 
