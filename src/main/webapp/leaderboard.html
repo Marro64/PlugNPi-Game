@@ -121,10 +121,6 @@
             /* Hidding the loading spinner */
             leaderboardWrapperLoader.classList.add("hidden");
 
-            /* Populating the dom */
-            ourRankingWrapper.appendChild(
-                parseHTML(`<voice-leaderboard leaderboardData='${JSON.stringify(leaderboard.our_ranking)}'></voice-leaderboard>`));
-
             leaderboardWrapper.appendChild(
                 parseHTML(`<leaderboard-table leaderboardData='${JSON.stringify(leaderboard)}'></leaderboard-table>`));
                 //parseHTML(`<leaderboard-table leaderboardData=leaderboard></leaderboard-table>`));
