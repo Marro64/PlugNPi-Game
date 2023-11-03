@@ -100,7 +100,7 @@ public class SessionFilter implements ContainerRequestFilter {
         if(sessionTime.isAfter(now)) {
             System.out.println("SessionFilter: valid sessionid");
             return true;
-        } else if (!sessionTime.isAfter(now)) {1
+        } else if (!sessionTime.isAfter(now)) {
             System.out.println("SessionFilter: Expired session id");
             SessionDao.INSTANCE.deleteSession(session);
         }

@@ -25,17 +25,22 @@ class Leaderboard extends HTMLElement {
 
         const headerCellPosition = document.createElement("th");
         headerCellPosition.classList.add("w-12", "px-6", "py-3");
-        headerCellPosition.innerHTML = "username";
+        headerCellPosition.innerHTML = "rank";
 
         const headerCellPerson = document.createElement("th");
         headerCellPerson.classList.add("w-64", "px-6", "py-3");
-        headerCellPerson.innerHTML = "distance";
+        headerCellPerson.innerHTML = "username";
 
         const headerCellEarned = document.createElement("th");
         headerCellEarned.classList.add("px-6", "py-3");
-        headerCellEarned.innerHTML = "date_of_record";
+        headerCellEarned.innerHTML = "points";
 
-        tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned);
+        const headerCellTime = document.createElement("th");
+        headerCellTime.classList.add("px-6", "py-3");
+        headerCellTime.innerHTML = "date_of_record";
+
+
+        tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned,headerCellTime);
         tableHead.appendChild(tableHeadRow);
 
         /* Table body */
@@ -77,7 +82,11 @@ class Leaderboard extends HTMLElement {
             bodyCellPoints.classList.add("px-6", "py-4");
             bodyCellPoints.innerHTML = data.distance;
 
-            tr.append(bodyCellPosition, bodyCellPerson, bodyCellPoints);
+            const bodyCellTime = document.createElement("td");
+            bodyCellTime.classList.add("px-6", "py-3");
+            bodyCellTime.innerHTML = data.date_of_record;
+
+            tr.append(bodyCellPosition, bodyCellPerson, bodyCellPoints,bodyCellTime);
             tableBody.appendChild(tr);
         });
 
