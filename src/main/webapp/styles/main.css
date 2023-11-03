@@ -127,14 +127,16 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .mauricios-color-bg{
     background-color: dimgrey;
+    align-items: center;
 }
 
 .mauricios-color-bg-v2{
     background-color: #555555;
+    align-items: center;
 }
 
 .height{
-    height: 50000px;
+    height: 780px;
 }
 
 .topnav {
