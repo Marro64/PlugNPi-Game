@@ -2,7 +2,6 @@ class Leaderboard extends HTMLElement {
     constructor() {
         super();
     }
-
     /* Invoked each time the custom element is appended into a document-connected element. */
     connectedCallback() {
         /* Leaderboard data must be a json object */
