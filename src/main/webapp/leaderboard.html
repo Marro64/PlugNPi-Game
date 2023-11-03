@@ -126,19 +126,13 @@
                 parseHTML(`<voice-leaderboard leaderboardData='${JSON.stringify(leaderboard.our_ranking)}'></voice-leaderboard>`));
 
             leaderboardWrapper.appendChild(
-                parseHTML(`<voice-leaderboard leaderboardData='${JSON.stringify(leaderboard.table_ranking)}'></voice-leaderboard>`));
+                parseHTML(`<leaderboard-table leaderboardData='${JSON.stringify(leaderboard)}'></leaderboard-table>`));
+                //parseHTML(`<leaderboard-table leaderboardData=leaderboard></leaderboard-table>`));
         }
 
         window.onload = () => {
             /* Initializing leaderboard on page load */
             fetchLeaderboardAndPopulate('all-time');
-
-            /* Registering event listeners for leaderboard by parameter filters */
-            document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
-                element.addEventListener("click", () => {
-                    setParams("by", element.getAttribute("data-by"));
-                })
-            });
         }
     </script>
 </head>

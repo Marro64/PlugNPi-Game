@@ -109,7 +109,7 @@ const APIConnectToPi = async (session) => {
 }
 
 const APIGetLeaderboardCall = async (date) => {
-    const request = await fetch(`/plugnpi/api/leaderboard?time=${date}`);
+    const request = await fetch(`/plugnpi/api/leaderboard?date=${date}`);
 
     return request.json();
 }

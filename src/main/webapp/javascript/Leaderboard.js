@@ -31,15 +31,15 @@ class Leaderboard extends HTMLElement {
 
         const headerCellPosition = document.createElement("th");
         headerCellPosition.classList.add("w-12", "px-6", "py-3");
-        headerCellPosition.innerHTML = "Username";
+        headerCellPosition.innerHTML = "username";
 
         const headerCellPerson = document.createElement("th");
         headerCellPerson.classList.add("w-64", "px-6", "py-3");
-        headerCellPerson.innerHTML = "Score";
+        headerCellPerson.innerHTML = "distance";
 
         const headerCellEarned = document.createElement("th");
         headerCellEarned.classList.add("px-6", "py-3");
-        headerCellEarned.innerHTML = "Date";
+        headerCellEarned.innerHTML = "date_of_record";
 
         tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned);
         tableHead.appendChild(tableHeadRow);
