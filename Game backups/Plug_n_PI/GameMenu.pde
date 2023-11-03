@@ -28,7 +28,7 @@ class GameMenu {
     text("Returning highscore, please wait...", width/2, 420);
   }
 
-  void displayPlayerConnected() {
+  void displayPlayerConnected(int mX, int mY) {
     background(255);
     displayTitleImage();
     textAlign(CENTER);
@@ -36,6 +36,9 @@ class GameMenu {
     textSize(20);
     text("Hello " + connectedUserName, width/2, 420);
     text("Start a game on you phone to play!", width/2, 440);
+    for (Button button : buttons_state1) {
+      button.display(mX, mY);
+    }
   }
 
   void displayTitleImage() {
@@ -48,7 +51,7 @@ class GameMenu {
   }
 
   void MouseInput(int Mx, int My, int gamestate) {
-    if (gamestate == 0) {
+    if (gamestate == 0 || gamestate == 2) {
       for (Button button : buttons_state1) {
         if (button.isInbox(Mx, My)) {
           gameState = button.toGameState;
