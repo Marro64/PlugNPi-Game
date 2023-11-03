@@ -76,7 +76,7 @@ public class SessionFilter implements ContainerRequestFilter {
                 return; // Allow new login attempt
             }
         }
-        Response unauthorized = Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
+        Response unauthorized = Response.seeOther(URI.create("/plugnpi/login.html")).build();
         request.abortWith(unauthorized);
     }
 
