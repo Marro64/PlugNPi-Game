@@ -81,6 +81,18 @@ public enum ScoreDao {
         }
         return objects;
     }
+
+    public JsonArray getMauricioScores() {
+        JsonArray objects = ORM.executeQuery("SELECT\n" +
+                "    a.username,\n" +
+                "    s.distance,\n" +
+                "    s.date_of_record\n" +
+                "FROM project.score s, project.account a\n" +
+                "WHERE s.u_id = a.u_id\n" +
+                "ORDER BY s.distance DESC");
+        return objects;
+    }
+
     public JsonArray getTopLastWeek()
     {
         return  ORM.executeQuery("SELECT\n" +
