@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.ext.Provider;
 import model.User;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -75,7 +76,7 @@ public class SessionFilter implements ContainerRequestFilter {
                 return; // Allow new login attempt
             }
         }
-        Response unauthorized = Response.status(Response.Status.UNAUTHORIZED).entity("Edge case, not valid.").build();
+        Response unauthorized = Response.seeOther(URI.create("http://localhost:8080/plugnpi/leaderboard.html")).build();
         request.abortWith(unauthorized);
     }
 
