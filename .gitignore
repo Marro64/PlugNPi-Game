@@ -9,3 +9,4 @@ PiKinect.sln
 /target
 /pom.xml
 /*.autosave
+.idea/dataSources.xml
