@@ -89,7 +89,7 @@ public class PiResource {
             } else if (action.equals("request_user")) {
                 System.out.println("Request for user connected to " + session);
                 System.out.println("Responding with 200 and username.");
-                return Response.status(Response.Status.OK).entity("Username: "+user.getUsername()).build();
+                return Response.status(Response.Status.OK).entity("username: "+user.getUsername()).build();
             } else {
                 System.out.println("Invalid request action.");
                 System.out.println("Responding with 400.");
