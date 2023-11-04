@@ -36,38 +36,6 @@
         }
     </style>
 
-<!--    <script>-->
-<!--        let leaderboardElement;-->
-<!--        let leaderboardData;-->
-
-<!--        const loadLeaderboard = (date) => {-->
-<!--            // Simulate an API call or replace this with your actual API call-->
-<!--            const fakeAPIData = { /* Your data here */ };-->
-
-<!--            leaderboardElement = document.getElementById("leaderboardElement");-->
-<!--            leaderboardElement.setAttribute("leaderboardData", JSON.stringify(fakeAPIData));-->
-<!--        }-->
-
-<!--        // You can call loadLeaderboard with a specific date-->
-<!--        loadLeaderboard('all-time');-->
-<!--    </script>-->
-
-<!--    <script>-->
-<!--        function initialize() {-->
-<!--            leaderboardElement = document.getElementById("leaderboardElement");-->
-<!--            leaderboardData = leaderboardElement.getAttribute("leaderboardData");-->
-
-<!--            if (leaderboardData) {-->
-<!--                const leaderboardDataDecoded = JSON.parse(leaderboardData);-->
-<!--                console.log(leaderboardDataDecoded);-->
-<!--            } else {-->
-<!--                console.error("No leaderboard data available.");-->
-<!--            }-->
-<!--        }-->
-
-<!--        window.onload = initialize;-->
-<!--    </script>-->
-
     <script>
         // /* Proxy method for intercepting the moment when url parameters change */
         // window.history.replaceState = new Proxy(window.history.replaceState, {
@@ -90,7 +58,6 @@
 
             const ourRankingWrapper = document.getElementById("our-ranking-leaderboard-wrapper");
             const leaderboardWrapper = document.getElementById("leaderboard-wrapper");
-            const leaderboardWrapperLoader = leaderboardWrapper.getElementsByTagName("span")[0];
 
             /* Removing our ranking table */
             ourRankingWrapper.innerHTML = "";
@@ -100,26 +67,8 @@
                 leaderboardWrapper.removeChild(leaderboardWrapper.lastChild);
             }
 
-            /* Displaying the loading spinner */
-            leaderboardWrapperLoader.classList.remove("hidden");
-
-            /* Updating the correct leaderboard by button style */
-            /* TODO: Refactor buttons to their own components */
-            // document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
-            //     if (element.getAttribute("data-by") === by) {
-            //         element.classList.add("text-blue-500");
-            //         element.classList.remove("text-gray-900");
-            //     } else {
-            //         element.classList.add("text-gray-900");
-            //         element.classList.remove("text-blue-500");
-            //     }
-            // });
-
             /* Issueing request */
             const leaderboard = await APIGetLeaderboardCall(date);
-
-            /* Hidding the loading spinner */
-            leaderboardWrapperLoader.classList.add("hidden");
 
             leaderboardWrapper.appendChild(
                 parseHTML(`<leaderboard-table leaderboardData='${JSON.stringify(leaderboard)}'></leaderboard-table>`));
@@ -167,7 +116,7 @@
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="daily-m"
                        onclick=fetchLeaderboardAndPopulate('daily-m');>
-                        Last 24h (mauricio's version)
+                        All time (Mauricio's version)
                     </a>
                 </div>
                 <!-- Do not mind this button, you'll regret it -->
@@ -189,7 +138,7 @@
                 <div class="flex flex-col space-y-3">
                     <div id="leaderboard-wrapper">
                         <leaderboard-table id="leaderboardElement"></leaderboard-table>
-                        <span class="loading loading-spinner loading-lg"></span>
+                        <span class="loading loading-spinner loading-lg" id="spinner"></span>
                     </div>
 
                     <a class="text-xs text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Show

@@ -29,7 +29,7 @@ public class LeaderboardsResource {
         if(time.equals("daily") && !ScoreDao.INSTANCE.getTopLast24().isEmpty())  {
             allScores = ScoreDao.INSTANCE.getTopLast24();
         } else if (time.equals("daily-m")) {
-            //TODO MAURICIO QUERY
+            allScores = ScoreDao.INSTANCE.getMauricioScores();
         } else if (time.equals("weekly") && !ScoreDao.INSTANCE.getTopLastWeek().isEmpty()) {
             allScores = ScoreDao.INSTANCE.getTopLastWeek();
         } else if (time.equals("all-time") && !ScoreDao.INSTANCE.getAllScores().isEmpty()) {
