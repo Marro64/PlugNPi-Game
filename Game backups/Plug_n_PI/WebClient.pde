@@ -28,7 +28,7 @@ class WebClient {
   }
 
   void update(float dt) {
-    if(!waitingForData && !client.active()) //<>//
+    if(!waitingForData && !client.active() && gameState == 0) //<>//
     {
       CycleTime += dt;
       if (CycleTime > completeCycleTime) {
@@ -37,10 +37,10 @@ class WebClient {
       }
     }
     
-    //if (waitingForData && !client.active())
-    //{
+    if (waitingForData && !client.active())
+    {
       receiveData();
-    //}
+    }
   }
 
   void receiveData() {
@@ -50,7 +50,7 @@ class WebClient {
       if (output == null)
       {
         println("Output was null");
-        //client.clear();
+        client.clear();
         break;
       }
       output = output.trim();
