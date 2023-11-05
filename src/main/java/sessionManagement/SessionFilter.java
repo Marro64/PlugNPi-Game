@@ -23,64 +23,78 @@ public class SessionFilter implements ContainerRequestFilter {
 
     private final String COOKIE_SESSION = "sessionId";
 
-    //SessionQueries queries = new SessionQueries();
+    private enum filterType {
+        NORMAL,REDIRECT_LOGIN,REDIRECT_HOME,NOTFOUND
+    }
 
-    /**
-     * Filter out incoming requests if they don't have a valid session id
-     * If successful, the program should continue handling the restful services
-     * @param request incoming request
-     */
+//        } else if (!verifySession(session.getValue()) && request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link")) {
+//            return;
+
+
     @Override
     public void filter(ContainerRequestContext request) {
-        System.out.println("new request!");
         Cookie session = request.getCookies().get(COOKIE_SESSION);
+        String uri = request.getUriInfo().getRequestUri().getPath();
+        System.out.println("SESSIONFILTER: " + uri);
+        String method = request.getMethod();
+        filterType toHandle = null;
 
-        //TESTING BLOCK FOR API CALLS: REMOVE WHEN YOU WANT TO TEST SESSIONS
-//        if (true) {
-//            return;
-//        }
-        if (session == null) { //No session, user wants to login or signup
-            System.out.println("SessionFilter: No session");
-            System.out.println("SessionFilter " + request.getUriInfo().getRequestUri().getPath());
-            if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") ||
-                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users") ||
-                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi") ||
-                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link") ||
-                    request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/getUsername")) {
-                if (request.getMethod().equals("POST") || request.getMethod().equals("GET")) {
-                    return; // Allow the request to continue processing
-                }
-            }
-            Response unauthorized = Response.status(Response.Status.UNAUTHORIZED).entity("Accessing function without login").build(); //Trying to access page wihout being logged in
-            request.abortWith(unauthorized);
-            return;
-        } else if (verifySession(session.getValue())) { //Valid session to any destination but not login
-            //Session is still valid
-            httprequest.setAttribute("session", session.getValue());
-            if (!request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login")) {
-                JsonObject queried = UserDao.INSTANCE.getUserFromSession(session.getValue());
-                User user = new User();
-                UserDao.INSTANCE.jsonToUser(queried, user);
-                System.out.println("SessionFilter: SESSION: " + user.getUsername());
-                httprequest.setAttribute("user", user);
-            } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/logout")) {
-                httprequest.setAttribute("session", session.getValue());
-            } else {
-                //TODO remove session on DB
-                SessionDao.INSTANCE.deleteSession(session.getValue()); //Removes existing cookie if the user wants to login again (which will give them a new cookie)
-            }
-            return; // Allow the request to continue processing
-        } else if (!verifySession(session.getValue()) && request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/pi/link")) {
-            return;
-        } else if (request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/session/login") || request.getUriInfo().getRequestUri().getPath().equals("/plugnpi/api/users/")) { //Session already there but to login/signup
-            //Previous check guarantees that an invalid session is removed
-            if (request.getMethod().equals("POST")) {
-                System.out.println("SessionFilter: login/signup attempt on existing cookie");
-                return; // Allow new login attempt
-            }
+        if(session==null) {
+            toHandle = userNotLoggedInHandler(uri);
+        } else {
+            String sessionId = session.getValue();
+            toHandle = userLoggedInHandler(sessionId,uri,method);
         }
-        Response unauthorized = Response.seeOther(URI.create("/plugnpi/login.html")).build();
-        request.abortWith(unauthorized);
+
+        switch (toHandle) {
+            case REDIRECT_LOGIN:
+                Response redirectLogin = Response.seeOther(URI.create("/plugnpi/login.html")).build();
+                request.abortWith(redirectLogin);
+                break;
+            case NORMAL:
+                return;
+            case REDIRECT_HOME:
+                Response redirectHome = Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
+                request.abortWith(redirectHome);
+                break;
+            default:
+                System.out.println("SESSIONFILTER: UNHANDLED CASE");
+        }
+    }
+
+    public void setUser(String session) {
+        JsonObject queried = UserDao.INSTANCE.getUserFromSession(session);
+        User user = new User();
+        UserDao.INSTANCE.jsonToUser(queried, user);
+        System.out.println("SessionFilter: SESSION: " + user.getUsername());
+        httprequest.setAttribute("session",session);
+        httprequest.setAttribute("user", user);
+    }
+
+    public filterType userLoggedInHandler (String session, String uri, String method) {
+        boolean valid = verifySession(session); //Will delete invalid session
+        if (valid) { //Unexpired
+            if(uri.equals("/plugnpi/api/session/login") || (uri.equals("/plugnpi/api/session/users") && method.equals("POST"))) {
+                return filterType.REDIRECT_HOME;
+            }
+            setUser(session);
+            return filterType.NORMAL;
+        } else { //Expired
+            return filterType.REDIRECT_LOGIN;
+        }
+    }
+
+    public filterType userNotLoggedInHandler (String uri) {
+        switch (uri) {
+            case "/plugnpi/api/session/login":
+            case "/plugnpi/api/users":
+            case "/plugnpi/api/pi":
+            case "/plugnpi/api/pi/link":
+            case "/plugnpi/api/pi/getUsername":
+                return filterType.NORMAL;
+            default:
+                return filterType.REDIRECT_LOGIN;
+        }
     }
 
 
@@ -89,7 +103,7 @@ public class SessionFilter implements ContainerRequestFilter {
      *
      * @return true if session is valid
      */
-    public boolean verifySession(String session) {
+    public static boolean verifySession(String session) {
         System.out.println("SessionFilter: checking session");
 
         String sessionTimeString = SessionDao.INSTANCE.getSessiontime(session).get("expires").getAsString();

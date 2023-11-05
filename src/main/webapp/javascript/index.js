@@ -88,10 +88,7 @@ const APILogoutCall = async () => {
     const response = await fetch(`/plugnpi/api/session`, {
         method: "GET",
     });
-
-    if (response.status === 200) {
-        window.location.href = "..";
-    }
+    window.location.href = "login.html";
 }
 
 const APIConnectToPi = async (session) => {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+
+    <!-- UT Favicon -->
+    <link rel="icon" type="image/png" href="images/ppicon.png" />
+
+    <!-- DaisyUI tailwind component system and tailwind utility class framework -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+
+    <!-- Header custom component -->
+    <script src="javascript/Navbar.js" type="text/javascript"></script>
+    <script src="javascript/Navbar.js" type="text/javascript"></script>
+
+    <!-- Utils JS -->
+    <script src="javascript/parser.js" type="text/javascript"></script>
+    <script src="javascript/formHandler.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="javascript/index.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: "Roboto", sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" id="apiCallData" value="" />
+<!-- Wrapper class for navbar and content -->
+<div class="flex flex-col h-screen height">
+
+    <!-- Page main content part -->
+    <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center items-center">
+        <!-- Whole content wrapper -->
+        <div class="w-1/3 flex flex-col gap-5">
+            <!-- Logo wrapper -->
+            <div class="flex flex-col items-center justify-center gap-2">
+                <img src="images/plugnpi-logo.png" width="600" height="600" />
+
+                <div class="text-center">
+                    <h1 class="text-4xl text-gray-700 font-thin">That's an oopsie, we could not find that page!</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
