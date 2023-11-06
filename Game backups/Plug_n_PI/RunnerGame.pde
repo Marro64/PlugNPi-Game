@@ -43,6 +43,8 @@ class RunnerGame {
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
+  
+  int fontSize = 30;
 
   //grid
   GroundGrid groundGrid;
@@ -157,14 +159,16 @@ class RunnerGame {
 
   void display(Capture video) {
     pushMatrix();
-    // Draw fps on screen
-    fill(255);
-    text("FPS: " + frameRate, 20, 60);
-
-    // Draw score
+    textSize(fontSize);
     textAlign(LEFT);
-    text("Score: " + score, 20, 20);
-    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, 40);
+    fill(255);
+    
+    // Draw score
+    text("Score: " + score, 20, fontSize);
+    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, fontSize*2);
+    
+    // Draw fps on screen
+    text("FPS: " + frameRate, 20, fontSize*3);
 
     // Translate and rotate world
     translate(gameW/2, gameH/2);
