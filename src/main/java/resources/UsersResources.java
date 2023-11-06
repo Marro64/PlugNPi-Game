@@ -50,11 +50,10 @@ public class UsersResources {
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> getUsers(@QueryParam("role") String role) {
         List<User> users = new ArrayList<>();
-        boolean creator = false;
         if (role == null) {
             //return all users
             //users = uQueries.getUsers();
-        } else if (role.equals("users")) {
+        } else if (role.equals("players")) {
             //return all normal users
             //users = uQueries.getNormals();
         } else if (role.equals("admins")) {
