@@ -32,8 +32,6 @@ public class UsersResources {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAccount(UserSignup user) {
-        System.out.println(user.getPassword());
-        System.out.println(user.getUsername());
         User newUser = new User();
         newUser.setEmail(user.getEmail());
         newUser.setUsername(user.getUsername());
