@@ -120,5 +120,4 @@ public class SessionFilter implements ContainerRequestFilter {
         }
         return false;
     }
-
 }

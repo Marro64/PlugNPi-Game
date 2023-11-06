@@ -75,9 +75,25 @@
                 //parseHTML(`<leaderboard-table leaderboardData=leaderboard></leaderboard-table>`));
         }
 
+        const checkAdmin = async () => {
+            const isAdmin = await APIAdminCheck;
+            console.log(isAdmin)
+            if (isAdmin) {
+                const userManagementButton = document.createElement("a");
+                userManagementButton.className = "mauricios-button hover-bg-pink-200";
+                userManagementButton.textContent = "User Management";
+                userManagementButton.onclick = function () {
+                    window.location.href = 'users.html';
+                };
+                const buttonContainer = document.getElementById("buttons");
+                buttonContainer.appendChild(userManagementButton);
+            }
+        }
+
         window.onload = () => {
             /* Initializing leaderboard on page load */
             fetchLeaderboardAndPopulate('all-time');
+            checkAdmin();
         }
     </script>
 </head>
@@ -86,7 +102,7 @@
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
     <!-- Header navigation bar -->
-    <div>
+    <div id="buttons">
         <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='play.html';">Play</a>
         <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>
         <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
