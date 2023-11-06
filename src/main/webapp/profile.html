@@ -58,70 +58,50 @@
 
       /* Fetch profile information on load */
       (async () => {
-        const profileDetailsCall = await APIGetProfileDetailsCall();
-        const profileOrdersCall = await APIGetOrdersByUserCall();
-
-        /* Setting credits section */
-        document.getElementById("total-points").innerHTML = `You have ${profileDetailsCall.total_points} unused reward credits!`
+        const profileDetailsCall = await APIGetProfileDetails();
 
         /* Setting details */
-        document.getElementById("first-name-input").value = profileDetailsCall.first_name;
-        document.getElementById("last-name-input").value = profileDetailsCall.last_name;
-        document.getElementById("birth-date-input").value = profileDetailsCall.birth_date;
-        phoneNumberInput.value = profileDetailsCall.phone;
+        document.getElementById("username-input").value = profileDetailsCall.username;
+        document.getElementById("email-input").value = profileDetailsCall.email;
+        document.getElementById("password-input").value = profileDetailsCall.password;
 
-        /* Setting privacy */
-        if (profileDetailsCall.hide_on_leaderboard) {
-          document.getElementById("hide-on-leaderboard-checkbox").toggleAttribute("checked");
+        if(password === newpassword){
+          document.getElementById("password-input").value = profileDetailsCall.password;
+        }else{
+          setFormError("Passwords do not match.", emailOrUsernameInput);
         }
 
         /* Setting orders list */
         const ordersWrapper = document.getElementById("orders-list");
 
-        profileOrdersCall.forEach(order => {
-          ordersWrapper.appendChild(
-                  parseHTML(`<a class="text-sm cursor-pointer hover:text-blue-500 transition-all duration-200" href="/viewOrder.html?id=${order.pog_id}">Order #${order.pog_id} - ${order.created_at}</a>`))
-        })
+        // profileDetailsCall.forEach(order => {
+        //   ordersWrapper.appendChild(
+        //           parseHTML(`<a class="text-sm cursor-pointer hover:text-blue-500 transition-all duration-200" href="/viewOrder.html?id=${order.pog_id}">Order #${order.pog_id} - ${order.created_at}</a>`))
+        // })
       })();
     }
-
-    /* intlTelInput error list */
-    const itiErrorList = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
     const validateForm = () => {
       /* Re-setting any displayed form errors */
       clearFormErrors();
 
-      /* Additional specific validations */
-      if (!iti.isValidNumber()) {
-        setFormError(itiErrorList[iti.getValidationError()], phoneNumberInput);
+      if(password.value !== newpassword.value){
+        setFormError("Passwords do not match.", emailOrUsernameInput);
         return false;
       }
-
       return true;
     }
 
     const handleDetailsFormSubmit = async () => {
       if (!validateForm()) return;
 
-      const data = { phoneNumber: iti.getNumber() };
-      const updateProfileDetailsCall = await APIUpdateProfileDetailsCall(data);
+      const data = {
+        "email": email.value,
+        "username": username.value,
+        "password": passwordInput.value
+      };
 
-      if (updateProfileDetailsCall?.phone) {
-        toast.fire({
-          icon: "success",
-          title: "Successfully updated details!"
-        })
-      }
-    }
-
-    const handlePrivacyFormSubmit = async (event) => {
-      const updateProfilePrivacyCall = await APIUpdateProfilePrivacyCall({ hideOnLeaderboard: event.target.checked });
-
-      toast.fire({
-        icon: "success",
-        title: "Successfully updated privacy!"
-      })
+      await APIUpdateProfileDetailsCall(data);
     }
   </script>
 </head>
@@ -129,9 +109,15 @@
 <body>
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
+  <div id="buttons">
+    <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+    <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
+  </div>
 
   <!-- Page main content part -->
   <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center items-center p-8">
+
+
     <!-- Whole content wrapper -->
     <div class="w-1/3 flex flex-col gap-5 bg-white p-4 rounded-md shadow-sm">
       <h1 class="font-bold text-gray-700 text-2xl">Profile information</h1>

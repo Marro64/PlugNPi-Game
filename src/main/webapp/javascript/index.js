@@ -105,10 +105,6 @@ const APIConnectToPi = async (session) => {
     }
 }
 
-const APIGetUser = async () => {
-
-}
-
 const APIGetUsers = async (role) => {
     const request = await fetch(`/plugnpi/api/users?role=${role}`);
 
@@ -129,14 +125,25 @@ const APIAdminCheck = async () => {
     return await response.text();
 }
 
+const APIGetProfileDetails = async (uid) => {
+    const request = await fetch(`/plugnpi/api/user?uid=${uid}`);
+    return request.json();
+}
+
 const APISwitchRole = async (username) => {
     const response = await fetch(`http://localhost:8080/plugnpi/api/${username}/permissions`, {
         method: "PUT",
     });
-
-
 }
 
-
-
+const APIUpdateProfileDetailsCall = async (userData) => {
+    const response = await fetch(`${BASE_URL}/profile/update`, {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    return response.json();
+}
 
