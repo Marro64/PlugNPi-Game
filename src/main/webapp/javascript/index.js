@@ -117,6 +117,20 @@ const APIGetLeaderboardCall = async (date) => {
     return request.json();
 }
 
+const APIGetProfileDetails = async (uid) => {
+    const request = await fetch(`/plugnpi/api/user?uid=${uid}`);
+    return request.json();
+}
 
+const APIUpdateProfileDetailsCall = async (userData) => {
+    const response = await fetch(`${BASE_URL}/profile/update`, {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
 
+    return response.json();
+}
 

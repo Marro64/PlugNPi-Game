@@ -95,7 +95,13 @@
     const handleDetailsFormSubmit = async () => {
       if (!validateForm()) return;
 
-      const updateProfileDetailsCall = await APIUpdateProfileDetailsCall(data);
+      const data = {
+        "email": email.value,
+        "username": username.value,
+        "password": passwordInput.value
+      };
+
+      await APIUpdateProfileDetailsCall(data);
     }
   </script>
 </head>
