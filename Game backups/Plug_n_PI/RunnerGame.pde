@@ -22,12 +22,21 @@ class RunnerGame {
   // trains
   float trainStartY = -300;
   float trainSpawnTime = 5000;
-
   int dim = 5;
   Train[] trains;
   int counter = -1;
   boolean trig = false;
   int elapsed = millis();
+
+  //Collectibles
+  PImage collectibleImg;
+  Collectible[] collectibles;
+  float collectibleSpawnTime = 2000;
+  int dimCol = 100;
+  int colCounter = -1;
+  boolean spawnCollectible = false;
+  int elapsedCollectible = millis();
+
   int score = 0;
   int endScore = 0;
   int gameHighScore = 0;
@@ -61,6 +70,10 @@ class RunnerGame {
     trainSide = loadImage("Train_Side.png");
     trainTop =loadImage("Train_Top.png");
     trains = new Train[dim];
+
+    //
+    collectibleImg = loadImage("Coin.png");
+    collectibles = new Collectible[dimCol];
   }
 
   void update(float dt) {
@@ -91,13 +104,36 @@ class RunnerGame {
           uploadScore(endScore);
           gameState = GameState.GameOver;
           //if (isOnline()) {
-          //  // Upload Score            
+          //  // Upload Score
           //}
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
-          playDopaminesfx();
+          //playDopaminesfx();
           speed += acceleration;
           score++;
+        }
+      }
+    }
+
+    //update collectibles
+    colTrigger();
+
+    if (spawnCollectible == true) {
+      if (++colCounter == dimCol) {
+        colCounter = 0;
+      }
+      collectibles[colCounter] = new Collectible(collectibleImg, laneXpos[int(random(3))], trainStartY);
+      spawnCollectible = false;
+    }
+
+    for (Collectible collectible : collectibles) {
+      if (collectible != null) {
+        collectible.update(distMoved);
+        if (collectible.collideWith(laneXpos[posIdx], gameH*0.6)) {
+          playDopaminesfx();
+          score += 5;
+        } else if (collectible.posY > gameH*0.6 && !collectible.hasPassed) {
+          collectible.hasPassed = true;
         }
       }
     }
@@ -144,6 +180,12 @@ class RunnerGame {
       }
     }
 
+    for (Collectible collectible : collectibles) {
+      if (collectible != null) {
+        collectible.display();
+      }
+    }
+
     // Draw player
     displayPlayer(video);
     popMatrix();
@@ -153,6 +195,13 @@ class RunnerGame {
     if (millis() > elapsed + trainSpawnTime*(1/speed)) {
       trig = true;
       elapsed = millis();
+    }
+  }
+
+  void colTrigger() {
+    if (millis() > elapsedCollectible + collectibleSpawnTime*(1/speed)) {
+      spawnCollectible = true;
+      elapsedCollectible = millis();
     }
   }
 
