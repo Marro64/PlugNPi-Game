@@ -6,7 +6,6 @@ class UsersTable extends HTMLElement {
     connectedCallback() {
         /* Leaderboard data must be a json object */
         const usersData = this.attributes.usersData?.value;
-        console.log(usersData)
         const userDataDecoded = JSON.parse(usersData);
 
         /* Wrapper div for the whole table */
@@ -50,6 +49,9 @@ class UsersTable extends HTMLElement {
         /* Going over all leaderboard data entries */
         userDataDecoded.forEach((data) => {
 
+            let name = data.username
+            console.log(name)
+
             /* Creating table body row */
             const tr = document.createElement("tr");
             tr.classList.add("bg-white", "border-b");
@@ -57,7 +59,7 @@ class UsersTable extends HTMLElement {
             /* Creating table data cells */
             const bodyCellAction = document.createElement("td");
             bodyCellAction.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
-            bodyCellAction.innerHTML = '<button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="APISwitchRole(data.username)">Change Role</button>';
+            bodyCellAction.innerHTML = '<button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="APISwitchRole(${name})">Change Role</button>';
 
 
             const bodyCellUsername = document.createElement("td");

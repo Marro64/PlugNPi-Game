@@ -85,8 +85,7 @@
                 userManagementButton.onclick = function () {
                     window.location.href = 'users.html';
                 };
-                const buttonContainer = document.getElementById("buttons");
-                buttonContainer.appendChild(userManagementButton);
+
 
                 const userLogButton = document.createElement("log");
                 userLogButton.className = "mauricios-button hover-bg-pink-200";
@@ -94,9 +93,9 @@
                 userLogButton.onclick = function () {
                     window.location.href = 'log.html';
                 };
-                const logContainer = document.getElementById("buttons-log");
-                logContainer.appendChild(userLogButton);
-
+                const buttonContainer = document.getElementById("buttons");
+                buttonContainer.appendChild(userManagementButton);
+                buttonContainer.appendChild(userLogButton);
             }
         }
 

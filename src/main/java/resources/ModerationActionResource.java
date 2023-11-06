@@ -42,6 +42,8 @@ public class ModerationActionResource {
 
         return Response.ok(log.toString()).build();
     }
+
+    @Path("/logs")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllLogs()

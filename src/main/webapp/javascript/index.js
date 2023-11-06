@@ -131,7 +131,8 @@ const APIGetProfileDetails = async (uid) => {
 }
 
 const APISwitchRole = async (username) => {
-    const response = await fetch(`http://localhost:8080/plugnpi/api/${username}/permissions`, {
+    console.log("Switch Role: " + username)
+    const response = await fetch(`http://localhost:8080/plugnpi/api/users/${username}/permissions`, {
         method: "PUT",
     });
 }
