@@ -65,6 +65,10 @@ void draw() {
     if (!isConnected) {//display if game is connected or not
       displayNotconnected();
     }
+    
+    if (getOnlineState() == OnlineState.Ready) {//game logged in
+      gameMenu.displayPlayerConnected(mouseX, mouseY);
+    }
   }
 
   if (gameState == 1) {//run the game
@@ -146,4 +150,31 @@ void playDopaminesfx() {
 void playFailsfx() {
   failSound.rewind();
   failSound.play();
+}
+
+void uploadScore(int score) {
+  if(getOnlineState() == OnlineState.Ready)
+  {
+    webClient.uploadScore(score);
+  }
+  else
+  {
+    println("Offline play, not uploading score.");
+  }
+}
+
+GameState getGameState() {
+  return gameState;
+}
+
+void setGameState(GameState newGameState) {
+  gameState = newGameState;
+}
+
+OnlineState getOnlineState() {
+  return webClient.onlineState;
+}
+
+boolean isOnline() {
+  return webClient.onlineState == OnlineState.Ready || webClient.onlineState == OnlineState.Uploading;
 }

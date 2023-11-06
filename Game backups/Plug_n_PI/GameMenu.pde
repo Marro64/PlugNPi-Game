@@ -55,8 +55,9 @@ class GameMenu {
       for (Button button : buttons_state1) {
         if (button.isInbox(Mx, My)) {
           gameState = button.toGameState;
-          if (button.toGameState ==1) {
+          if (button.toGameState == GameState.Playing) {
             RunnerGame.reset();
+            setGameState(GameState.Playing);
           }
         }
       }

@@ -91,6 +91,7 @@ public class SessionFilter implements ContainerRequestFilter {
             case "/plugnpi/api/pi":
             case "/plugnpi/api/pi/link":
             case "/plugnpi/api/pi/getUsername":
+            case "/plugnpi/api/leaderboard":
                 return filterType.NORMAL;
             default:
                 return filterType.REDIRECT_LOGIN;
