@@ -167,3 +167,28 @@ input[type=range]::-webkit-slider-thumb:hover {
     align-content: center;
     align-self: center;
 }
+
+.element {
+    transition: all 0.5s ease;
+    background: black;
+}
+.element:start {
+    background: green;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+header {
+    /* This section calls the slideInFromLeft animation we defined above */
+    animation: 1s ease-out 0s 1 slideInFromLeft;
+
+    background: #333;
+    padding: 30px;
+}

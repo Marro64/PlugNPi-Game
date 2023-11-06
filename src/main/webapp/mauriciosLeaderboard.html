@@ -39,25 +39,57 @@
         }
     </style>
 
+    <!--    <script>-->
+    <!--        let leaderboardElement;-->
+    <!--        let leaderboardData;-->
+
+    <!--        const loadLeaderboard = (date) => {-->
+    <!--            // Simulate an API call or replace this with your actual API call-->
+    <!--            const fakeAPIData = { /* Your data here */ };-->
+
+    <!--            leaderboardElement = document.getElementById("leaderboardElement");-->
+    <!--            leaderboardElement.setAttribute("leaderboardData", JSON.stringify(fakeAPIData));-->
+    <!--        }-->
+
+    <!--        // You can call loadLeaderboard with a specific date-->
+    <!--        loadLeaderboard('all-time');-->
+    <!--    </script>-->
+
+    <!--    <script>-->
+    <!--        function initialize() {-->
+    <!--            leaderboardElement = document.getElementById("leaderboardElement");-->
+    <!--            leaderboardData = leaderboardElement.getAttribute("leaderboardData");-->
+
+    <!--            if (leaderboardData) {-->
+    <!--                const leaderboardDataDecoded = JSON.parse(leaderboardData);-->
+    <!--                console.log(leaderboardDataDecoded);-->
+    <!--            } else {-->
+    <!--                console.error("No leaderboard data available.");-->
+    <!--            }-->
+    <!--        }-->
+
+    <!--        window.onload = initialize;-->
+    <!--    </script>-->
+
     <script>
-        /* Proxy method for intercepting the moment when url parameters change */
-        window.history.replaceState = new Proxy(window.history.replaceState, {
-            apply: (target, thisArg, argArray) => {
-                const result = target.apply(thisArg, argArray);
-
-                /* Re-fetch leaderboard method */
-                fetchLeaderboardAndPopulate();
-
-                return result;
-            },
-        });
+        // /* Proxy method for intercepting the moment when url parameters change */
+        // window.history.replaceState = new Proxy(window.history.replaceState, {
+        //     apply: (target, thisArg, argArray) => {
+        //         const result = target.apply(thisArg, argArray);
+        //
+        //         /* Re-fetch leaderboard method */
+        //         fetchLeaderboardAndPopulate();
+        //
+        //         return result;
+        //     },
+        // });
 
         /* Method for fetching leaderboard and populating dom */
-        const fetchLeaderboardAndPopulate = async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-
-            /* Initializing default values */
-            const by = urlParams.get("by") ?? "year";
+        const fetchLeaderboardAndPopulate = async (date) => {
+            // const urlParams = new URLSearchParams(window.location.search);
+            //
+            // /* Initializing default values */
+            // const by = urlParams.get("by") ?? "year";
 
             const ourRankingWrapper = document.getElementById("our-ranking-leaderboard-wrapper");
             const leaderboardWrapper = document.getElementById("leaderboard-wrapper");
@@ -76,51 +108,42 @@
 
             /* Updating the correct leaderboard by button style */
             /* TODO: Refactor buttons to their own components */
-            document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
-                if (element.getAttribute("data-by") === by) {
-                    element.classList.add("text-blue-500");
-                    element.classList.remove("text-gray-900");
-                } else {
-                    element.classList.add("text-gray-900");
-                    element.classList.remove("text-blue-500");
-                }
-            });
+            // document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
+            //     if (element.getAttribute("data-by") === by) {
+            //         element.classList.add("text-blue-500");
+            //         element.classList.remove("text-gray-900");
+            //     } else {
+            //         element.classList.add("text-gray-900");
+            //         element.classList.remove("text-blue-500");
+            //     }
+            // });
 
             /* Issueing request */
-            const leaderboard = await APIGetLeaderboardCall(by);
+            const leaderboard = await APIGetLeaderboardCall(date);
 
             /* Hidding the loading spinner */
             leaderboardWrapperLoader.classList.add("hidden");
 
-            /* Populating the dom */
-            ourRankingWrapper.appendChild(
-                parseHTML(`<leaderboard leaderboardData='${JSON.stringify(leaderboard.our_ranking)}'></leaderboard>`));
-
             leaderboardWrapper.appendChild(
-                parseHTML(`<leaderboard leaderboardData='${JSON.stringify(leaderboard.table_ranking)}'></leaderboard>`));
+                parseHTML(`<leaderboard-table leaderboardData='${JSON.stringify(leaderboard)}'></leaderboard-table>`));
+            //parseHTML(`<leaderboard-table leaderboardData=leaderboard></leaderboard-table>`));
         }
 
         window.onload = () => {
             /* Initializing leaderboard on page load */
-            fetchLeaderboardAndPopulate();
-
-            /* Registering event listeners for leaderboard by parameter filters */
-            document.querySelectorAll(".leaderboard-by-sorter").forEach((element) => {
-                element.addEventListener("click", () => {
-                    setParams("by", element.getAttribute("data-by"));
-                })
-            });
+            fetchLeaderboardAndPopulate('all-time');
         }
-
     </script>
 </head>
 
-<body>
+<body class="">
 <!-- Wrapper class for navbar and content -->
-<div class="flex flex-col h-screen">
+<div class="flex flex-col header h-screen element">
     <!-- Header navigation bar -->
     <div>
-        <navbar />
+        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='play.html';">Play</a>
+        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>
+        <a class="mauricios-button hover:bg-pink-300 float-right" onclick="window.location.href='login.html';">Log Out</a>
     </div>
 
     <!-- Page main content part -->
@@ -129,10 +152,30 @@
         <div class="w-2/3">
             <!-- Title and filter buttons section -->
             <div class="flex items-center justify-between">
-                <h1 class="text-4xl text-gray-700">Mauricios Leaderboard</h1>
+                <h1 class="text-4xl text-gray-700">Leaderboard</h1>
+
+
+                <div class="rounded-md shadow-sm cursor-pointer">
+                    <a aria-current="page"
+                       class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="all-time"
+                       onclick=fetchLeaderboardAndPopulate('all-time');>
+                        All time
+                    </a>
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="daily"
+                       onclick=fetchLeaderboardAndPopulate('daily');>
+                        Last 24h
+                    </a>
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="daily-m"
+                       onclick=fetchLeaderboardAndPopulate('daily-m');>
+                        Last 24h (mauricio's version)
+                    </a>
+                </div>
                 <!-- Do not mind this button, you'll regret it -->
-                <button onclick="window.location.href='leaderboard.html';">
-                    Back to losers Leaderboard
+                <button onclick="window.location.href='mauriciosLeaderboard.html';">
+                    .
                 </button>
 
             </div>
@@ -148,6 +191,7 @@
                 <!-- Table of current leaderboard state -->
                 <div class="flex flex-col space-y-3">
                     <div id="leaderboard-wrapper">
+                        <leaderboard-table id="leaderboardElement"></leaderboard-table>
                         <span class="loading loading-spinner loading-lg"></span>
                     </div>
 
@@ -162,3 +206,4 @@
 </body>
 
 </html>
+
