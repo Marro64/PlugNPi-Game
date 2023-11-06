@@ -39,50 +39,7 @@
         }
     </style>
 
-    <!--    <script>-->
-    <!--        let leaderboardElement;-->
-    <!--        let leaderboardData;-->
-
-    <!--        const loadLeaderboard = (date) => {-->
-    <!--            // Simulate an API call or replace this with your actual API call-->
-    <!--            const fakeAPIData = { /* Your data here */ };-->
-
-    <!--            leaderboardElement = document.getElementById("leaderboardElement");-->
-    <!--            leaderboardElement.setAttribute("leaderboardData", JSON.stringify(fakeAPIData));-->
-    <!--        }-->
-
-    <!--        // You can call loadLeaderboard with a specific date-->
-    <!--        loadLeaderboard('all-time');-->
-    <!--    </script>-->
-
-    <!--    <script>-->
-    <!--        function initialize() {-->
-    <!--            leaderboardElement = document.getElementById("leaderboardElement");-->
-    <!--            leaderboardData = leaderboardElement.getAttribute("leaderboardData");-->
-
-    <!--            if (leaderboardData) {-->
-    <!--                const leaderboardDataDecoded = JSON.parse(leaderboardData);-->
-    <!--                console.log(leaderboardDataDecoded);-->
-    <!--            } else {-->
-    <!--                console.error("No leaderboard data available.");-->
-    <!--            }-->
-    <!--        }-->
-
-    <!--        window.onload = initialize;-->
-    <!--    </script>-->
-
     <script>
-        // /* Proxy method for intercepting the moment when url parameters change */
-        // window.history.replaceState = new Proxy(window.history.replaceState, {
-        //     apply: (target, thisArg, argArray) => {
-        //         const result = target.apply(thisArg, argArray);
-        //
-        //         /* Re-fetch leaderboard method */
-        //         fetchLeaderboardAndPopulate();
-        //
-        //         return result;
-        //     },
-        // });
 
         /* Method for fetching leaderboard and populating dom */
         const fetchLeaderboardAndPopulate = async (date) => {

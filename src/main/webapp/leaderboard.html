@@ -87,6 +87,16 @@
                 };
                 const buttonContainer = document.getElementById("buttons");
                 buttonContainer.appendChild(userManagementButton);
+
+                const userLogButton = document.createElement("log");
+                userLogButton.className = "mauricios-button hover-bg-pink-200";
+                userLogButton.textContent = "Log Management";
+                userLogButton.onclick = function () {
+                    window.location.href = 'log.html';
+                };
+                const logContainer = document.getElementById("buttons-log");
+                logContainer.appendChild(userLogButton);
+
             }
         }
 
