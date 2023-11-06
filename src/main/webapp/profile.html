@@ -64,20 +64,6 @@
         document.getElementById("username-input").value = profileDetailsCall.username;
         document.getElementById("email-input").value = profileDetailsCall.email;
         document.getElementById("password-input").value = profileDetailsCall.password;
-
-        if(password === newpassword){
-          document.getElementById("password-input").value = profileDetailsCall.password;
-        }else{
-          setFormError("Passwords do not match.", emailOrUsernameInput);
-        }
-
-        /* Setting orders list */
-        const ordersWrapper = document.getElementById("orders-list");
-
-        // profileDetailsCall.forEach(order => {
-        //   ordersWrapper.appendChild(
-        //           parseHTML(`<a class="text-sm cursor-pointer hover:text-blue-500 transition-all duration-200" href="/viewOrder.html?id=${order.pog_id}">Order #${order.pog_id} - ${order.created_at}</a>`))
-        // })
       })();
     }
 
@@ -86,7 +72,7 @@
       clearFormErrors();
 
       if(password.value !== newpassword.value){
-        setFormError("Passwords do not match.", emailOrUsernameInput);
+        setFormError("Passwords do not match.", password);
         return false;
       }
       return true;
@@ -98,7 +84,7 @@
       const data = {
         "email": email.value,
         "username": username.value,
-        "password": passwordInput.value
+        "password": password.value
       };
 
       await APIUpdateProfileDetailsCall(data);

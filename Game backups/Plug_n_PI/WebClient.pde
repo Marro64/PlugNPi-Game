@@ -16,7 +16,7 @@ class WebClient {
   PImage QRCode;
   int QRCodeSize = 128;
   int fontSize = 20;
-  float completeCycleTime = 20;
+  float completeCycleTime = 100;
   float CycleTime = 0;
 
   //Client client;
@@ -187,16 +187,24 @@ class WebClient {
     }
   }
 
-  void display() {
-    pushMatrix();
-    translate(width/2, 520);
-    scale(2);
-    imageMode(CENTER);
-    image(QRCode, 0, 0);
-    popMatrix();
-    textSize(fontSize);
-    textAlign(CENTER);
-    text("Scan the QR code to connect, or enter the address manually:",width/2, 410);
-    text(QRCodeContent, width/2, 410 + fontSize);
+  //void display() {
+  //  pushMatrix();
+  //  translate(width/2, 520);
+  //  scale(2);
+  //  imageMode(CENTER);
+  //  image(QRCode, 0, 0);
+  //  popMatrix();
+  //  textSize(fontSize);
+  //  textAlign(CENTER);
+  //  text("Scan the QR code to connect, or enter the address manually:",width/2, 410);
+  //  text(QRCodeContent, width/2, 410 + fontSize);
+  //}
+  
+  PImage getQRCode() {
+    return QRCode;
+  }
+  
+  String getQRCodeContent() {
+    return QRCodeContent;
   }
 }

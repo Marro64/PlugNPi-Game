@@ -58,21 +58,30 @@ void setup() {
 void draw() {
   float dt = (millis()-lastFrame)/1000.0*60;
   lastFrame = millis();
+  
+  if (gameState == GameState.MainMenu || gameState == GameState.GameOver) {
+    gameMenu.display(mouseX, mouseY);
+  }
 
   if (gameState == GameState.MainMenu) {//Main menu of the game, the game waits for a connection or offline play is pressed
     //display logo and menu select 'offline play or connect'
-    gameMenu.display(mouseX, mouseY);
     //update connection ore sth
     webClient.update(dt);
-
-    if (getOnlineState() == OnlineState.QRCode) {//display if game is connected or not
-      //display QR code
-      webClient.display();
-      displayNotconnected();
+    
+    
+    switch(getOnlineState()) {
+      case Connecting:
+        gameMenu.displayNotConnected();
+        break;
+      case QRCode:
+        gameMenu.displayQRCode(webClient.getQRCode(), webClient.getQRCodeContent());
+        break;
+      case Ready:
+        gameMenu.displayPlayerConnected();
     }
     
     if (getOnlineState() == OnlineState.Ready) {//game logged in
-      gameMenu.displayPlayerConnected(mouseX, mouseY);
+      
     }
   }
 
@@ -87,21 +96,7 @@ void draw() {
   }
 
   if (gameState == GameState.GameOver) {//reset game and return Highscore
-    gameMenu.displayReturningHighscore();
-    //int endScore = Pigame.giveScore();
-    //if (endScore > localHighscore){
-    //  displayLocalHighscore = true;
-    //  localHighscore = endScore
-    //}
-    //Pigame.reset();
-    //display Highscore
-    //display waiting screen
-    //ifConnected:
-    //  return highscore and wait until highscore is returned
-    //  return to connected mode/waiting for input mode
-    //else{
-    //  gameState = 0;
-    //}
+    gameMenu.displayGameOver();
   }
 }
 
