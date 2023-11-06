@@ -109,9 +109,15 @@
 <body>
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
+  <div id="buttons">
+    <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+    <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
+  </div>
 
   <!-- Page main content part -->
   <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center items-center p-8">
+
+
     <!-- Whole content wrapper -->
     <div class="w-1/3 flex flex-col gap-5 bg-white p-4 rounded-md shadow-sm">
       <h1 class="font-bold text-gray-700 text-2xl">Profile information</h1>
