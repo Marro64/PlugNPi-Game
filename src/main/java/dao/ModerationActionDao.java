@@ -40,7 +40,11 @@ public enum ModerationActionDao {
         int userID = user.getUid();
         System.out.println("MODDAO: " + userID);
         return ORM.executeQuery(
-                "SELECT a.username m.action_type u.username m.time_of_action FROM project.account a, project.account u, project.moderation_action m WHERE u.u_id = ? AND u.u_id = m.player_id" ,userID
+                "SELECT a.username AS admin_username, m.action_type, u.username AS user_username, m.time_of_action\n" +
+                        "FROM project.account a\n" +
+                        "JOIN project.moderation_action m ON a.u_id = m.admin_id\n" +
+                        "JOIN project.account u ON m.player_id = u.u_id\n" +
+                        "WHERE m.player_id = ?;" ,userID
         );
     }
 
