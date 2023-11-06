@@ -149,7 +149,7 @@ const APIUpdateProfileDetailsCall = async (userData) => {
 }
 
 const APIGetLog = async () => {
-    const response = await fetch(`${BASE_URL}/actionlog`, {
+    const response = await fetch(`${BASE_URL}/actionlog/logs`, {
         method: "GET"
     });
     return response.json();
