@@ -74,7 +74,6 @@ void draw() {
     if (getOnlineState() == OnlineState.Ready) {//game logged in
       gameMenu.displayPlayerConnected(mouseX, mouseY);
     }
-    println("We in menu");
   }
 
   if (gameState == GameState.Playing) {//run the game

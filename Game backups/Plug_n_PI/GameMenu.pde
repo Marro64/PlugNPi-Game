@@ -58,7 +58,7 @@ class GameMenu {
           if (button.toGameState == GameState.Playing) {
             println("Starting offline game.");
             RunnerGame.reset();
-            gameState = GameState.Playing;
+            setGameState(GameState.Playing);
           }
         }
       }
