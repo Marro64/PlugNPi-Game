@@ -155,3 +155,14 @@ const APIGetLog = async () => {
     return response.json();
 }
 
+const APIDeleteUser = async () => {
+
+}
+
+const APIGetUserLog = async () => {
+    const response = await fetch(`${BASE_URL}/actionlog/logs`, {
+        method: "GET"
+    });
+    // user sid needed
+    return response.json();
+}
