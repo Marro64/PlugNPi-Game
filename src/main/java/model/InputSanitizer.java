@@ -43,6 +43,4 @@ public class InputSanitizer {
         user.setUsername(user.getUsername());
         return user;
     }
-
-
 }
