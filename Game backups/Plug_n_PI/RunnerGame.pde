@@ -10,6 +10,7 @@ class RunnerGame {
   float speed = 0; // game speed
   int maxDistMoved = 32;
   float distMoved = 0;
+  float walktimer = 0;
 
   int border = 250; // define the width of the outer edges
 
@@ -31,11 +32,13 @@ class RunnerGame {
   //Collectibles
   PImage collectibleImg;
   Collectible[] collectibles;
-  float collectibleSpawnTime = 2000;
-  int dimCol = 100;
+  float collectibleSpawnTime = 5000;
+  int dimCol = 30;
   int colCounter = -1;
   boolean spawnCollectible = false;
   int elapsedCollectible = millis();
+  float colScore;
+  int lives = 0;
 
   int score = 0;
   int endScore = 0;
@@ -44,6 +47,7 @@ class RunnerGame {
   PImage trainSide;
   PImage trainTop;
   
+  PImage playerImage;
   int fontSize = 30;
 
   //grid
@@ -72,6 +76,8 @@ class RunnerGame {
     trainSide = loadImage("Train_Side.png");
     trainTop =loadImage("Train_Top.png");
     trains = new Train[dim];
+    
+    playerImage = loadImage("runnerKid.png");
 
     //
     collectibleImg = loadImage("Coin.png");
@@ -100,14 +106,16 @@ class RunnerGame {
       if (train != null) {
         train.update(dt, speed);
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
-          endScore = score;
-          reset();
+          lives--;
           playFailsfx();
-          uploadScore(endScore);
-          gameState = GameState.GameOver;
-          //if (isOnline()) {
-          //  // Upload Score
-          //}
+          speed = (speed-startSpeed)/2 + startSpeed;
+          if (lives < 0) {
+            uploadScore(endScore);
+            gameState = GameState.GameOver;
+            reset();
+          }else{
+            resetGameObjects();
+          }
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           //playDopaminesfx();
@@ -130,10 +138,15 @@ class RunnerGame {
 
     for (Collectible collectible : collectibles) {
       if (collectible != null) {
-        collectible.update(distMoved);
+        collectible.update(speed, dt);
         if (collectible.collideWith(laneXpos[posIdx], gameH*0.6)) {
           playDopaminesfx();
-          score += 5;
+          colScore ++;
+          if (colScore > 99) {
+            colScore = 0;
+            lives ++;
+          }
+          collectible.posY = 10000;
         } else if (collectible.posY > gameH*0.6 && !collectible.hasPassed) {
           collectible.hasPassed = true;
         }
@@ -161,14 +174,14 @@ class RunnerGame {
     pushMatrix();
     textSize(fontSize);
     textAlign(LEFT);
+    text("Score: " + score, 20, fontSize);
+    text("Coins for new life: " +(100-colScore), 20, fontSize*2);
+    text("lives: " + lives, 20, fontSize*3);
+    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, fontSize*4);
     fill(255);
     
-    // Draw score
-    text("Score: " + score, 20, fontSize);
-    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, fontSize*2);
-    
-    // Draw fps on screen
-    text("FPS: " + frameRate, 20, fontSize*3);
+    //// Draw fps on screen
+    text("FPS: " + frameRate, 20, fontSize*5);
 
     // Translate and rotate world
     translate(gameW/2, gameH/2);
@@ -226,11 +239,13 @@ class RunnerGame {
   void displayPlayer(Capture video) {
 
     beginShape(QUADS);
-    texture(video);
+    texture(playerImage);
     textureMode(NORMAL);
     //front
-    translate(laneXpos[posIdx], gameH*0.6, 5);
-    scale(25);
+    walktimer -= speed;
+    translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
+    scale(23,32,32);
+    scale(0.8);
     vertex(-1, 1, 1, 0, 0);
     vertex( 1, 1, 1, 1, 0);
     vertex( 1, 1, -1, 1, 1);
@@ -239,15 +254,26 @@ class RunnerGame {
   }
 
   void reset() {
+    endScore = score;
+    score = 0;//reset score
+    colScore = 0;
+    lives = 0;
+    if (endScore > gameHighScore) gameHighScore = endScore;
+    resetGameObjects();
+  }
+
+  void resetGameObjects() {
     backgroundMusic.rewind();
     backgroundMusic.play();
     speed = startSpeed;
-    endScore = score;
-    score = 0;//reset score
-    if (endScore > gameHighScore) gameHighScore = endScore;
     for (Train train : trains) {//reset trains
       if (train != null) {
         train.reset();
+      }
+    }
+    for (Collectible collectible : collectibles) {//reset trains
+      if (collectible != null) {
+        collectible.reset();
       }
     }
   }
