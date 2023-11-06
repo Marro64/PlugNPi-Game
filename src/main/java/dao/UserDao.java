@@ -131,8 +131,15 @@ public enum UserDao {
         return null;
     }
 
-
-
+    public JsonArray getAllUsers(String utype) {
+        if(utype.equals("undefined")) {
+            return ORM.executeQuery(
+                    "SELECT u.username, u.email, u.u_type FROM project.account u");
+        } else {
+            return ORM.executeQuery(
+                    "SELECT u.username, u.email, u.u_type FROM project.account u WHERE u.u_type = ?::project.u_type", utype);
+        }
+    }
 }
 
 

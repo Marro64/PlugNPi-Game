@@ -2,14 +2,6 @@ import com.cage.zxing4p3.*;
 //import processing.net.*;
 import http.requests.*;
 
-enum OnlineState {
-  Connecting,
-  QRCode,
-  Ready,
-  Uploading,
-  Offline
-}
-
 class WebClient {
   ZXING4P zxing4p;
   String QRCodeContent = "https://www.youtube.com/watch?v=KMU0tzLwhbE";
@@ -27,8 +19,6 @@ class WebClient {
   String username = "None"; 
   
   PApplet papplet;
-  
-  OnlineState onlineState;
 
   WebClient(PApplet papplet) {
     this.papplet = papplet;
@@ -102,16 +92,14 @@ class WebClient {
     println("Content: " + content);
     switch(dataType) {
     case "session":
-      if(onlineState == OnlineState.Connecting) {
-        onlineState = OnlineState.QRCode;
-      }
       updateSessionID(content);
       println("Received session code.\n");
       break;
     case "username":
       username = content;
       connectedUserName = content;
-      onlineState = OnlineState.Ready;
+      isConnected = true;
+      gameState = 2;
       println("Received username: " + content);
       break;    
     default:

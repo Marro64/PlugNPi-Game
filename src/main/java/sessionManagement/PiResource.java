@@ -75,7 +75,7 @@ public class PiResource {
         User user = (User) httpreq.getAttribute("user");
         if (SessionDao.INSTANCE.getSessions().containsKey(session))
         {
-            if (action.equals("connect"))
+            if (action == null || action.equals("connect"))
             {
                 if (SessionDao.INSTANCE.getSessions().get(session) == -1)
                 {

@@ -6,9 +6,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class ModerationAction {
     int aid;
     int pid;
-    ModerationAction actionType;
+    ModerationType actionType;
 
-    public ModerationAction(int aid, int pid, ModerationAction actionType) {
+    public ModerationAction(int aid, int pid, ModerationType actionType) {
         this.aid = aid;
         this.pid = pid;
         this.actionType = actionType;
@@ -22,7 +22,7 @@ public class ModerationAction {
         this.pid = pid;
     }
 
-    public void setActionType(ModerationAction actionType) {
+    public void setActionType(ModerationType actionType) {
         this.actionType = actionType;
     }
 
@@ -34,7 +34,7 @@ public class ModerationAction {
         return pid;
     }
 
-    public ModerationAction getActionType() {
+    public ModerationType getActionType() {
         return actionType;
     }
 }
