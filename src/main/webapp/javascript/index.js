@@ -117,6 +117,11 @@ const APIGetLeaderboardCall = async (date) => {
     return request.json();
 }
 
+const APIGetProfileDetails = async (id) => {
+    const request = await fatch(`/plugnpi/api/user?uid=${id}`);
+    return request.json();
+}
+
 
 
 
