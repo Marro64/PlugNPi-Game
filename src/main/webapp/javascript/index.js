@@ -105,6 +105,10 @@ const APIConnectToPi = async (session) => {
     }
 }
 
+const APIGetUser = async () => {
+
+}
+
 const APIGetUsers = async (role) => {
     const request = await fetch(`/plugnpi/api/users?role=${role}`);
 
@@ -115,6 +119,14 @@ const APIGetLeaderboardCall = async (date) => {
     const request = await fetch(`/plugnpi/api/leaderboard?date=${date}`);
 
     return request.json();
+}
+
+const APIAdminCheck = async () => {
+    const response = await fetch(`/plugnpi/api/u/users/check`, {
+        method: "GET",
+    });
+
+    return await response.text();
 }
 
 

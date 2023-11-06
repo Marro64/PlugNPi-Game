@@ -1,5 +1,6 @@
 package resources;
 
+import com.google.gson.JsonArray;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -11,6 +12,7 @@ import model.User;
 import dao.UserDao;
 import model.UserLogin;
 import model.UserSignup;
+import model.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,26 +50,33 @@ public class UsersResources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getUsers(@QueryParam("role") String role) {
-        List<User> users = new ArrayList<>();
-        if (role == null) {
-            //return all users
-            //users = uQueries.getUsers();
-        } else if (role.equals("players")) {
-            //return all normal users
-            //users = uQueries.getNormals();
-        } else if (role.equals("admins")) {
-            //return all admins
-            //users = uQueries.getAdmins();
+    public Response getUsers(@QueryParam("role") String role) {
+        JsonArray users = new JsonArray();
+        if (role.equals("undefined")) {
+            users = UserDao.INSTANCE.getAllUsers(role);
+        } else if (role.equals("PLAYER")) {
+            users = UserDao.INSTANCE.getAllUsers(role);
+        } else if (role.equals("ADMIN")) {
+            users = UserDao.INSTANCE.getAllUsers(role);
+        } else {
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
-        return users;
+        return Response.ok(users.toString()).build();
     }
-
-
-
 
     @Path("/{username}")
     public UserResource getUser(@PathParam("username") String id) {
         return new UserResource(uriInfo, request, id);
+    }
+
+    @GET
+    @Path("/check")
+    public boolean isAdmin() {
+        User user = (User) request.getAttribute("user");
+        if(user.getUser_type().equals(UserType.ADMIN)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

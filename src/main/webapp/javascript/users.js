@@ -5,8 +5,9 @@ class UsersTable extends HTMLElement {
     /* Invoked each time the custom element is appended into a document-connected element. */
     connectedCallback() {
         /* Leaderboard data must be a json object */
-        const leaderboardData = this.attributes.leaderboardData?.value;
-        const leaderboardDataDecoded = JSON.parse(leaderboardData);
+        const usersData = this.attributes.usersData?.value;
+        console.log(usersData)
+        const userDataDecoded = JSON.parse(usersData);
 
         /* Wrapper div for the whole table */
         const wrapperDiv = document.createElement("div");
@@ -47,7 +48,7 @@ class UsersTable extends HTMLElement {
         const tableBody = document.createElement("tbody");
 
         /* Going over all leaderboard data entries */
-        leaderboardDataDecoded.forEach((data) => {
+        userDataDecoded.forEach((data) => {
 
             /* Creating table body row */
             const tr = document.createElement("tr");
@@ -69,7 +70,7 @@ class UsersTable extends HTMLElement {
 
             const bodyCellRole = document.createElement("td");
             bodyCellRole.classList.add("px-6", "py-3");
-            bodyCellRole.innerHTML = data.user_type;
+            bodyCellRole.innerHTML = data.u_type;
 
             tr.append(bodyCellAction, bodyCellUsername, bodyCellEmail,bodyCellRole);
             tableBody.appendChild(tr);
@@ -83,4 +84,4 @@ class UsersTable extends HTMLElement {
     }
 }
 
-customElements.define("leaderboard-table", Leaderboard);
+customElements.define("users-table", UsersTable);
