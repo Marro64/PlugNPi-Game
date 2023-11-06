@@ -40,7 +40,7 @@ class WebClient {
   }
 
   void update(float dt) {
-    //if(!waitingForData && !client.active() && onlineState == OnlineState.QRCode) //<>// //<>//
+    //if(!waitingForData && !client.active() && onlineState == OnlineState.QRCode) //<>//
     if(onlineState == OnlineState.QRCode)
     {
       CycleTime += dt;
@@ -155,7 +155,7 @@ class WebClient {
     GetRequest get = new GetRequest(host + request);
     get.send();
     println("Reponse Content: " + get.getContent());
-    println("Reponse Content-Length Header: " + get.getHeader("Content-Length"));
+    //println("Reponse Content-Length Header: " + get.getHeader("Content-Length"));
     if(get.getContent() != null) {
       receiveData(get.getContent());
     }
@@ -167,9 +167,9 @@ class WebClient {
     {
       post.addData(data[i][0], data[i][1]);
     }
-    post.send(); //<>// //<>//
+    post.send();
     println("Reponse Content: " + post.getContent());
-    println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
+    //println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
     if(post.getContent() != null) {
       receiveData(post.getContent());
     }
