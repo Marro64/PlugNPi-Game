@@ -79,7 +79,7 @@
         const checkAdmin = async () => {
             const isAdmin = await APIAdminCheck;
             console.log(isAdmin)
-            if (isAdmin) {
+            if (isAdmin === true) {
                 const userManagementButton = document.createElement("a");
                 userManagementButton.className = "mauricios-button hover-bg-pink-200";
                 userManagementButton.textContent = "User Management";

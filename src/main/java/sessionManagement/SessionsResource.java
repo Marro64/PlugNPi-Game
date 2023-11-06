@@ -48,7 +48,7 @@ public class SessionsResource {
             if (login) {
                 System.out.println("SessionsResource: logging in");
                 String sessionId = CreateCookie.generateSession(); //generate id
-                LocalDateTime expiry = LocalDateTime.now().plusHours(3); //set time
+                LocalDateTime expiry = LocalDateTime.now().plusHours(1); //set time
                 SessionDao.INSTANCE.addSession(sessionId, uid);
                 User loggedIn = new User();
                 NewCookie cookie = CreateCookie.createSession(sessionId, expiry);

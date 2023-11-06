@@ -19,9 +19,11 @@ public class ModerationActionResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadAction(ModerationAction action) {
+        System.out.println("MODRESOURCE: " + action.getAid());
         ModerationActionDao.INSTANCE.addLog(action);
         return Response.ok().build();
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLogsForUser(@QueryParam("username") String username)
@@ -32,11 +34,11 @@ public class ModerationActionResource {
         UserDao.INSTANCE.jsonToUser(jsonUser, user);
         if (UserDao.INSTANCE.isAdmin(user) && UserDao.INSTANCE.UserExists(user))
         {
+            System.out.println("MODRES: USER IS ADMIN");
             log = ModerationActionDao.INSTANCE.getLogsFromAdmin(user);
-
-        } else if (!UserDao.INSTANCE.isAdmin(user) && UserDao.INSTANCE.UserExists(user)) {
-            log = ModerationActionDao.INSTANCE.getLogsFromUser(user);
+            log.addAll(ModerationActionDao.INSTANCE.getLogsFromUser(user));
         }else {
+            System.out.println("MODRES: NO CONTENT");
             return Response.status(Response.Status.NO_CONTENT).build();
         }
 

@@ -27,6 +27,10 @@ class UsersTable extends HTMLElement {
         headerCellAction.classList.add("w-12", "px-6", "py-3");
         headerCellAction.innerHTML = "action";
 
+        const headerCellBan = document.createElement("th");
+        headerCellBan.classList.add("w-12", "px-6", "py-3");
+        headerCellBan.innerHTML = "ban";
+
         const headerCellUsername = document.createElement("th");
         headerCellUsername.classList.add("w-64", "px-6", "py-3");
         headerCellUsername.innerHTML = "username";
@@ -60,6 +64,9 @@ class UsersTable extends HTMLElement {
             bodyCellAction.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
             bodyCellAction.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchRole(this.id)>Change Role</button>";
 
+            const bodyCellBan = document.createElement("td");
+            bodyCellBan.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
+            bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchRole(this.id)>Ban</button>";
 
             const bodyCellUsername = document.createElement("td");
             bodyCellUsername.classList.add("px-6", "py-4");
@@ -73,7 +80,7 @@ class UsersTable extends HTMLElement {
             bodyCellRole.classList.add("px-6", "py-3");
             bodyCellRole.innerHTML = data.u_type;
 
-            tr.append(bodyCellAction, bodyCellUsername, bodyCellEmail,bodyCellRole);
+            tr.append(bodyCellAction, bodyCellBan, bodyCellUsername, bodyCellEmail,bodyCellRole);
             tableBody.appendChild(tr);
         });
 

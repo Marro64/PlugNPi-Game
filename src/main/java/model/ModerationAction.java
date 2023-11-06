@@ -8,6 +8,9 @@ public class ModerationAction {
     int pid;
     ModerationType actionType;
 
+    public ModerationAction() {
+
+    }
     public ModerationAction(int aid, int pid, ModerationType actionType) {
         this.aid = aid;
         this.pid = pid;

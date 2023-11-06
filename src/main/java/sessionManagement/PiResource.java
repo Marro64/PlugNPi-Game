@@ -47,21 +47,8 @@ public class PiResource {
         SessionDao.INSTANCE.addPiSession(id,-1); //When you want to connect check whether the id exists, and update the uid
         return indicator;
     }
-//    @GET
-//    @Produces(MediaType.TEXT_PLAIN)
-//    @Path("/getUsername")
-//    public String returnUsername(@QueryParam("session") String session) {
-////        int userID = SessionDao.INSTANCE.getSessions().get(session);
-////        User sesssionUser = new User();
-////        JsonObject jsonObject = UserDao.INSTANCE.getUser(userID);
-////        if(jsonObject != null) {
-////            UserDao.INSTANCE.jsonToUser(jsonObject, sesssionUser);
-////            String output = "username: "+ sesssionUser.getUsername() + "\n";
-////            System.out.println("Responding with 200 and " + output);
-////            return output;
-////        }
-////        return null;
-//    }
+
+
 
     /**
      * The user scans a QR code/enters code and makes a request to the server to link the account to the pi.

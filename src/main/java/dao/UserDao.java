@@ -143,7 +143,6 @@ public enum UserDao {
     public boolean isAdmin(User user)
     {
         return (user.getUser_type().equals(UserType.ADMIN));
-
     }
 
 }
