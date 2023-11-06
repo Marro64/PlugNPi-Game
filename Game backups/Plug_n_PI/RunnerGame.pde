@@ -29,7 +29,7 @@ class RunnerGame {
   boolean trig = false;
   int elapsed = millis();
   int score = 0;
-  int endscore = 0;
+  int endScore = 0;
   int gameHighScore = 0;
   PImage trainFront;
   PImage trainSide;
@@ -85,9 +85,10 @@ class RunnerGame {
       if (train != null) {
         train.update(dt, speed);
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
-          endscore = score;
+          endScore = score;
           reset();
           playFailsfx();
+          uploadScore(endScore);
           gameState = GameState.GameOver;
           //if (isOnline()) {
           //  // Upload Score            
@@ -188,9 +189,9 @@ class RunnerGame {
     backgroundMusic.rewind();
     backgroundMusic.play();
     speed = startSpeed;
-    endscore = score;
+    endScore = score;
     score = 0;//reset score
-    if (endscore > gameHighScore) gameHighScore = endscore;
+    if (endScore > gameHighScore) gameHighScore = endScore;
     for (Train train : trains) {//reset trains
       if (train != null) {
         train.reset();

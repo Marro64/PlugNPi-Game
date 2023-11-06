@@ -154,6 +154,17 @@ void playFailsfx() {
   failSound.play();
 }
 
+void uploadScore(int score) {
+  if(getOnlineState() == OnlineState.Ready)
+  {
+    webClient.uploadScore(score);
+  }
+  else
+  {
+    println("Offline play, not uploading score.");
+  }
+}
+
 GameState getGameState() {
   return gameState;
 }

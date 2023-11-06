@@ -50,6 +50,7 @@ public class LeaderboardsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadAScore(PiScore score) {
         //Verify whether score upload matches up with the session
+        System.out.println("Receiving new score");
         String pid = score.getPid();
         int uid = SessionDao.INSTANCE.getSessions().get(pid);
         Score dbScore = new Score(uid,score.getDistance());

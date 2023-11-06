@@ -47,28 +47,27 @@ public class PiResource {
         SessionDao.INSTANCE.addPiSession(id,-1); //When you want to connect check whether the id exists, and update the uid
         return indicator;
     }
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/getUsername")
-    public String returnUsername(@QueryParam("session") String session) {
-        int userID = SessionDao.INSTANCE.getSessions().get(session);
-        User sesssionUser = new User();
-        JsonObject jsonObject = UserDao.INSTANCE.getUser(userID);
-        if(jsonObject != null) {
-            UserDao.INSTANCE.jsonToUser(jsonObject, sesssionUser);
-            String output = "username: "+ sesssionUser.getUsername() + "\n";
-            System.out.println("Responding with 200 and " + output);
-            return output;
-        }
-        return null;
-    }
+//    @GET
+//    @Produces(MediaType.TEXT_PLAIN)
+//    @Path("/getUsername")
+//    public String returnUsername(@QueryParam("session") String session) {
+////        int userID = SessionDao.INSTANCE.getSessions().get(session);
+////        User sesssionUser = new User();
+////        JsonObject jsonObject = UserDao.INSTANCE.getUser(userID);
+////        if(jsonObject != null) {
+////            UserDao.INSTANCE.jsonToUser(jsonObject, sesssionUser);
+////            String output = "username: "+ sesssionUser.getUsername() + "\n";
+////            System.out.println("Responding with 200 and " + output);
+////            return output;
+////        }
+////        return null;
+//    }
 
     /**
      * The user scans a QR code/enters code and makes a request to the server to link the account to the pi.
      * They're already logged in, so we should be taking the user object based on the session_id of the cookie.
      * Requests by users who are not logged in are not accepted, and they're forced to log in.
      * User is guaranteed to exist because they have already managed to log in.
-     * //TODO the pi has to know who is playing
      */
     @GET
     @Path("/link")
@@ -118,7 +117,15 @@ public class PiResource {
             {
                 System.out.println("Request for user connected to " + session);
                 int userID = SessionDao.INSTANCE.getSessions().get(session);
-//                returnUsername(userID); //TODO make a new separate link
+                User sesssionUser = new User();
+                JsonObject jsonObject = UserDao.INSTANCE.getUser(userID);
+                if(jsonObject != null) {
+                    UserDao.INSTANCE.jsonToUser(jsonObject, sesssionUser);
+                    String output = "username: "+ sesssionUser.getUsername() + "\n";
+                    System.out.println("Responding with 200 and " + output);
+                    return Response.status(Response.Status.OK).entity(output).build();
+                }
+                return Response.status(Response.Status.NO_CONTENT).build();
             }
             else
             {

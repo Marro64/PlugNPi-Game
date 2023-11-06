@@ -56,7 +56,6 @@ class GameMenu {
         if (button.isInbox(Mx, My)) {
           gameState = button.toGameState;
           if (button.toGameState == GameState.Playing) {
-            println("Starting offline game.");
             RunnerGame.reset();
             setGameState(GameState.Playing);
           }
