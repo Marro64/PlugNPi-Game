@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plug'n'pi | Moderation log</title>
+
+    <link rel="icon" type="image/png" href="images/ppicon.png" />
+
+    <!-- DaisyUI tailwind component system and tailwind utility class framework -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.6/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+
+    <!-- Components -->
+    <script src="javascript/Navbar.js" type="text/javascript"></script>
+    <!-- Utils -->
+    <script src="javascript/parser.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="javascript/index.js" type="text/javascript"></script>
+    <script src="javascript/Leaderboard.js" type="text/javascript"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: "Roboto", sans-serif !important;
+        }
+    </style>
+    <script>
+
+        const fetchAndPopulateLog = async () => {
+            const logWrapper = document.getElementById("our-log-wrapper");
+            const logInfo = document.getElementById("log-wrapper");
+
+            /* Removing our ranking table */
+            logWrapper.innerHTML = "";
+
+            while (logInfo.childNodes.length > 2) {
+                logInfo.removeChild(logInfo.lastChild);
+            }
+
+            /* Issueing request */
+            const log = await APIGetLog();
+
+            logInfo.appendChild(
+                parseHTML(`<log-table logData='${JSON.stringify(log)}'></log-table>`));
+            //parseHTML(`<leaderboard-table leaderboardData=leaderboard></leaderboard-table>`));
+        }
+
+        window.onload = () => {
+            fetchAndPopulateLog();
+        }
+    </script>
+</head>
+<body>
+<!-- Wrapper class for navbar and content -->
+<div class="flex flex-col h-screen">
+    <!-- Header navigation bar -->
+    <div id="buttons">
+        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+        <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
+    </div>
+
+    <!-- Page main content part -->
+    <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center p-8 items-center">
+        <!-- Main content wrapper -->
+        <div class="w-2/3">
+            <!-- Title and filter buttons section -->
+            <div class="flex items-center justify-between">
+                <h1 class="text-4xl text-gray-700">Moderation Log</h1>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Leaderboard table wrapper -->
+            <div class="flex flex-col gap-8">
+                <!-- Table of current user position -->
+                <div id="our-log-wrapper">
+                </div>
+
+                <!-- Table of current leaderboard state -->
+                <div class="flex flex-col space-y-3">
+                    <div id="log-wrapper">
+                        <log-table id="logElement"></log-table>
+                        <span class="loading loading-spinner loading-lg" id="spinner"></span>
+                    </div>
+
+                    <a class="text-xs text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Show
+                        more
+                        results</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
