@@ -108,6 +108,7 @@ class RunnerGame {
         if (train.collideWith(laneXpos[posIdx], gameH*0.6)) {
           lives--;
           playFailsfx();
+          speed = (speed-startSpeed)/2 + startSpeed;
           if (lives < 0) {
             uploadScore(endScore);
             gameState = GameState.GameOver;
@@ -173,18 +174,14 @@ class RunnerGame {
     pushMatrix();
     textSize(fontSize);
     textAlign(LEFT);
-    text("Score: " + score, 20, 20);
-    text("Coins for new life: " +(100-colScore), 20, 40);
-    text("lives: " + lives, 20, 60);
-    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, 80);
+    text("Score: " + score, 20, fontSize);
+    text("Coins for new life: " +(100-colScore), 20, fontSize*2);
+    text("lives: " + lives, 20, fontSize*3);
+    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, fontSize*4);
     fill(255);
     
-    // Draw score
-    text("Score: " + score, 20, fontSize);
-    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, fontSize*2);
-    
-    // Draw fps on screen
-    text("FPS: " + frameRate, 20, fontSize*3);
+    //// Draw fps on screen
+    text("FPS: " + frameRate, 20, fontSize*5);
 
     // Translate and rotate world
     translate(gameW/2, gameH/2);
@@ -246,7 +243,7 @@ class RunnerGame {
     textureMode(NORMAL);
     //front
     walktimer -= speed;
-    translate(laneXpos[posIdx], gameH*0.6, 20 + 5*sin(walktimer*0.1));
+    translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
     scale(23,32,32);
     scale(0.8);
     vertex(-1, 1, 1, 0, 0);
@@ -259,6 +256,8 @@ class RunnerGame {
   void reset() {
     endScore = score;
     score = 0;//reset score
+    colScore = 0;
+    lives = 0;
     if (endScore > gameHighScore) gameHighScore = endScore;
     resetGameObjects();
   }
