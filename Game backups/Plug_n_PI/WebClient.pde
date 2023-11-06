@@ -12,19 +12,19 @@ enum OnlineState {
 
 class WebClient {
   ZXING4P zxing4p;
-  String QRCodeContent = "https://www.youtube.com/watch?v=KMU0tzLwhbE";
-  PImage QRCode;
   int QRCodeSize = 128;
   int fontSize = 20;
+  
   float completeCycleTime = 100;
   float CycleTime = 0;
 
-  //Client client;
   String host = "http://145.126.2.121:8080";
-  boolean waitingForData = false;
   
+  String QRCodeContent = "https://www.youtube.com/watch?v=KMU0tzLwhbE";
+  PImage QRCode;
   String sessionID = "";
   String username = "None"; 
+  String highscoreString = "";
   
   PApplet papplet;
   
@@ -34,7 +34,6 @@ class WebClient {
     this.papplet = papplet;
     zxing4p = new ZXING4P();
     onlineState = OnlineState.Connecting;
-    //webRequest("GET /plugnpi/api/pi HTTP/1.0");
     getRequest("/plugnpi/api/pi");
     updateQRCode();
   }
@@ -49,13 +48,6 @@ class WebClient {
         getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_user");
       }
     }
-    
-    
-    
-    //if (waitingForData && !client.active())
-    //{
-    //  receiveData();
-    //}
   }
   
   void uploadScore(int score) {
@@ -142,6 +134,18 @@ class WebClient {
     QRCode = zxing4p.generateQRCode(content, 128, 128);
     println("Set QR code to \"" + content + "\".\n");
   }
+  
+  void updateHighscores() {
+    String HighscoresRaw = getJsonRequest("/plugnpi/api/leaderboard?date=weekly");
+    JSONArray highscoresJson = parseJSONArray(HighscoresRaw);
+    if(highscoresJson == null) return;
+    
+    highscoreString = "Weekly highscores:\n";
+    for(int i = 0; i < highscoresJson.size(); i++) {
+      JSONObject highscoreObject = highscoresJson.getJSONObject(i);
+      highscoreString += i+1 + ". " + highscoreObject.getString("username") + ": " + parseInt(highscoreObject.getInt("distance")) + "\n";
+    }
+  }
 
   //void webRequest(String request) {
   //  client = new Client(papplet, host, port);
@@ -159,6 +163,17 @@ class WebClient {
     if(get.getContent() != null) {
       receiveData(get.getContent());
     }
+  }
+  
+  String getJsonRequest(String request) {
+    GetRequest get = new GetRequest(host + request);
+    get.send();
+    println("Reponse Content: " + get.getContent());
+    //println("Reponse Content-Length Header: " + get.getHeader("Content-Length"));
+    if(get.getContent() != null) {
+      return get.getContent();
+    }
+    return("");
   }
   
   void postRequest(String request, String[][] data) {
@@ -206,5 +221,9 @@ class WebClient {
   
   String getQRCodeContent() {
     return QRCodeContent;
+  }
+  
+  String getHighscores() {
+    return highscoreString;
   }
 }

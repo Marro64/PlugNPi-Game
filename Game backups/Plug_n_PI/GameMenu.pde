@@ -66,6 +66,13 @@ class GameMenu {
     image(titleImage, 0, 400);
     popMatrix();
   }
+  
+  void displayHighscores(String highscoreString) {
+    textAlign(RIGHT);
+    fill(255);
+    textSize(fontSize);
+    text(highscoreString, width-20, fontSize);
+  }
 
   void MouseInput(int Mx, int My, GameState gameState) {
     if (gameState == GameState.MainMenu || gameState == GameState.GameOver) {
@@ -73,8 +80,7 @@ class GameMenu {
         if (button.isInbox(Mx, My)) {
           gameState = button.toGameState;
           if (button.toGameState == GameState.Playing) {
-            RunnerGame.reset();
-            setGameState(GameState.Playing);
+            startGame();
           }
         }
       }
