@@ -26,10 +26,9 @@ public enum SessionDao {
     }
 
     public JsonObject getSessiontime(String session) {
-        JsonArray userQuery = ORM.executeQuery("SELECT expires FROM project.session WHERE session_key = ?",
+        JsonArray userQuery = ORM.executeQuery("SELECT s.expires FROM project.session s WHERE s.session_key = ?",
                 session);
         if (userQuery == null || userQuery.size() == 0) return null;
-
         return (JsonObject) userQuery.get(0);
     }
 

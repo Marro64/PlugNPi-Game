@@ -57,7 +57,7 @@ class UsersTable extends HTMLElement {
             /* Creating table data cells */
             const bodyCellAction = document.createElement("td");
             bodyCellAction.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
-            bodyCellAction.innerHTML = '<button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Change Role</button>';
+            bodyCellAction.innerHTML = '<button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="APISwitchRole(data.username)">Change Role</button>';
 
 
             const bodyCellUsername = document.createElement("td");
