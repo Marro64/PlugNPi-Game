@@ -9,7 +9,7 @@ class GameMenu {
     gameHeight = GameHeight;
     titleImage = loadImage("PlugNPI.png");
     buttons_state1 = new Button[1];
-    buttons_state1[0] = new Button(GameWidth/2, 700, 200, 50, "Play Offline", 1);
+    buttons_state1[0] = new Button(GameWidth/2, 700, 200, 50, "Play Offline", GameState.Playing);
     //buttons_state1[1] = new Button(GameWidth/2 + 110, 420, 200, 50, "Play Online", 2);
   }
 
@@ -50,18 +50,19 @@ class GameMenu {
     popMatrix();
   }
 
-  void MouseInput(int Mx, int My, int gamestate) {
-    if (gamestate == 0 || gamestate == 2) {
+  void MouseInput(int Mx, int My, GameState gameState) {
+    if (gameState == GameState.MainMenu || gameState == GameState.GameOver) {
       for (Button button : buttons_state1) {
         if (button.isInbox(Mx, My)) {
           gameState = button.toGameState;
-          if (button.toGameState ==1) {
+          if (button.toGameState == GameState.Playing) {
             RunnerGame.reset();
+            gameState = GameState.Playing;
           }
         }
       }
-    } else if (gamestate == 1) {
-      gameState = 0;
+    } else if (gameState == GameState.Playing) {
+      gameState = GameState.MainMenu;
     }
   }
 }

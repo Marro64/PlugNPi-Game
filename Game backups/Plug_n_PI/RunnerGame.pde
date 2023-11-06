@@ -88,9 +88,10 @@ class RunnerGame {
           endscore = score;
           reset();
           playFailsfx();
-          if (isConnected) {
-            gameState =99;
-          }
+          gameState = GameState.GameOver;
+          //if (isOnline()) {
+          //  // Upload Score            
+          //}
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
           train.hasPassed = true;
           playDopaminesfx();

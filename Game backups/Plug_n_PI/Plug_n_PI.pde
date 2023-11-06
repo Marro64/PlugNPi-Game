@@ -10,19 +10,24 @@ AudioPlayer[] dopamineSound;
 AudioPlayer failSound;
 AudioPlayer backgroundMusic;
 
-boolean isConnected;
 boolean displayLocalHighscore;
 int localHighscore = 0;
 String connectedUserName;
 
-int gameState = 0;
+enum GameState {
+  MainMenu,
+  Playing,
+  GameOver
+}
+
+GameState gameState;
 int lastFrame = 0;
 
 void setup() {
-  isConnected = false;
-
   //setup gamewindow
   size(1920, 980, P3D);
+  
+  gameState = GameState.MainMenu;
 
   //setup gameMenu
   gameMenu = new GameMenu(width, height);
@@ -54,20 +59,24 @@ void draw() {
   float dt = (millis()-lastFrame)/1000.0*60;
   lastFrame = millis();
 
-  if (gameState == 0) {//Main menu of the game, the game waits for a connection or offline play is pressed
+  if (gameState == GameState.MainMenu) {//Main menu of the game, the game waits for a connection or offline play is pressed
     //display logo and menu select 'offline play or connect'
     gameMenu.display(mouseX, mouseY);
     //update connection ore sth
     webClient.update(dt);
-    //display QR code
-    webClient.display();
 
-    if (!isConnected) {//display if game is connected or not
+    if (getOnlineState() == OnlineState.QRCode) {//display if game is connected or not
+      //display QR code
+      webClient.display();
       displayNotconnected();
+    }
+    
+    if (getOnlineState() == OnlineState.Ready) {//game logged in
+      gameMenu.displayPlayerConnected(mouseX, mouseY);
     }
   }
 
-  if (gameState == 1) {//run the game
+  if (gameState == GameState.Playing) {//run the game
     //get delta time and update game
     update(dt);
 
@@ -77,11 +86,7 @@ void draw() {
     LaneDetection.display();
   }
 
-  if (gameState == 2) {//game logged in
-    gameMenu.displayPlayerConnected(mouseX, mouseY);
-  }
-
-  if (gameState == 99) {//reset game and return Highscore
+  if (gameState == GameState.GameOver) {//reset game and return Highscore
     gameMenu.displayReturningHighscore();
     //int endScore = Pigame.giveScore();
     //if (endScore > localHighscore){
@@ -120,7 +125,7 @@ void mouseClicked() {
 }
 
 void captureEvent(Capture c) {//capture the camera
-  if (gameState == 1) {
+  if (gameState == GameState.Playing) {
     c.read();
   }
 }
@@ -143,7 +148,16 @@ void playDopaminesfx() {
   }
   dopamineSound[int(random(0, 3))].play();
 }
+
 void playFailsfx() {
   failSound.rewind();
   failSound.play();
+}
+
+OnlineState getOnlineState() {
+  return webClient.onlineState;
+}
+
+boolean isOnline() {
+  return webClient.onlineState == OnlineState.Ready || webClient.onlineState == OnlineState.Uploading;
 }

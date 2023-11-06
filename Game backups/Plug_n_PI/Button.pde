@@ -5,9 +5,9 @@ class Button {
   color HighlightColor = color(13,201,247);
   color lineColor = color(0);
   String buttonText;
-  int toGameState;
+  GameState toGameState;
 
-  Button(int x, int y, int W, int H, String ButtonText, int ToGameState) {
+  Button(int x, int y, int W, int H, String ButtonText, GameState ToGameState) {
     buttonText = ButtonText;
     xPos = x;
     yPos = y;
