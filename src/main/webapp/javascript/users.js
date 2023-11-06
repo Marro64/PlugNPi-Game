@@ -49,8 +49,7 @@ class UsersTable extends HTMLElement {
         /* Going over all leaderboard data entries */
         userDataDecoded.forEach((data) => {
 
-            let name = data.username
-            console.log(name)
+            var name = data.username;
 
             /* Creating table body row */
             const tr = document.createElement("tr");
@@ -59,7 +58,7 @@ class UsersTable extends HTMLElement {
             /* Creating table data cells */
             const bodyCellAction = document.createElement("td");
             bodyCellAction.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
-            bodyCellAction.innerHTML = '<button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="APISwitchRole(${name})">Change Role</button>';
+            bodyCellAction.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchRole(this.id)>Change Role</button>";
 
 
             const bodyCellUsername = document.createElement("td");
