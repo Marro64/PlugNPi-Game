@@ -67,9 +67,9 @@ class GameMenu {
     popMatrix();
   }
   
-  void displayHighscores(String highscoreString) {
+  void displayHighscores(String highscoreString, int brightness) {
+    fill(brightness);
     textAlign(RIGHT);
-    fill(255);
     textSize(fontSize);
     text(highscoreString, width-20, fontSize);
   }

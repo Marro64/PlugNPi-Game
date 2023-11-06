@@ -36,6 +36,7 @@ class WebClient {
     onlineState = OnlineState.Connecting;
     getRequest("/plugnpi/api/pi");
     updateQRCode();
+    updateHighscores();
   }
 
   void update(float dt) {
