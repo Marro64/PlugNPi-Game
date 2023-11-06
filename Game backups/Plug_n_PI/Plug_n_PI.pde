@@ -74,6 +74,7 @@ void draw() {
     if (getOnlineState() == OnlineState.Ready) {//game logged in
       gameMenu.displayPlayerConnected(mouseX, mouseY);
     }
+    println("We in menu");
   }
 
   if (gameState == GameState.Playing) {//run the game
@@ -152,6 +153,14 @@ void playDopaminesfx() {
 void playFailsfx() {
   failSound.rewind();
   failSound.play();
+}
+
+GameState getGameState() {
+  return gameState;
+}
+
+void setGameState(GameState newGameState) {
+  gameState = newGameState;
 }
 
 OnlineState getOnlineState() {
