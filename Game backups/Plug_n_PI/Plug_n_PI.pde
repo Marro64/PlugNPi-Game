@@ -61,7 +61,8 @@ void draw() {
   
   if (gameState == GameState.MainMenu || gameState == GameState.GameOver) {
     gameMenu.display(mouseX, mouseY);
-    gameMenu.displayHighscores(webClient.getHighscores(), 0);
+    fill(0);
+    gameMenu.displayHighscores(webClient.getHighscores());
   }
 
   if (gameState == GameState.MainMenu) {//Main menu of the game, the game waits for a connection or offline play is pressed
@@ -94,11 +95,16 @@ void draw() {
     RunnerGame.displayBackground();
     RunnerGame.display(LaneDetection.passvideo());
     LaneDetection.display();
-    gameMenu.displayHighscores(webClient.getHighscores(), 255);
+    fill(255);
+    gameMenu.displayScores(RunnerGame);
+    gameMenu.displayHighscores(webClient.getHighscores());
+    gameMenu.displayFramerate();
   }
 
   if (gameState == GameState.GameOver) {//reset game and return Highscore
     gameMenu.displayGameOver();
+    fill(0);
+    gameMenu.displayScores(RunnerGame);
   }
 }
 

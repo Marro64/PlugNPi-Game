@@ -37,7 +37,7 @@ class RunnerGame {
   int colCounter = -1;
   boolean spawnCollectible = false;
   int elapsedCollectible = millis();
-  float colScore;
+  int colScore;
   int lives = 0;
 
   int score = 0;
@@ -112,7 +112,7 @@ class RunnerGame {
           if (lives < 0) {
             uploadScore(endScore);
             gameState = GameState.GameOver;
-            reset();
+            //reset();
           }else{
             resetGameObjects();
           }
@@ -172,16 +172,6 @@ class RunnerGame {
 
   void display(Capture video) {
     pushMatrix();
-    textSize(fontSize);
-    textAlign(LEFT);
-    text("Score: " + score, 20, fontSize);
-    text("Coins for new life: " +(100-colScore), 20, fontSize*2);
-    text("lives: " + lives, 20, fontSize*3);
-    if (gameHighScore > 0)text("Highscore: " + gameHighScore, 20, fontSize*4);
-    fill(255);
-    
-    //// Draw fps on screen
-    text("FPS: " + frameRate, 20, fontSize*5);
 
     // Translate and rotate world
     translate(gameW/2, gameH/2);

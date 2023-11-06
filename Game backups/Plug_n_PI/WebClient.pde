@@ -141,7 +141,7 @@ class WebClient {
     JSONArray highscoresJson = parseJSONArray(HighscoresRaw);
     if(highscoresJson == null) return;
     
-    highscoreString = "Weekly highscores:\n";
+    highscoreString = "Weekly highscores:\n\n";
     for(int i = 0; i < highscoresJson.size(); i++) {
       JSONObject highscoreObject = highscoresJson.getJSONObject(i);
       highscoreString += i+1 + ". " + highscoreObject.getString("username") + ": " + parseInt(highscoreObject.getInt("distance")) + "\n";

@@ -67,11 +67,29 @@ class GameMenu {
     popMatrix();
   }
   
-  void displayHighscores(String highscoreString, int brightness) {
-    fill(brightness);
+  // Use fill() beforehand to set text color
+  void displayHighscores(String highscoreString) { 
     textAlign(RIGHT);
     textSize(fontSize);
+    textLeading(fontSize);
     text(highscoreString, width-20, fontSize);
+  }
+  
+  // Use fill() beforehand to set text color
+  void displayScores(RunnerGame game) {
+    textSize(fontSize);
+    textAlign(LEFT);
+    
+    text("Score: " + game.score, 20, fontSize);
+    text("Coins: " +((int)game.colScore) + "/100", 20, fontSize*2);
+    if (game.lives >= 0) text("lives: " + game.lives, 20, fontSize*3);
+    if (game.gameHighScore > 0) text("Highscore: " + game.gameHighScore, 20, fontSize*4);
+  }
+  
+  void displayFramerate() {
+    textSize(fontSize);
+    textAlign(LEFT);
+    text("FPS: " + frameRate, 20, height-20);
   }
 
   void MouseInput(int Mx, int My, GameState gameState) {
