@@ -40,7 +40,7 @@ class WebClient {
   }
 
   void update(float dt) {
-    //if(!waitingForData && !client.active() && onlineState == OnlineState.QRCode) //<>//
+    //if(!waitingForData && !client.active() && onlineState == OnlineState.QRCode) //<>// //<>//
     if(onlineState == OnlineState.QRCode)
     {
       CycleTime += dt;
@@ -167,7 +167,7 @@ class WebClient {
     {
       post.addData(data[i][0], data[i][1]);
     }
-    post.send(); //<>//
+    post.send(); //<>// //<>//
     println("Reponse Content: " + post.getContent());
     println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
     if(post.getContent() != null) {
