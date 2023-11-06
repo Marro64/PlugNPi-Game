@@ -39,6 +39,7 @@ public enum ScoreDao {
                 "    SELECT DISTINCT ON (u_id) s_id\n" +
                 "    FROM project.score\n" +
                 "    ORDER BY u_id, distance DESC)\n" +
+                "AND a.active = TRUE\n" +
                 "AND s.u_id = a.u_id\n" +
                 "ORDER BY distance DESC\n" +
                 "LIMIT 100;");
@@ -56,6 +57,7 @@ public enum ScoreDao {
                 "    FROM project.score\n" +
                 "    ORDER BY u_id, distance DESC)\n" +
                 "AND s.u_id = a.u_id\n" +
+                "AND a.active = TRUE\n" +
                 "AND date_of_record >= NOW() - INTERVAL '24 hours'\n" +
                 "ORDER BY distance DESC\n");
 
@@ -72,6 +74,7 @@ public enum ScoreDao {
                 "    FROM project.score\n" +
                 "    ORDER BY u_id, distance DESC)\n" +
                 "AND s.u_id = a.u_id\n" +
+                "AND a.active = TRUE\n" +
                 "ORDER BY distance DESC\n");
         System.out.println(objects);
         try {
@@ -89,6 +92,7 @@ public enum ScoreDao {
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
                 "WHERE s.u_id = a.u_id\n" +
+                "AND a.active = TRUE\n" +
                 "ORDER BY s.distance DESC");
         return objects;
     }
@@ -105,9 +109,9 @@ public enum ScoreDao {
                 "    FROM project.score\n" +
                 "    ORDER BY u_id, distance DESC)\n" +
                 "AND s.u_id = a.u_id\n" +
+                "AND a.active = TRUE\n" +
                 "AND date_of_record >= NOW() - INTERVAL '7 days'\n" +
                 "ORDER BY distance DESC\n");
-
     }
 
 }
