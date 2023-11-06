@@ -60,7 +60,7 @@ public class SessionFilter implements ContainerRequestFilter {
             case REMOVE_COOKIE:
                 NewCookie cookie = new NewCookie("sessionId", session.getValue(), "/", null, null, 0, false);
                 System.out.println("logout cookie");
-                Response remove = Response.ok().cookie(cookie).build(); //cancels out the existing cookie
+                Response remove = Response.seeOther(URI.create("/plugnpi/login.html")).cookie(cookie).build(); //cancels out the existing cookie
                 request.abortWith(remove);
             default:
                 System.out.println("SESSIONFILTER: UNHANDLED CASE");
@@ -85,7 +85,7 @@ public class SessionFilter implements ContainerRequestFilter {
             setUser(session);
             return filterType.NORMAL;
         } else { //Expired
-            return filterType.REDIRECT_LOGIN;
+            return filterType.REMOVE_COOKIE;
         }
     }
 
