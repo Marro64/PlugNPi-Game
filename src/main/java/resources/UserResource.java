@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -19,19 +20,20 @@ public class UserResource {
     private UriInfo info;
 
     @Context
-    private HttpServletRequest req;
+    private HttpServletRequest request;
 
     private  String username;
 
-    public UserResource(UriInfo info, HttpServletRequest req, String username) {
+    public UserResource(UriInfo info, HttpServletRequest request, String username) {
         this.info = info;
-        this.req = req;
+        this.request = request;
         this.username = username;
     }
     public UserResource()
     {
 
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserDetails() {
@@ -91,9 +93,7 @@ public class UserResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateUser(User newSettings) {
-        User oldSettings = new User();
-        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username); //change this to req later
-        UserDao.INSTANCE.jsonToUser(jsonObject, oldSettings);
+        User oldSettings = (User) request.getAttribute("user");
         newSettings.setU_id(oldSettings.getUid());
         String hashed = SecurityFactory.createPassword(newSettings.getPassword());
         newSettings.setPassword(hashed);

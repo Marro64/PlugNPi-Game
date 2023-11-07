@@ -140,7 +140,7 @@ void endGame() {
 }
 
 void moveLane(int lane) {
-  RunnerGame.moveLane(lane);
+  RunnerGame.moveDelta(lane);
 }
 
 void displayNotconnected() {

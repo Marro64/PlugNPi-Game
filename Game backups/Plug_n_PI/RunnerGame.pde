@@ -16,6 +16,9 @@ class RunnerGame {
 
   // Player position
   int posIdx = 1;
+  float playerRotation = 0;
+  boolean doAflip = false;
+  float flipSpeed = 0.2;
 
   //possible lane locations
   float[] laneXpos = {0, 0, 0};
@@ -46,7 +49,7 @@ class RunnerGame {
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
-  
+
   PImage playerImage;
   int fontSize = 30;
 
@@ -63,8 +66,8 @@ class RunnerGame {
     gameW = w;
     gameH = h;
 
-    laneXpos[0] = -56;
-    laneXpos[2] = 56;
+    laneXpos[0] = -64;
+    laneXpos[2] = 64;
 
     textureMode(NORMAL);
 
@@ -76,7 +79,7 @@ class RunnerGame {
     trainSide = loadImage("Train_Side.png");
     trainTop =loadImage("Train_Top.png");
     trains = new Train[dim];
-    
+
     playerImage = loadImage("runnerKid.png");
 
     //
@@ -210,17 +213,30 @@ class RunnerGame {
     }
   }
 
-  void moveDelta(int delta) {
-    moveLane(delta+posIdx);
+  void moveDelta(int lane) {
+    int delta = 0;
+    if(lane > posIdx){
+      delta = 1;
+    }
+    else if(lane < posIdx){
+      delta  =-1;
+    }
+    moveLane(delta);
   }
 
-  void moveLane(int lane) {
+  void moveLane(int delta) {
+    int oldlane = posIdx;
+    int lane  = posIdx + delta;
     if (lane >= 0 && lane < 3) {
       posIdx = lane;
     } else if (lane < 0) {
       posIdx = 0;
     } else if (lane > 2) {
       posIdx = 2;
+    }
+    if (oldlane != posIdx) {
+      flipSpeed = delta * abs(flipSpeed);
+      doAflip = true;
     }
   }
 
@@ -231,9 +247,13 @@ class RunnerGame {
     textureMode(NORMAL);
     //front
     walktimer -= speed;
+    calculateFlip();
+    rotateY(playerRotation);
     translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
-    scale(23,32,32);
+
+    scale(23, 32, 32);
     scale(0.8);
+
     vertex(-1, 1, 1, 0, 0);
     vertex( 1, 1, 1, 1, 0);
     vertex( 1, 1, -1, 1, 1);
@@ -248,6 +268,16 @@ class RunnerGame {
     lives = 0;
     if (endScore > gameHighScore) gameHighScore = endScore;
     resetGameObjects();
+  }
+
+  void calculateFlip() {
+    if (doAflip) {
+      playerRotation += flipSpeed*speed;
+      if (playerRotation > 2*PI || playerRotation < -2*PI) {
+        playerRotation = 0;
+        doAflip = false;
+      }
+    }
   }
 
   void resetGameObjects() {
