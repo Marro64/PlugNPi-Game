@@ -1,6 +1,4 @@
 class RunnerGame {
-  PGraphics blur;
-
   int cols, rows; // grid variables
   int scale = 1; //scale of the game
   float gameW;
@@ -18,7 +16,9 @@ class RunnerGame {
   int posIdx = 1;
   float playerRotation = 0;
   boolean doAflip = false;
-  float flipSpeed = 0.3;
+  float flipSpeed = 0.9;
+  
+  float menuY = 0;
 
   //possible lane locations
   float[] laneXpos = {0, 0, 0};
@@ -247,7 +247,7 @@ class RunnerGame {
     texture(playerImage);
     textureMode(NORMAL);
     //front
-    walktimer -= speed;
+    walktimer -= 3;
     calculateFlip();
     translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
     int rotationDirection = 1;
@@ -279,7 +279,7 @@ class RunnerGame {
 
   void calculateFlip() {
     if (doAflip) {
-      playerRotation += flipSpeed*speed;
+      playerRotation += flipSpeed;
       if (playerRotation > 2*PI || playerRotation < -2*PI) {
         playerRotation = 0;
         doAflip = false;
@@ -288,8 +288,6 @@ class RunnerGame {
   }
 
   void resetGameObjects() {
-    backgroundMusic.rewind();
-    backgroundMusic.play();
     speed = startSpeed;
     for (Train train : trains) {//reset trains
       if (train != null) {
@@ -301,6 +299,13 @@ class RunnerGame {
         collectible.reset();
       }
     }
+  }
+  
+  void displayPlayerMenu(float posX, float posY, float dt){
+    menuY += dt;
+    translate(posX, posY + 10*sin(menuY*0.2));
+    scale(8);
+    image(playerImage,0,0);
   }
   
   boolean getNewHighScore() {
