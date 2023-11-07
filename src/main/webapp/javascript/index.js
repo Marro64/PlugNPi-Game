@@ -132,8 +132,8 @@ const APIAdminCheck = async () => {
     }
 }
 
-const APIGetProfileDetails = async (uid) => {
-    const request = await fetch(`/plugnpi/api/user?uid=${uid}`);
+const APIGetProfileDetails = async () => {
+    const request = await fetch(`/plugnpi/api/user`);
     return request.json();
 }
 
@@ -176,8 +176,8 @@ const APIDeleteUser = async () => {
     return response;
 }
 
-const APIGetUserLog = async () => {
-    const response = await fetch(`/plugnpi/api/actionlog/logs`, { //TODO
+const APIGetUserLog = async (username) => {
+    const response = await fetch(`/plugnpi/api/actionlog?username=${username}`, { //TODO
         method: "GET"
     });
     // user sid needed

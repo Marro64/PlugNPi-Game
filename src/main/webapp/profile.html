@@ -80,7 +80,13 @@
     }
 
     const getLog = async () => {
-      document.getElementById("user-log").value = await APIGetUserLog();
+      const username = (await APIGetProfileDetails()).username;
+      console.log(username);
+      if(JSON.stringify(await APIGetUserLog(username)) == null){
+        document.getElementById("user-log").value = "No data recorded for this user";
+      }else{
+        document.getElementById("user-log").value = JSON.stringify(await APIGetUserLog(username));
+      }
     }
 
     const handleDetailsFormSubmit = async () => {
