@@ -116,10 +116,10 @@ void update(float dtime) {
 
 void keyPressed() {//check for keyboard inputs for keyboard controls
   if (key == 'a' || keyCode == LEFT) {
-    RunnerGame.moveDelta(-1);
+    RunnerGame.moveLane(-1);
   }
   if (key == 'd' || keyCode == RIGHT) {
-    RunnerGame.moveDelta(1);
+    RunnerGame.moveLane(1);
   }
 }
 

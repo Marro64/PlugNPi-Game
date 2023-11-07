@@ -18,7 +18,7 @@ class RunnerGame {
   int posIdx = 1;
   float playerRotation = 0;
   boolean doAflip = false;
-  float flipSpeed = 0.2;
+  float flipSpeed = 0.3;
 
   //possible lane locations
   float[] laneXpos = {0, 0, 0};
@@ -61,7 +61,7 @@ class RunnerGame {
     //setup game variables
     startSpeed = 3;
     speed = startSpeed;
-    acceleration = 0.05;
+    acceleration = 0.1;
 
     gameW = w;
     gameH = h;
@@ -114,7 +114,7 @@ class RunnerGame {
           speed = (speed-startSpeed)/2 + startSpeed;
           if (lives < 0) {
             endGame();
-          }else{
+          } else {
             resetGameObjects();
           }
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
@@ -215,10 +215,9 @@ class RunnerGame {
 
   void moveDelta(int lane) {
     int delta = 0;
-    if(lane > posIdx){
+    if (lane > posIdx) {
       delta = 1;
-    }
-    else if(lane < posIdx){
+    } else if (lane < posIdx) {
       delta  =-1;
     }
     moveLane(delta);
@@ -248,11 +247,18 @@ class RunnerGame {
     //front
     walktimer -= speed;
     calculateFlip();
-    rotateY(playerRotation);
     translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
-
+    int rotationDirection = 1;
+    if (doAflip) {
+      if (playerRotation >0){
+        rotationDirection= -1;
+      }
+      translate(64*rotationDirection+(64/(2*PI))*playerRotation, 0,3*(pow(PI, 2)-pow(abs(playerRotation)-PI, 2)));
+    }
     scale(23, 32, 32);
     scale(0.8);
+    rotateY(playerRotation);
+
 
     vertex(-1, 1, 1, 0, 0);
     vertex( 1, 1, 1, 1, 0);
