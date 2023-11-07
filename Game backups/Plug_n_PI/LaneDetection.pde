@@ -20,7 +20,7 @@ Rectangle[] faces;
 
 class lanedetection {
   lanedetection(PApplet papplet, int cWidth, int cHeight) {
-    showCamera = false;
+    showCamera = true;
     showRectangles = false;
     lane = "middle";
     capWidth = cWidth;
@@ -56,7 +56,6 @@ class lanedetection {
 
     if (showCamera) {
       pushMatrix();
-      scale(Cscale);
       drawCamera();
       popMatrix();
     }
@@ -88,7 +87,9 @@ class lanedetection {
   }
 
   void drawCamera() {
-    image(video, 0, 0 );
+    translate(0, height/3);
+    scale(Cscale);
+    image(video, 0,0);
   }
 
   void detect_lane(float FaceCenter) {
