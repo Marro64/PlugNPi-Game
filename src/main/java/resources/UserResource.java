@@ -21,17 +21,18 @@ public class UserResource {
     @Context
     private HttpServletRequest req;
 
-    private  String username;
+    private String username;
 
     public UserResource(UriInfo info, HttpServletRequest req, String username) {
         this.info = info;
         this.req = req;
         this.username = username;
     }
-    public UserResource()
-    {
+
+    public UserResource() {
 
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserDetails() {
@@ -85,6 +86,7 @@ public class UserResource {
 
     /**
      * Update settings for a given id
+     *
      * @param newSettings
      * @return
      */
@@ -103,5 +105,19 @@ public class UserResource {
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deActivateUser(User user) {
+
+        User currentUser = (User) req.getAttribute("user");
+        if (currentUser.getUser_type().equals(UserType.ADMIN)) {
+            UserDao.INSTANCE.de_Activate(user);
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
     }
 }
