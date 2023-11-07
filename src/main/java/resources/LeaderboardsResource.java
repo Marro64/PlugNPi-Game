@@ -43,6 +43,12 @@ public class LeaderboardsResource {
         return Response.ok(allScores.toString()).build();
     }
 
+    @DELETE
+    public Response removeScore(@QueryParam("scoreid") int scoreid) {
+        ScoreDao.INSTANCE.deleteScore(scoreid);
+        return Response.ok().build();
+    }
+
 
     /**
      * Upload a piscore from the pi and upload the score to the database

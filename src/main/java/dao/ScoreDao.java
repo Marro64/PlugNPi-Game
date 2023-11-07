@@ -28,6 +28,13 @@ public enum ScoreDao {
                         "VALUES (?, ?)",
                 score.getUid(),score.getDistance());
     }
+
+    public void deleteScore(int scoreid) {
+        JsonArray addUserQuerry =  ORM.executeQuery(
+                "DELETE FROM project.score s WHERE s.s_id = ?",
+                scoreid);
+    }
+
     public JsonArray getTop100AllTime()
     {
       return ORM.executeQuery("SELECT\n" +
