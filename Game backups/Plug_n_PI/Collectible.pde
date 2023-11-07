@@ -41,7 +41,7 @@ class Collectible {
   }
 
   boolean collideWith(float otherX, float otherY) {
-    if (otherY > posY && otherY < posY + 32 && posX == otherX) {
+    if (otherY > posY-48 && otherY < posY && posX == otherX) {
       return true;
     }
     return false;
