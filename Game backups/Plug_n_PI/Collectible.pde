@@ -19,7 +19,7 @@ class Collectible {
   void update(float speed, float dt) {
     distMoved -= speed*dt;
     posY += speed;
-    rotation += speed*0.5;
+    rotation += 0.5;
   }
 
   void display() {
