@@ -109,8 +109,10 @@ public class UserResource {
     @Path("/ban")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deActivateUser(User user) {
-
+    public Response deActivateUser(String username) {
+        User user = new User();
+        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
+        UserDao.INSTANCE.jsonToUser(jsonObject, user);
         User currentUser = (User) request.getAttribute("user");
         if (currentUser.getUser_type().equals(UserType.ADMIN)) {
             UserDao.INSTANCE.de_Activate(user);
