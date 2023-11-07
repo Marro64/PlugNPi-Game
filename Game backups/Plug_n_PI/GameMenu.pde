@@ -7,7 +7,7 @@ class GameMenu {
   GameMenu() {
     titleImage = loadImage("PlugNPI.png");
     buttons_state1 = new Button[1];
-    buttons_state1[0] = new Button(width/2, height-200, 400, 50, "Play Offline", GameState.Playing);
+    buttons_state1[0] = new Button(width/2, height-100, 400, 50, "Play", GameState.Playing);
     //buttons_state1[1] = new Button(GameWidth/2 + 110, 420, 200, 50, "Play Online", 2);
   }
 
@@ -139,6 +139,12 @@ class GameMenu {
       }
     } else if (gameState == GameState.Playing) {
       gameState = GameState.MainMenu;
+    }
+  }
+  
+  void rescale(int w, int h) {
+    for (Button button : buttons_state1) {
+      button.rescale(w, h); 
     }
   }
 }
