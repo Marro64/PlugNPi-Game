@@ -163,7 +163,10 @@ const APIGetLog = async () => {
 }
 
 const APIDeleteUser = async () => {
-
+    const response = await fetch(`/plugnpi/api/user`, {
+        method: "DELETE",
+    });
+    return response;
 }
 
 const APIGetUserLog = async () => {
