@@ -57,14 +57,14 @@
       newpassword = document.getElementById("confirm-password-input");
 
       /* Fetch profile information on load */
-      (async () => {
-        const profileDetailsCall = await APIGetProfileDetails();
-
-        /* Setting details */
-        document.getElementById("username-input").value = profileDetailsCall.username;
-        document.getElementById("email-input").value = profileDetailsCall.email;
-        document.getElementById("password-input").value = profileDetailsCall.password;
-      })();
+      // (async () => {
+      //   const profileDetailsCall = await APIGetProfileDetails();
+      //
+      //   /* Setting details */
+      //   document.getElementById("username-input").value = profileDetailsCall.username;
+      //   document.getElementById("email-input").value = profileDetailsCall.email;
+      //   document.getElementById("password-input").value = profileDetailsCall.password;
+      // })();
     }
 
     const validateForm = () => {
