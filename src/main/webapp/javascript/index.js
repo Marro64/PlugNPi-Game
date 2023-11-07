@@ -118,11 +118,18 @@ const APIGetLeaderboardCall = async (date) => {
 }
 
 const APIAdminCheck = async () => {
-    const response = await fetch(`/plugnpi/api/u/users/check`, {
+    const response = await fetch(`/plugnpi/api/users/check`, {
         method: "GET",
-    });
-
-    return await response.text();
+    })
+    if (await response.json() === true) {
+        console.log("is admin")
+        const message = "Is Admin"
+        return {success: true, message: message};
+    }else {
+        console.log("is player")
+        const errorMessage = "Is Player.";
+        return {success: false, message: errorMessage};
+    }
 }
 
 const APIGetProfileDetails = async (uid) => {
@@ -132,13 +139,13 @@ const APIGetProfileDetails = async (uid) => {
 
 const APISwitchRole = async (username) => {
     console.log("Switch Role: " + username)
-    const response = await fetch(`http://localhost:8080/plugnpi/api/users/${username}/permissions`, {
+    const response = await fetch(`/plugnpi/api/users/${username}/permissions`, {
         method: "PUT",
     });
 }
 
 const APIUpdateProfileDetailsCall = async (userData) => {
-    const response = await fetch(`${BASE_URL}/profile/update`, {
+    const response = await fetch(`/plugnpi/api/profile/update`, {
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -149,7 +156,7 @@ const APIUpdateProfileDetailsCall = async (userData) => {
 }
 
 const APIGetLog = async () => {
-    const response = await fetch(`${BASE_URL}/actionlog/logs`, {
+    const response = await fetch(`/plugnpi/api/actionlog/logs`, { //TODO
         method: "GET"
     });
     return response.json();
@@ -160,9 +167,22 @@ const APIDeleteUser = async () => {
 }
 
 const APIGetUserLog = async () => {
-    const response = await fetch(`${BASE_URL}/actionlog/logs`, {
+    const response = await fetch(`/plugnpi/api/actionlog/logs`, { //TODO
         method: "GET"
     });
     // user sid needed
     return response.json();
+}
+
+const APIJoinQueue = async () => {
+    const response = await fetch('/plugnpi/api/pi/queue',{ //TODO
+        method: "GET"
+    });
+    if (response.status === 200) {
+        const message = "Successfully joined the game."
+        return {success: true, message: message};
+    }else if(response.status === 204) {
+        const errorMessage = "No such session exists.";
+        return {success: false, message: errorMessage};
+    }
 }

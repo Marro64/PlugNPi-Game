@@ -77,12 +77,13 @@
         }
 
         const checkAdmin = async () => {
-            const isAdmin = await APIAdminCheck;
-            console.log(isAdmin)
-            if (isAdmin === true) {
+            console.log("Checking for Admin type")
+            let isAdmin = await APIAdminCheck();
+            if (isAdmin.success === true) {
                 const userManagementButton = document.createElement("a");
                 userManagementButton.className = "mauricios-button hover-bg-pink-200";
                 userManagementButton.textContent = "User Management";
+                userManagementButton.style.marginRight = "4px";
                 userManagementButton.onclick = function () {
                     window.location.href = 'users.html';
                 };
@@ -102,8 +103,8 @@
 
         window.onload = () => {
             /* Initializing leaderboard on page load */
-            fetchLeaderboardAndPopulate('all-time');
             checkAdmin();
+            fetchLeaderboardAndPopulate('all-time');
         }
     </script>
 </head>
