@@ -111,7 +111,7 @@ public class PiResource {
                     }
                     System.out.println("Connecting " + session + " to user account " + user.getUid());
                     System.out.println("Responding with a redirect to the leaderboard.");
-                    removeSession(user.getUid()); //NEW NEEDS TEST
+                    removeSession(user.getUid());
                     SessionDao.INSTANCE.addPiSession(session, user.getUid());
                     return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
                 }
@@ -151,7 +151,11 @@ public class PiResource {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             else if (action.equals("request_join")) { //Queries it's own session with request_join action
-                return Response.ok("queued:" + SessionDao.INSTANCE.getInGame().contains(session)).build();
+                boolean inGame = SessionDao.INSTANCE.getInGame().contains(session);
+                if(inGame) {
+                    SessionDao.INSTANCE.removeInGame(session);
+                }
+                return Response.ok("queued:" + inGame).build();
             }
             else
             {
