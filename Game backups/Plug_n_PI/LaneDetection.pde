@@ -87,8 +87,8 @@ class lanedetection {
   }
 
   void drawCamera() {
-    translate(0, height/3);
-    scale(Cscale);
+    translate(0, height - 50 - capWidth/4*2.5/2);
+    scale(2.5);
     image(video, 0,0);
   }
 
