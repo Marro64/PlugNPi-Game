@@ -37,15 +37,8 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserDetails() {
-        User user = null;
-        //User user = UserDao.instance.getUsers().get(Integer.parseInt(email));
-        //String password = uQueries.getPassword(email);
-        //user.setPassword(password);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        } else {
-            return user;
-        }
+        User user = (User) request.getAttribute("user");
+        return user;
     }
 
     /**

@@ -24,6 +24,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/index.js" type="text/javascript"></script>
     <script src="javascript/users.js" type="text/javascript"></script>
+    <script src="javascript/buttonHandler.js" type="text/javascript"></script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,6 +75,8 @@
         <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>
         <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
     </div>
+
+    <input type="hidden" id="reload" value="" />
 
     <!-- Page main content part -->
     <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center p-8 items-center">
