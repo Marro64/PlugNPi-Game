@@ -12,6 +12,7 @@ import model.User;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,10 +47,15 @@ public class PiResource {
     }
 
     public void removeSession(int uid) {
-        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+        Iterator<Map.Entry<String, Integer>> iterator = SessionDao.INSTANCE.getSessions().entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Integer> entry = iterator.next();
+
             if (entry.getValue() == uid) {
                 String sessionId = entry.getKey();
                 SessionDao.INSTANCE.removeSession(sessionId);
+                iterator.remove(); // Safely remove the entry from the iterator
             }
         }
     }
@@ -64,10 +70,15 @@ public class PiResource {
         User user = (User) httpreq.getAttribute("user");
         int uid = user.getUid();
 
-        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+        Iterator<Map.Entry<String, Integer>> iterator = SessionDao.INSTANCE.getSessions().entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Integer> entry = iterator.next();
+
             if (entry.getValue() == uid) {
                 String sessionId = entry.getKey();
                 SessionDao.INSTANCE.addInGame(sessionId);
+                iterator.remove(); // Safely remove the entry from the iterator
                 return Response.ok().build();
             }
         }
