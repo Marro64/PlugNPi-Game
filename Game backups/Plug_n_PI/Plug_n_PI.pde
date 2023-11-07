@@ -80,10 +80,7 @@ void draw() {
         break;
       case Ready:
         gameMenu.displayPlayerConnected();
-    }
-    
-    if (getOnlineState() == OnlineState.Ready) {//game logged in
-      
+        break;
     }
   }
 
@@ -99,12 +96,15 @@ void draw() {
     gameMenu.displayScores(RunnerGame);
     gameMenu.displayHighscores(webClient.getHighscores());
     gameMenu.displayFramerate();
+    gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
   }
 
   if (gameState == GameState.GameOver) {//reset game and return Highscore
     gameMenu.displayGameOver();
     fill(0);
     gameMenu.displayScores(RunnerGame);
+    webClient.update(dt);
+    gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getQRCodeContent());
   }
 }
 
@@ -134,13 +134,18 @@ void captureEvent(Capture c) {//capture the camera
 }
 
 void startGame() {
-  webClient.updateHighscores();
+  //webClient.updateHighscores();
   RunnerGame.reset();
   setGameState(GameState.Playing);
 }
 
+void endGame() {
+  uploadScore(RunnerGame.endScore);
+  gameState = GameState.GameOver;
+}
+
 void moveLane(int lane) {
-  RunnerGame.moveLane(lane);
+  RunnerGame.moveDelta(lane);
 }
 
 void displayNotconnected() {
@@ -179,7 +184,7 @@ OnlineState getOnlineState() {
 }
 
 boolean isOnline() {
-  return webClient.onlineState == OnlineState.Ready || webClient.onlineState == OnlineState.Uploading;
+  return webClient.onlineState == OnlineState.Ready;
 }
 
 GameState getGameState() {

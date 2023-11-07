@@ -5,14 +5,13 @@ import http.requests.*;
 enum OnlineState {
   Connecting,
   QRCode,
-  Ready,
-  Uploading,
-  Offline
+  Ready
 }
 
 class WebClient {
   ZXING4P zxing4p;
-  int QRCodeSize = 128;
+  int QRCodeSizeSmall = 180;
+  int QRCodeSize = 270;
   int fontSize = 20;
   
   float completeCycleTime = 100;
@@ -22,6 +21,7 @@ class WebClient {
   
   String QRCodeContent = "https://www.youtube.com/watch?v=KMU0tzLwhbE";
   PImage QRCode;
+  PImage QRCodeSmall;
   String sessionID = "";
   String username = "None"; 
   String highscoreString = "";
@@ -34,21 +34,30 @@ class WebClient {
     this.papplet = papplet;
     zxing4p = new ZXING4P();
     onlineState = OnlineState.Connecting;
-    getRequest("/plugnpi/api/pi");
-    updateQRCode();
-    updateHighscores();
   }
 
-  void update(float dt) {
-    //if(!waitingForData && !client.active() && onlineState == OnlineState.QRCode) //<>//
-    if(onlineState == OnlineState.QRCode)
-    {
-      CycleTime += dt;
-      if (CycleTime > completeCycleTime) {
-        CycleTime = 0;
-        getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_user");
-      }
+  void update(float dt) { //<>//
+    CycleTime += dt;
+    if (CycleTime > completeCycleTime) {
+      CycleTime = 0;
+      runRoutineUpdates();
     }
+  }
+  
+  void runRoutineUpdates() {
+    switch(onlineState) {
+      case Connecting:
+        getRequest("/plugnpi/api/pi");
+      case QRCode:
+        getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_user");
+        break;
+      case Ready:
+        getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_join");
+        break;
+      default:
+        break;
+    }
+    updateHighscores();
   }
   
   void uploadScore(int score) {
@@ -63,22 +72,6 @@ class WebClient {
     println("Request: " + request);
     postJsonRequest("/plugnpi/api/leaderboard", request);
   }
-
-  //void receiveData() {
-  //  while (client.available() > 0)
-  //  {
-  //    String output = client.readStringUntil('\n');
-  //    if (output == null)
-  //    {
-  //      println("Output was null");
-  //      client.clear();
-  //      break;
-  //    }
-  //    output = output.trim();
-  //    parseString(output);
-  //  }
-  //  waitingForData = false;
-  //}
   
   void receiveData(String data) {
     String split[] = data.split("\\R");
@@ -114,7 +107,12 @@ class WebClient {
       connectedUserName = content;
       onlineState = OnlineState.Ready;
       println("Received username: " + content);
-      break;    
+      break;
+    case "queued":
+    println("Received queued with value \"" + "\"\n");
+      if(content == "true" && gameState != GameState.Playing) {
+        startGame();
+      }
     default:
       println("Data Type not recognised.\n");
     }
@@ -122,17 +120,14 @@ class WebClient {
 
   void updateSessionID(String newSessionID) {
     sessionID = newSessionID;
-    String connectURL = host + "/plugnpi/api/pi/link?session=" + sessionID + "&action=connect";
+    String connectURL = host + "/plugnpi/api/pi/link?session=" + sessionID;
     updateQRCode(connectURL);
-  }
-
-  void updateQRCode() {
-    QRCode = zxing4p.generateQRCode(QRCodeContent, 128, 128);
   }
 
   void updateQRCode(String content) {
     QRCodeContent = content;
-    QRCode = zxing4p.generateQRCode(content, 128, 128);
+    QRCode = zxing4p.generateQRCode(content, QRCodeSize, QRCodeSize);
+    QRCodeSmall = zxing4p.generateQRCode(content, QRCodeSizeSmall, QRCodeSizeSmall);
     println("Set QR code to \"" + content + "\".\n");
   }
   
@@ -147,14 +142,6 @@ class WebClient {
       highscoreString += i+1 + ". " + highscoreObject.getString("username") + ": " + parseInt(highscoreObject.getInt("distance")) + "\n";
     }
   }
-
-  //void webRequest(String request) {
-  //  client = new Client(papplet, host, port);
-  //  client.write(request + "\n");
-  //  client.write("Host: " + host + "\n\n");
-  //  waitingForData = true;
-  //  println("Send: \"" + request + "\".\n");
-  //}
   
   void getRequest(String request) {
     GetRequest get = new GetRequest(host + request);
@@ -197,31 +184,26 @@ class WebClient {
     post.addData(json);
     post.send();
     println("Reponse Content: " + post.getContent());
-    println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
+    //println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
     if(post.getContent() != null) {
       receiveData(post.getContent());
     }
   }
-
-  //void display() {
-  //  pushMatrix();
-  //  translate(width/2, 520);
-  //  scale(2);
-  //  imageMode(CENTER);
-  //  image(QRCode, 0, 0);
-  //  popMatrix();
-  //  textSize(fontSize);
-  //  textAlign(CENTER);
-  //  text("Scan the QR code to connect, or enter the address manually:",width/2, 410);
-  //  text(QRCodeContent, width/2, 410 + fontSize);
-  //}
   
   PImage getQRCode() {
     return QRCode;
   }
   
+  PImage getQRCodeSmall() {
+    return QRCodeSmall;
+  }
+  
   String getQRCodeContent() {
     return QRCodeContent;
+  }
+  
+  String getSessionID() {
+    return sessionID;
   }
   
   String getHighscores() {
