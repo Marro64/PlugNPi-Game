@@ -140,6 +140,7 @@ class WebClient {
     
     highscoreString = "Weekly highscores:\n\n";
     for(int i = 0; i < highscoresJson.size(); i++) {
+      if(i >= 5) break;
       JSONObject highscoreObject = highscoresJson.getJSONObject(i);
       highscoreString += i+1 + ". " + highscoreObject.getString("username") + ": " + parseInt(highscoreObject.getInt("distance")) + "\n";
     }
