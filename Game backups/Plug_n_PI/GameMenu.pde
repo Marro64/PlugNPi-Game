@@ -107,7 +107,7 @@ class GameMenu {
   }
   
   // Use fill() beforehand to set text color
-  void displayScoresCorner(RunnerGame game, boolean newHighscore) {
+  void displayScoresCorner(RunnerGame game, boolean newHighScore) {
     textSize(fontSize);
     textAlign(LEFT);
     
@@ -120,6 +120,7 @@ class GameMenu {
       } else {
         text("Highscore: " + game.gameHighScore, 20, fontSize*4);
       }
+    }
   }
   
   void displayFramerate() {

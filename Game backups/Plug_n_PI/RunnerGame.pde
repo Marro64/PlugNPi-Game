@@ -44,8 +44,8 @@ class RunnerGame {
   int lives = 0;
 
   int score = 0;
-  int endScore = 0;
   int gameHighScore = 0;
+  boolean newHighScore = false;
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
@@ -153,6 +153,11 @@ class RunnerGame {
         }
       }
     }
+    
+    if(score > gameHighScore) {
+      newHighScore = true;
+      gameHighScore = score;
+    }
   }
 
   void displayBackground() {
@@ -259,17 +264,11 @@ class RunnerGame {
   }
 
   void reset() {
-    endScore = score;
     score = 0;//reset score
     colScore = 0;
     lives = 0;
+    newHighScore = false;
     resetGameObjects();
-  }
-  
-  void updateHighscore() {
-    if (endScore > gameHighScore) {
-      gameHighScore = endScore;
-    }
   }
 
   void calculateFlip() {
@@ -299,6 +298,6 @@ class RunnerGame {
   }
   
   boolean getNewHighScore() {
-    return score > gameHighScore;
+    return newHighScore;
   }
 }

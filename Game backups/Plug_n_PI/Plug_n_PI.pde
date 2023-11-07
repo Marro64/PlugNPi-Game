@@ -135,8 +135,7 @@ void startGame() {
 }
 
 void endGame() {
-  uploadScore(RunnerGame.endScore);
-  RunnerGame.updateHighscore();
+  uploadScore(RunnerGame.score);
   gameState = GameState.GameOver;
 }
 
