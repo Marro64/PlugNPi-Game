@@ -24,7 +24,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/index.js" type="text/javascript"></script>
     <script src="javascript/users.js" type="text/javascript"></script>
-    <script src="javascript/buttonHandler.js" type="text/javascript"></script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,17 +90,17 @@
                     <a aria-current="page"
                        class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="All Users"
-                       onclick=fetchUsersAndPopulate();handleButtonClick(this);>
+                       onclick=fetchUsersAndPopulate();>
                         All Users
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="Players Only"
-                       onclick=fetchUsersAndPopulate('PLAYER');handleButtonClick(this);>
+                       onclick=fetchUsersAndPopulate('PLAYER');>
                         Player Only
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="Admins Only"
-                       onclick=fetchUsersAndPopulate('ADMIN');handleButtonClick(this);>
+                       onclick=fetchUsersAndPopulate('ADMIN');>
                         Admins Only
                     </a>
                 </div>
