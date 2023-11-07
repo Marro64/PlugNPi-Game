@@ -110,9 +110,7 @@ class RunnerGame {
           playFailsfx();
           speed = (speed-startSpeed)/2 + startSpeed;
           if (lives < 0) {
-            uploadScore(endScore);
-            gameState = GameState.GameOver;
-            //reset();
+            endGame();
           }else{
             resetGameObjects();
           }
