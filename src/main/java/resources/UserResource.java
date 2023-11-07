@@ -106,6 +106,7 @@ public class UserResource {
         }
     }
 
+    @Path("/ban")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deActivateUser(User user) {

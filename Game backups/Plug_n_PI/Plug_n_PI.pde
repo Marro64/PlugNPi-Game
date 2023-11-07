@@ -21,15 +21,20 @@ enum GameState {
 
 GameState gameState;
 int lastFrame = 0;
+int w, h;
 
 void setup() {
   //setup gamewindow
-  size(1920, 980, P3D);
+  w = 1920;
+  h = 1080;
+  size(1920, 1080, P3D);
+  surface.setResizable(true);
+  registerMethod("pre", this);
 
   gameState = GameState.MainMenu;
 
   //setup gameMenu
-  gameMenu = new GameMenu(width, height);
+  gameMenu = new GameMenu();
 
   //setup lane Detection
   LaneDetection = new lanedetection(this, 600, 400);
@@ -74,7 +79,6 @@ void draw() {
       gameMenu.displayPlayerConnected();
       break;
     }
-    RunnerGame.displayPlayerMenu(100, height/2, dt);
 
 
     fill(0);
@@ -187,4 +191,14 @@ GameState getGameState() {
 
 void setGameState(GameState newGameState) {
   gameState = newGameState;
+}
+
+void pre() {
+  if (w != width || h != height) {
+    w = width;
+    h = height;
+    //resize gameobjects
+    RunnerGame.rescale(w,h);
+    //gameMenu.rescale(w,h);
+  }
 }
