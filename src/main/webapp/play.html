@@ -97,12 +97,19 @@
 
 
     <div class="flex flex-col">
+      <div class="mt-7">
+        <button class="btn btn-info w-full bg-lime-500 hover:bg-lime-300 border-none" onclick="queueGame()">Start Game</button>
+      </div><br>
       <div class="form-group">
+        <br>
+        <span class="font-bold text-gray-100 text-2xl">Connect to Pi</span><br>
+        <span class="text-gray-300">If the start game button doesn't work, enter the session code below or scan the QR code on the screen of the Pi.</span>
+        <div class="divider -mt-1"></div>
         <label class="label">
           <span class="label-text">Enter the session ID for the Pi</span>
         </label>
 
-        <input type="text" id="url" placeholder="im sorry mauricio" name="URL"
+        <input type="text" id="url" placeholder="01234567-89AB-CDEF-0123-456789ABCDEF" name="URL"
                class="input w-full rounded-md bg-slate-200 transition-all duration-200 focus:border-gray-500 focus:bg-slate-100 focus:ring-0 text-sm font-medium" />
 
         <!-- Container for the error message -->
@@ -114,9 +121,6 @@
       <div class="mt-6">
         <!-- "handle for submit is a function to handle the input of the login" -->
         <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
-      </div>
-      <div class="mt-7">
-        <button class="btn btn-info w-full bg-blue-600 hover:bg-blue-600 border-none" onclick="queueGame()">Join Game</button>
       </div>
     </div>
   </div>

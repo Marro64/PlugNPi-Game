@@ -16,12 +16,10 @@ import model.*;
 public class ModerationActionResource {
     @Context
     private HttpServletRequest req;
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadAction(ModerationAction action) {
-        System.out.println("MODRESOURCE: " + action.getAid());
-        ModerationActionDao.INSTANCE.addLog(action);
-        return Response.ok().build();
+
+    public static void createAction(int adminID, int affectedID, ModerationType action) {
+        ModerationAction mod = new ModerationAction(adminID,affectedID,action);
+        ModerationActionDao.INSTANCE.addLog(mod);
     }
 
     @GET
@@ -54,6 +52,7 @@ public class ModerationActionResource {
         User user = (User) req.getAttribute("user");
         log = ModerationActionDao.INSTANCE.getLogsFromAdmin(user);
         log.addAll(ModerationActionDao.INSTANCE.getLogsFromUser(user));
+        ModerationActionResource.createAction(user.getUid(), user.getUid(), ModerationType.GDPR_DATA_REQUEST); //Getting my own data
         return Response.ok(log.toString()).build();
     }
 
