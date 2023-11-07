@@ -110,7 +110,7 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deActivateUser(User user) {
 
-        User currentUser = (User) req.getAttribute("user");
+        User currentUser = (User) request.getAttribute("user");
         if (currentUser.getUser_type().equals(UserType.ADMIN)) {
             UserDao.INSTANCE.de_Activate(user);
             return Response.ok().build();
