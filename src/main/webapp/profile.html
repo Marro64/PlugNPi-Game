@@ -90,8 +90,8 @@
         "username": username.value,
         "password": password.value
       };
-
       await APIUpdateProfileDetailsCall(data);
+      setFormSuccess("Credentials updated!", username);
     }
   </script>
 </head>
@@ -126,7 +126,7 @@
               <span class="label-text">Username</span>
             </label>
 
-            <input type="text" id="username-input" name="First name"
+            <label for="username-input"></label><input type="text" id="username-input" name="First name"
                    class="input w-full rounded-md bg-gray-100 transition-all duration-200 focus:border-gray-500 focus:bg-white disabled:bg-gray-100 disabled:border-none focus:ring-0 text-sm font-medium"
                     />
           </div>
