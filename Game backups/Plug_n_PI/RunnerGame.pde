@@ -1,6 +1,6 @@
 class RunnerGame {
   int cols, rows; // grid variables
-  int scale = 1; //scale of the game
+  float scale = 1; //scale of the game
   float gameW;
   float gameH;
   float startSpeed;
@@ -305,6 +305,8 @@ class RunnerGame {
   
   void rescale(int w, int h){
     gameW = w;
+    scale = scale * float(h)/gameH;
+    groundGrid.rescale(scale);
     gameH = h;
   }
 }
