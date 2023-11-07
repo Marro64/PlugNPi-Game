@@ -3,6 +3,7 @@ class GroundGrid {
   int rows, columns;
   PImage groundImage;
   float scale;
+  float gScale;
   float gameW;
   float gameH;
   float distMoved = 0;
@@ -13,6 +14,7 @@ class GroundGrid {
 
 
     //set scale and gamesize
+    gScale = Scale;
     scale = 64;
     border = 0;
     gameW = GameW;
@@ -31,6 +33,7 @@ class GroundGrid {
     pushMatrix();
     noFill();
     beginShape(QUADS);
+    scale(gScale);
     scale(scale);
     translate(-columns/2, -rows/2 - distMoved);
     texture(groundImage);
@@ -48,5 +51,9 @@ class GroundGrid {
 
   void update(float speed) {
     distMoved = speed/5;
+  }
+  
+  void rescale(float Scale){
+    gScale = Scale;
   }
 }
