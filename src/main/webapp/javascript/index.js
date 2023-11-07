@@ -180,6 +180,7 @@ const APIGetUserLog = async () => {
     const response = await fetch(`/plugnpi/api/actionlog/logs`, { //TODO
         method: "GET"
     });
+    // user sid needed
     return response.json();
 }
 
