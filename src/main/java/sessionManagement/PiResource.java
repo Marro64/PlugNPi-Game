@@ -12,6 +12,7 @@ import model.User;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,10 +47,18 @@ public class PiResource {
     }
 
     public void removeSession(int uid) {
-        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+        Iterator<Map.Entry<String, Integer>> iterator = SessionDao.INSTANCE.getSessions().entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Integer> entry = iterator.next();
+
             if (entry.getValue() == uid) {
                 String sessionId = entry.getKey();
                 SessionDao.INSTANCE.removeSession(sessionId);
+                iterator.remove(); // Safely remove the entry from the iterator
+
+                System.out.println("RS MAP: "+SessionDao.INSTANCE.getSessions());
+                System.out.println("RS QUEUE: "+SessionDao.INSTANCE.getInGame());
             }
         }
     }
@@ -81,6 +90,8 @@ public class PiResource {
                 SessionDao.INSTANCE.removeInGame(sessionId);
             }
         }
+        System.out.println("UQG MAP: "+SessionDao.INSTANCE.getSessions());
+        System.out.println("UQG QUEUE: "+SessionDao.INSTANCE.getInGame());
     }
 
 
@@ -94,6 +105,8 @@ public class PiResource {
     @GET
     @Path("/link")
     public Response connectAccount(@QueryParam("session") String session, @QueryParam("action") String action) {
+        System.out.println("CA MAP: "+SessionDao.INSTANCE.getSessions());
+        System.out.println("CA QUEUE: "+SessionDao.INSTANCE.getInGame());
         User user = (User) httpreq.getAttribute("user");
         if (SessionDao.INSTANCE.getSessions().containsKey(session))
         {
@@ -113,6 +126,10 @@ public class PiResource {
                     System.out.println("Responding with a redirect to the leaderboard.");
                     removeSession(user.getUid());
                     SessionDao.INSTANCE.addPiSession(session, user.getUid());
+
+                    System.out.println("CONNECT MAP: "+SessionDao.INSTANCE.getSessions());
+                    System.out.println("CONNECT QUEUE: "+SessionDao.INSTANCE.getInGame());
+
                     return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
                 }
                 else if (SessionDao.INSTANCE.getSessions().get(session) > -1)
@@ -151,10 +168,17 @@ public class PiResource {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             else if (action.equals("request_join")) { //Queries it's own session with request_join action
+
+                System.out.println("BEFORE INGAME QUERY MAP: "+SessionDao.INSTANCE.getSessions());
+                System.out.println("BEFORE INGAME QUERY QUEUE: "+SessionDao.INSTANCE.getInGame());
+
                 boolean inGame = SessionDao.INSTANCE.getInGame().contains(session);
                 if(inGame) {
                     SessionDao.INSTANCE.removeInGame(session);
                 }
+
+                System.out.println("AFTER INGAME QUERY MAP: "+SessionDao.INSTANCE.getSessions());
+                System.out.println("AFTER INGAME QUERY QUEUE: "+SessionDao.INSTANCE.getInGame());
                 return Response.ok("queued:" + inGame).build();
             }
             else

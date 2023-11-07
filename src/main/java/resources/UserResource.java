@@ -22,15 +22,15 @@ public class UserResource {
     @Context
     private HttpServletRequest request;
 
-    private  String username;
+    private String username;
 
     public UserResource(UriInfo info, HttpServletRequest request, String username) {
         this.info = info;
         this.request = request;
         this.username = username;
     }
-    public UserResource()
-    {
+
+    public UserResource() {
 
     }
 
@@ -87,6 +87,7 @@ public class UserResource {
 
     /**
      * Update settings for a given id
+     *
      * @param newSettings
      * @return
      */
@@ -103,5 +104,20 @@ public class UserResource {
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
+    }
+
+    @Path("/ban")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deActivateUser(User user) {
+
+        User currentUser = (User) request.getAttribute("user");
+        if (currentUser.getUser_type().equals(UserType.ADMIN)) {
+            UserDao.INSTANCE.de_Activate(user);
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
     }
 }

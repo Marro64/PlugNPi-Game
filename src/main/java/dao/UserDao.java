@@ -73,8 +73,15 @@ public enum UserDao {
     //different method for admin that only they can access.
     public void deleteUser(User user) {
         JsonArray deleteUserQuerry =  ORM.executeQuery(
-                "DELETE FROM project.account " +
-                "WHERE u_id = ?",
+                "DELETE FROM project.moderation_action\n" +
+                        "WHERE admin_id IN (SELECT u_id FROM project.account WHERE u_id = ?);\n" +
+                        "DELETE FROM project.moderation_action\n" +
+                        "WHERE player_id IN (SELECT u_id FROM project.account WHERE u_id = ?);\n" +
+                        "DELETE FROM project.score\n" +
+                        "WHERE u_id IN (SELECT u_id FROM project.account WHERE u_id = ?);\n" +
+                        "DELETE FROM project.session\n" +
+                        "WHERE u_id IN (SELECT u_id FROM project.account WHERE u_id = ?);\n" +
+                        "DELETE FROM project.account WHERE u_id = ?;",
                 user.getUid());
     }
     public int updateUser(User user) {
@@ -144,8 +151,32 @@ public enum UserDao {
     {
         return (user.getUser_type().equals(UserType.ADMIN));
     }
+    public boolean isActive(User user)
+    {
+        JsonArray userQuery = ORM.executeQuery("SELECT a.active FROM project.account a WHERE a.u_id = ?", user.getUid() );
+        String active = userQuery.getAsString();
+        boolean isactive = true;
+        if (active.equalsIgnoreCase("false")) {
+            isactive = false;
 
-}
+        }
+        return  isactive;
+    }
+
+    public void de_Activate(User user)
+    {
+        if( isActive(user) ) {
+
+            ORM.executeQuery("UPDATE project.account SET active = false WHERE a.u_id = ?", user.getUid() );
+        } else if (!isActive(user)) {
+
+            ORM.executeQuery("UPDATE project.account SET active = true WHERE a.u_id = ?", user.getUid() );
+        }
+
+        }
+    }
+
+
 
 
 
