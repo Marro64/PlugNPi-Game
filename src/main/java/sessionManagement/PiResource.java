@@ -129,13 +129,13 @@ public class PiResource {
                     System.out.println("CONNECT MAP: "+SessionDao.INSTANCE.getSessions());
                     System.out.println("CONNECT QUEUE: "+SessionDao.INSTANCE.getInGame());
 
-                    return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
+                    return Response.seeOther(URI.create("/plugnpi/play.html")).build();
                 }
                 else if (SessionDao.INSTANCE.getSessions().get(session) > -1)
                 {
                     System.out.println("Session " + session + " already has a user connected.");
                     System.out.println("Responding with a redirect to the leaderboard.");
-                    return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
+                    return Response.seeOther(URI.create("/plugnpi/play.html")).build();
                 }
                 else
                 {
