@@ -113,10 +113,8 @@ class RunnerGame {
           playFailsfx();
           speed = (speed-startSpeed)/2 + startSpeed;
           if (lives < 0) {
-            uploadScore(endScore);
-            gameState = GameState.GameOver;
-            //reset();
-          } else {
+            endGame();
+          }else{
             resetGameObjects();
           }
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {

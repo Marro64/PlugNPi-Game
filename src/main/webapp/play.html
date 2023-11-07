@@ -52,7 +52,7 @@
       /* Validate email*/
       console.log("checking url valid")
       if (!isValidSession(url.value)) {
-        setFormError("Kim Jong Un does not like your URL.", url);
+        setFormError("Kim Jong Un does not like your sessionID.", url);
         bool = false;
       }
       return bool;
@@ -63,10 +63,6 @@
         console.log("invalid form")
         return;
       }
-      /*
-Have to send a UserSignup object with a String username and String password and String email so {"username":"xxx","email":"xxx","password":"xxx"}
-Handle not acceptable if the username/email already exists
-*/
       console.log("calling url api call")
       const urlCall = await APIConnectToPi(url.value);
 
@@ -77,6 +73,17 @@ Handle not acceptable if the username/email already exists
       } else {
         // Display the error message in the formError
         setFormError(urlCall.message, url);
+      }
+    }
+
+    const queueGame = async () => {
+      const queue = await APIJoinQueue();
+      if (queue.success) {
+        // Redirect to the leaderboard on successful login
+        setFormSuccess(queue.message, url)
+      } else {
+        // Display the error message in the formError
+        setFormError(queue.message, url);
       }
     }
   </script>
@@ -107,6 +114,9 @@ Handle not acceptable if the username/email already exists
       <div class="mt-6">
         <!-- "handle for submit is a function to handle the input of the login" -->
         <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
+      </div>
+      <div class="mt-7">
+        <button class="btn btn-info w-full bg-blue-600 hover:bg-blue-600 border-none" onclick="queueGame()">Join Game</button>
       </div>
     </div>
   </div>

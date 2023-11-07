@@ -8,13 +8,16 @@ import db.ORM;
 import model.User;
 import model.UserSignup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public enum SessionDao {
     INSTANCE;
 
     private final HashMap<String,Integer> sessions = new HashMap<>();
+    private final List<String> inGame = new ArrayList<>();
     public int addSession(String session, int u_id) {
         JsonArray addUserQuery =  ORM.executeQuery(
                 "INSERT INTO project.session " +
@@ -54,6 +57,18 @@ public enum SessionDao {
 
     public HashMap<String,Integer> getSessions() {
         return sessions;
+    }
+
+    public List<String> getInGame() {
+        return inGame;
+    }
+
+    public void addInGame(String session) {
+        inGame.add(session);
+    }
+
+    public void removeInGame(String session) {
+        inGame.remove(session);
     }
 
 
