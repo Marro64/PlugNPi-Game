@@ -97,12 +97,13 @@ class GameMenu {
     textSize(fontSize);
     textAlign(CENTER);
     
-    text("Score: " + game.score, width/2, textBaseOffset+fontSize*linesOffset);
-    text("Coins: " +((int)game.colScore) + "/100", width/2, textBaseOffset+fontSize*(linesOffset+1));
+    text(webClient.username, width/2, textBaseOffset+fontSize*linesOffset);
+    text("Score: " + game.score, width/2, textBaseOffset+fontSize*(linesOffset+1));
+    text("Coins: " +((int)game.colScore) + "/100", width/2, textBaseOffset+fontSize*(linesOffset+2));
     if(newHighScore) {
-      text("New Highscore!", width/2, textBaseOffset+fontSize*(linesOffset+2));
+      text("New Highscore!", width/2, textBaseOffset+fontSize*(linesOffset+3));
     } else {
-      text("Highscore: " + game.gameHighScore, width/2, textBaseOffset+fontSize*(linesOffset+2));
+      text("Highscore: " + game.gameHighScore, width/2, textBaseOffset+fontSize*(linesOffset+3));
     }
   }
   
@@ -111,14 +112,15 @@ class GameMenu {
     textSize(fontSize);
     textAlign(LEFT);
     
-    text("Score: " + game.score, 20, fontSize);
-    text("Coins: " +((int)game.colScore) + "/100", 20, fontSize*2);
-    if (game.lives >= 0) text("lives: " + game.lives, 20, fontSize*3);
+    text(webClient.username, 20, fontSize);
+    text("Score: " + game.score, 20, fontSize*2);
+    text("Coins: " +((int)game.colScore) + "/100", 20, fontSize*3);
+    if (game.lives >= 0) text("lives: " + game.lives, 20, fontSize*4);
     if (game.gameHighScore > 0) {
       if(newHighScore) {
-        text("New Highscore!", 20, fontSize*4);
+        text("New Highscore!", 20, fontSize*5);
       } else {
-        text("Highscore: " + game.gameHighScore, 20, fontSize*4);
+        text("Highscore: " + game.gameHighScore, 20, fontSize*5);
       }
     }
   }
