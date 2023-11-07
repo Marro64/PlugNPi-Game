@@ -23,7 +23,7 @@ class WebClient {
   PImage QRCode;
   PImage QRCodeSmall;
   String sessionID = "";
-  String username = "None"; 
+  String username = "Guest"; 
   String highscoreString = "";
   
   PApplet papplet;
