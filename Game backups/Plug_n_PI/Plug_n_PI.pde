@@ -58,61 +58,56 @@ void setup() {
 void draw() {
   float dt = (millis()-lastFrame)/1000.0*60;
   lastFrame = millis();
-  
-  if (gameState == GameState.MainMenu || gameState == GameState.GameOver) {
-    gameMenu.display(mouseX, mouseY);
-    fill(0);
-    gameMenu.displayHighscores(webClient.getHighscores());
-  }
 
-  if (gameState == GameState.MainMenu) {//Main menu of the game, the game waits for a connection or offline play is pressed
-    //display logo and menu select 'offline play or connect'
-    //update connection ore sth
-    webClient.update(dt);
+  switch(gameState) {
+    case MainMenu: //Main menu of the game, the game waits for a connection or offline play is pressed
+      webClient.update(dt);
+      
+      gameMenu.display(mouseX, mouseY);
+      
+      switch(getOnlineState()) {
+        case Connecting:
+          gameMenu.displayNotConnected();
+          break;
+        case QRCode:
+          gameMenu.displayQRCode(webClient.getQRCode(), webClient.getQRCodeContent());
+          break;
+        case Ready:
+          gameMenu.displayPlayerConnected();
+          break;
+      }
     
+      fill(0);
+      gameMenu.displayHighscoresCorner(webClient.getHighscores());
+      break;
+      
+    case Playing:
+      RunnerGame.update(dt);
+      LaneDetection.update();
+      
+      //display the game
+      RunnerGame.displayBackground();
+      RunnerGame.display(LaneDetection.passvideo());
+      LaneDetection.display();
+      fill(255);
+      gameMenu.displayScores(RunnerGame);
+      gameMenu.displayHighscoresCorner(webClient.getHighscores());
+      gameMenu.displayFramerate();
+      gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
+      break;
     
-    switch(getOnlineState()) {
-      case Connecting:
-        gameMenu.displayNotConnected();
-        break;
-      case QRCode:
-        gameMenu.displayQRCode(webClient.getQRCode(), webClient.getQRCodeContent());
-        break;
-      case Ready:
-        gameMenu.displayPlayerConnected();
-        break;
-    }
-  }
-
-  if (gameState == GameState.Playing) {//run the game
-    //get delta time and update game
-    update(dt);
-
-    //display the game
-    RunnerGame.displayBackground();
-    RunnerGame.display(LaneDetection.passvideo());
-    LaneDetection.display();
-    fill(255);
-    gameMenu.displayScores(RunnerGame);
-    gameMenu.displayHighscores(webClient.getHighscores());
-    gameMenu.displayFramerate();
-    gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
-  }
-
-  if (gameState == GameState.GameOver) {//reset game and return Highscore
-    gameMenu.displayGameOver();
-    fill(0);
-    gameMenu.displayScores(RunnerGame);
-    webClient.update(dt);
-    gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getQRCodeContent());
+    case GameOver:
+      webClient.update(dt);
+      
+      gameMenu.display(mouseX, mouseY);
+      gameMenu.displayGameOver();
+      fill(0);
+      gameMenu.displayScores(RunnerGame);
+      gameMenu.displayHighscores(webClient.getHighscores());
+      gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
+      break;
   }
 }
-
-void update(float dtime) {
-  RunnerGame.update(dtime);
-  LaneDetection.update();
-}
-
 
 void keyPressed() {//check for keyboard inputs for keyboard controls
   if (key == 'a' || keyCode == LEFT) {

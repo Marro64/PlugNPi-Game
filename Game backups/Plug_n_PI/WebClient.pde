@@ -14,7 +14,7 @@ class WebClient {
   int QRCodeSize = 270;
   int fontSize = 20;
   
-  float completeCycleTime = 100;
+  float completeCycleTime = 50;
   float CycleTime = 0;
 
   String host = "http://145.126.2.121:8080";
@@ -36,7 +36,7 @@ class WebClient {
     onlineState = OnlineState.Connecting;
   }
 
-  void update(float dt) { //<>//
+  void update(float dt) { //<>// //<>// //<>//
     CycleTime += dt;
     if (CycleTime > completeCycleTime) {
       CycleTime = 0;
@@ -109,10 +109,12 @@ class WebClient {
       println("Received username: " + content);
       break;
     case "queued":
-    println("Received queued with value \"" + "\"\n");
-      if(content == "true" && gameState != GameState.Playing) {
+      println("Received queued with value \"" + content + "\"\n");
+      if(content.equals("true")) {
+        println("Calling startGame");
         startGame();
       }
+      break;
     default:
       println("Data Type not recognised.\n");
     }

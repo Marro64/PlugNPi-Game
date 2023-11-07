@@ -10,7 +10,7 @@ class GameMenu {
     gameHeight = GameHeight;
     titleImage = loadImage("PlugNPI.png");
     buttons_state1 = new Button[1];
-    buttons_state1[0] = new Button(GameWidth/2, 900, 400, 50, "Play Offline", GameState.Playing);
+    buttons_state1[0] = new Button(GameWidth/2, 880, 400, 50, "Play Offline", GameState.Playing);
     //buttons_state1[1] = new Button(GameWidth/2 + 110, 420, 200, 50, "Play Online", 2);
   }
 
@@ -77,6 +77,14 @@ class GameMenu {
   
   // Use fill() beforehand to set text color
   void displayHighscores(String highscoreString) { 
+    textAlign(CENTER);
+    textSize(fontSize);
+    textLeading(fontSize);
+    text(highscoreString, width/2, 420+fontSize*2);
+  }
+  
+  // Use fill() beforehand to set text color
+  void displayHighscoresCorner(String highscoreString) { 
     textAlign(RIGHT);
     textSize(fontSize);
     textLeading(fontSize);
