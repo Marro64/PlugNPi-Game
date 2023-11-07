@@ -55,6 +55,10 @@ public enum SessionDao {
         System.out.println("SESSIONDAO; " + " RESET/PID: " + pid);
     }
 
+    public void removeSession(String pid) {
+        sessions.remove(pid);
+    }
+
     public HashMap<String,Integer> getSessions() {
         return sessions;
     }

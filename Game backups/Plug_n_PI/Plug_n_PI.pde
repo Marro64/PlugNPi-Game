@@ -8,7 +8,6 @@ WebClient webClient;
 
 AudioPlayer[] dopamineSound;
 AudioPlayer failSound;
-AudioPlayer backgroundMusic;
 
 boolean displayLocalHighscore;
 int localHighscore = 0;
@@ -16,8 +15,8 @@ String connectedUserName;
 
 enum GameState {
   MainMenu,
-  Playing,
-  GameOver
+    Playing,
+    GameOver
 }
 
 GameState gameState;
@@ -26,7 +25,7 @@ int lastFrame = 0;
 void setup() {
   //setup gamewindow
   size(1920, 980, P3D);
-  
+
   gameState = GameState.MainMenu;
 
   //setup gameMenu
@@ -44,7 +43,6 @@ void setup() {
   dopamineSound[1] = minim.loadFile("Sounds/dopamine(2).wav");
   dopamineSound[2] = minim.loadFile("Sounds/dopamine(3).wav");
   failSound = minim.loadFile("Sounds/fail1.wav");
-  backgroundMusic = minim.loadFile("Sounds/backgroundSong.mp3");
 
   //create client for server communication
   webClient = new WebClient(this);
@@ -58,68 +56,65 @@ void setup() {
 void draw() {
   float dt = (millis()-lastFrame)/1000.0*60;
   lastFrame = millis();
-  
-  if (gameState == GameState.MainMenu || gameState == GameState.GameOver) {
-    gameMenu.display(mouseX, mouseY);
-    fill(0);
-    gameMenu.displayHighscores(webClient.getHighscores());
-  }
 
-  if (gameState == GameState.MainMenu) {//Main menu of the game, the game waits for a connection or offline play is pressed
-    //display logo and menu select 'offline play or connect'
-    //update connection ore sth
+  switch(gameState) {
+  case MainMenu: //Main menu of the game, the game waits for a connection or offline play is pressed
     webClient.update(dt);
-    
-    
-    switch(getOnlineState()) {
-      case Connecting:
-        gameMenu.displayNotConnected();
-        break;
-      case QRCode:
-        gameMenu.displayQRCode(webClient.getQRCode(), webClient.getQRCodeContent());
-        break;
-      case Ready:
-        gameMenu.displayPlayerConnected();
-    }
-    
-    if (getOnlineState() == OnlineState.Ready) {//game logged in
-      
-    }
-  }
 
-  if (gameState == GameState.Playing) {//run the game
-    //get delta time and update game
-    update(dt);
+    gameMenu.display(mouseX, mouseY);
+
+    switch(getOnlineState()) {
+    case Connecting:
+      gameMenu.displayNotConnected();
+      break;
+    case QRCode:
+      gameMenu.displayQRCode(webClient.getQRCode(), webClient.getQRCodeContent());
+      break;
+    case Ready:
+      gameMenu.displayPlayerConnected();
+      break;
+    }
+    RunnerGame.displayPlayerMenu(100, height/2, dt);
+
+
+    fill(0);
+    gameMenu.displayHighscoresCorner(webClient.getHighscores());
+    break;
+
+  case Playing:
+    RunnerGame.update(dt);
+    LaneDetection.update();
 
     //display the game
     RunnerGame.displayBackground();
-    RunnerGame.display(LaneDetection.passvideo());
+    RunnerGame.display();
     LaneDetection.display();
     fill(255);
-    gameMenu.displayScores(RunnerGame);
-    gameMenu.displayHighscores(webClient.getHighscores());
+    gameMenu.displayScoresCorner(RunnerGame, RunnerGame.getNewHighScore());
+    gameMenu.displayHighscoresCorner(webClient.getHighscores());
     gameMenu.displayFramerate();
-  }
+    gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
+    break;
 
-  if (gameState == GameState.GameOver) {//reset game and return Highscore
+  case GameOver:
+    webClient.update(dt);
+
+    gameMenu.display(mouseX, mouseY);
     gameMenu.displayGameOver();
     fill(0);
-    gameMenu.displayScores(RunnerGame);
+    gameMenu.displayScores(RunnerGame, RunnerGame.getNewHighScore(), 2);
+    gameMenu.displayHighscores(webClient.getHighscores(), 7);
+    gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
+    break;
   }
 }
-
-void update(float dtime) {
-  RunnerGame.update(dtime);
-  LaneDetection.update();
-}
-
 
 void keyPressed() {//check for keyboard inputs for keyboard controls
   if (key == 'a' || keyCode == LEFT) {
-    RunnerGame.moveDelta(-1);
+    RunnerGame.moveLane(-1);
   }
   if (key == 'd' || keyCode == RIGHT) {
-    RunnerGame.moveDelta(1);
+    RunnerGame.moveLane(1);
   }
 }
 
@@ -134,13 +129,18 @@ void captureEvent(Capture c) {//capture the camera
 }
 
 void startGame() {
-  webClient.updateHighscores();
+  //webClient.updateHighscores();
   RunnerGame.reset();
   setGameState(GameState.Playing);
 }
 
+void endGame() {
+  uploadScore(RunnerGame.score);
+  gameState = GameState.GameOver;
+}
+
 void moveLane(int lane) {
-  RunnerGame.moveLane(lane);
+  RunnerGame.moveDelta(lane);
 }
 
 void displayNotconnected() {
@@ -164,11 +164,10 @@ void playFailsfx() {
 }
 
 void uploadScore(int score) {
-  if(getOnlineState() == OnlineState.Ready)
+  if (getOnlineState() == OnlineState.Ready)
   {
     webClient.uploadScore(score);
-  }
-  else
+  } else
   {
     println("Offline play, not uploading score.");
   }
@@ -179,7 +178,7 @@ OnlineState getOnlineState() {
 }
 
 boolean isOnline() {
-  return webClient.onlineState == OnlineState.Ready || webClient.onlineState == OnlineState.Uploading;
+  return webClient.onlineState == OnlineState.Ready;
 }
 
 GameState getGameState() {

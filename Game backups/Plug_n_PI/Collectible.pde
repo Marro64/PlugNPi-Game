@@ -19,7 +19,7 @@ class Collectible {
   void update(float speed, float dt) {
     distMoved -= speed*dt;
     posY += speed;
-    rotation += speed*0.5;
+    rotation += 0.5;
   }
 
   void display() {
@@ -41,7 +41,7 @@ class Collectible {
   }
 
   boolean collideWith(float otherX, float otherY) {
-    if (otherY > posY-48 && otherY < posY && posX == otherX) {
+    if (otherY > posY-64 && otherY < posY && posX == otherX) {
       return true;
     }
     return false;

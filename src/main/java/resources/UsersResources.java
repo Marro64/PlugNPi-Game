@@ -1,6 +1,7 @@
 package resources;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -8,11 +9,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-import model.User;
+import model.*;
 import dao.UserDao;
-import model.UserLogin;
-import model.UserSignup;
-import model.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,6 @@ public class UsersResources {
             return Response.ok().build();
         }
     }
-
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

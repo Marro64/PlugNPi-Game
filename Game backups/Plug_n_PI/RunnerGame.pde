@@ -1,6 +1,4 @@
 class RunnerGame {
-  PGraphics blur;
-
   int cols, rows; // grid variables
   int scale = 1; //scale of the game
   float gameW;
@@ -16,6 +14,11 @@ class RunnerGame {
 
   // Player position
   int posIdx = 1;
+  float playerRotation = 0;
+  boolean doAflip = false;
+  float flipSpeed = 0.9;
+  
+  float menuY = 0;
 
   //possible lane locations
   float[] laneXpos = {0, 0, 0};
@@ -41,12 +44,12 @@ class RunnerGame {
   int lives = 0;
 
   int score = 0;
-  int endScore = 0;
   int gameHighScore = 0;
+  boolean newHighScore = false;
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
-  
+
   PImage playerImage;
   int fontSize = 30;
 
@@ -58,13 +61,13 @@ class RunnerGame {
     //setup game variables
     startSpeed = 3;
     speed = startSpeed;
-    acceleration = 0.05;
+    acceleration = 0.1;
 
     gameW = w;
     gameH = h;
 
-    laneXpos[0] = -56;
-    laneXpos[2] = 56;
+    laneXpos[0] = -64;
+    laneXpos[2] = 64;
 
     textureMode(NORMAL);
 
@@ -76,7 +79,7 @@ class RunnerGame {
     trainSide = loadImage("Train_Side.png");
     trainTop =loadImage("Train_Top.png");
     trains = new Train[dim];
-    
+
     playerImage = loadImage("runnerKid.png");
 
     //
@@ -110,10 +113,8 @@ class RunnerGame {
           playFailsfx();
           speed = (speed-startSpeed)/2 + startSpeed;
           if (lives < 0) {
-            uploadScore(endScore);
-            gameState = GameState.GameOver;
-            //reset();
-          }else{
+            endGame();
+          } else {
             resetGameObjects();
           }
         } else if (train.posY > gameH*0.6 && !train.hasPassed) {
@@ -152,9 +153,11 @@ class RunnerGame {
         }
       }
     }
-
-    //groundgrid
-    groundGrid.update(distMoved);
+    
+    if(score > gameHighScore) {
+      newHighScore = true;
+      gameHighScore = score;
+    }
   }
 
   void displayBackground() {
@@ -170,7 +173,7 @@ class RunnerGame {
     popMatrix();
   }
 
-  void display(Capture video) {
+  void display() {
     pushMatrix();
 
     // Translate and rotate world
@@ -194,7 +197,7 @@ class RunnerGame {
     }
 
     // Draw player
-    displayPlayer(video);
+    displayPlayer();
     popMatrix();
   }
 
@@ -212,11 +215,19 @@ class RunnerGame {
     }
   }
 
-  void moveDelta(int delta) {
-    moveLane(delta+posIdx);
+  void moveDelta(int lane) {
+    int delta = 0;
+    if (lane > posIdx) {
+      delta = 1;
+    } else if (lane < posIdx) {
+      delta  =-1;
+    }
+    moveLane(delta);
   }
 
-  void moveLane(int lane) {
+  void moveLane(int delta) {
+    int oldlane = posIdx;
+    int lane  = posIdx + delta;
     if (lane >= 0 && lane < 3) {
       posIdx = lane;
     } else if (lane < 0) {
@@ -224,18 +235,33 @@ class RunnerGame {
     } else if (lane > 2) {
       posIdx = 2;
     }
+    if (oldlane != posIdx) {
+      flipSpeed = delta * abs(flipSpeed);
+      doAflip = true;
+    }
   }
 
-  void displayPlayer(Capture video) {
+  void displayPlayer() {
 
     beginShape(QUADS);
     texture(playerImage);
     textureMode(NORMAL);
     //front
-    walktimer -= speed;
+    walktimer -= 3;
+    calculateFlip();
     translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
-    scale(23,32,32);
+    int rotationDirection = 1;
+    if (doAflip) {
+      if (playerRotation >0){
+        rotationDirection= -1;
+      }
+      translate(64*rotationDirection+(64/(2*PI))*playerRotation, 0,3*(pow(PI, 2)-pow(abs(playerRotation)-PI, 2)));
+    }
+    scale(23, 32, 32);
     scale(0.8);
+    rotateY(playerRotation);
+
+
     vertex(-1, 1, 1, 0, 0);
     vertex( 1, 1, 1, 1, 0);
     vertex( 1, 1, -1, 1, 1);
@@ -244,17 +270,24 @@ class RunnerGame {
   }
 
   void reset() {
-    endScore = score;
     score = 0;//reset score
     colScore = 0;
     lives = 0;
-    if (endScore > gameHighScore) gameHighScore = endScore;
+    newHighScore = false;
     resetGameObjects();
   }
 
+  void calculateFlip() {
+    if (doAflip) {
+      playerRotation += flipSpeed;
+      if (playerRotation > 2*PI || playerRotation < -2*PI) {
+        playerRotation = 0;
+        doAflip = false;
+      }
+    }
+  }
+
   void resetGameObjects() {
-    backgroundMusic.rewind();
-    backgroundMusic.play();
     speed = startSpeed;
     for (Train train : trains) {//reset trains
       if (train != null) {
@@ -266,5 +299,16 @@ class RunnerGame {
         collectible.reset();
       }
     }
+  }
+  
+  void displayPlayerMenu(float posX, float posY, float dt){
+    menuY += dt;
+    translate(posX, posY + 10*sin(menuY*0.2));
+    scale(8);
+    image(playerImage,0,0);
+  }
+  
+  boolean getNewHighScore() {
+    return newHighScore;
   }
 }

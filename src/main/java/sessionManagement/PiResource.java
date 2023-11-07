@@ -12,6 +12,7 @@ import model.User;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,6 +46,20 @@ public class PiResource {
         return indicator;
     }
 
+    public void removeSession(int uid) {
+        Iterator<Map.Entry<String, Integer>> iterator = SessionDao.INSTANCE.getSessions().entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Integer> entry = iterator.next();
+
+            if (entry.getValue() == uid) {
+                String sessionId = entry.getKey();
+                SessionDao.INSTANCE.removeSession(sessionId);
+                iterator.remove(); // Safely remove the entry from the iterator
+            }
+        }
+    }
+
     /**
      * For the user to join a game
      * @return a 200 OK if the user has joined a session
@@ -55,14 +70,28 @@ public class PiResource {
         User user = (User) httpreq.getAttribute("user");
         int uid = user.getUid();
 
-        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+        Iterator<Map.Entry<String, Integer>> iterator = SessionDao.INSTANCE.getSessions().entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Integer> entry = iterator.next();
+
             if (entry.getValue() == uid) {
                 String sessionId = entry.getKey();
                 SessionDao.INSTANCE.addInGame(sessionId);
+                iterator.remove(); // Safely remove the entry from the iterator
                 return Response.ok().build();
             }
         }
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    public void unQueueGame(int uid) {
+        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+            if (entry.getValue() == uid) {
+                String sessionId = entry.getKey();
+                SessionDao.INSTANCE.removeInGame(sessionId);
+            }
+        }
     }
 
 
@@ -93,6 +122,7 @@ public class PiResource {
                     }
                     System.out.println("Connecting " + session + " to user account " + user.getUid());
                     System.out.println("Responding with a redirect to the leaderboard.");
+                    removeSession(user.getUid());
                     SessionDao.INSTANCE.addPiSession(session, user.getUid());
                     return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
                 }
@@ -132,7 +162,11 @@ public class PiResource {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             else if (action.equals("request_join")) { //Queries it's own session with request_join action
-                return Response.ok("queued:" + SessionDao.INSTANCE.getInGame().contains(session)).build();
+                boolean inGame = SessionDao.INSTANCE.getInGame().contains(session);
+                if(inGame) {
+                    SessionDao.INSTANCE.removeInGame(session);
+                }
+                return Response.ok("queued:" + inGame).build();
             }
             else
             {
