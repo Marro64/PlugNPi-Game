@@ -4,13 +4,14 @@ class GameMenu {
   int gameHeight;
   Button[] buttons_state1;
   int fontSize = 30;
+  int textBaseOffset = 430;
 
   GameMenu(int GameWidth, int GameHeight) {
     gameWidth = GameWidth;
     gameHeight = GameHeight;
     titleImage = loadImage("PlugNPI.png");
     buttons_state1 = new Button[1];
-    buttons_state1[0] = new Button(GameWidth/2, 900, 400, 50, "Play Offline", GameState.Playing);
+    buttons_state1[0] = new Button(GameWidth/2, 880, 400, 50, "Play Offline", GameState.Playing);
     //buttons_state1[1] = new Button(GameWidth/2 + 110, 420, 200, 50, "Play Online", 2);
   }
 
@@ -35,8 +36,8 @@ class GameMenu {
     image(QRCode, width/2, 550 + 4*fontSize);
     textSize(fontSize);
     textAlign(CENTER);
-    text("Scan the QR code to connect, or enter the address manually:",width/2, 440);
-    text(QRCodeContent, width/2, 440 + 2*fontSize);
+    text("Scan the QR code to connect, or enter the address manually:",width/2, textBaseOffset);
+    text(QRCodeContent, width/2, textBaseOffset + 2*fontSize);
   }
   
   void displayQRCodeCorner(PImage QRCode, String QRCodeContent) {
@@ -55,15 +56,15 @@ class GameMenu {
     textAlign(CENTER);
     fill(0);
     textSize(fontSize);
-    text("Hello " + connectedUserName, width/2, 440);
-    text("Start a game on your phone to play!", width/2, 430+2*fontSize);
+    text("Hello " + connectedUserName, width/2, textBaseOffset);
+    text("Start a game on your phone to play!", width/2, textBaseOffset+2*fontSize);
   }
   
   void displayGameOver() {
     textAlign(CENTER);
     fill(0);
     textSize(fontSize);
-    text("Game Over!", width/2, 420);
+    text("Game Over!", width/2, textBaseOffset);
   }
 
   void displayTitleImage() {
@@ -76,7 +77,15 @@ class GameMenu {
   }
   
   // Use fill() beforehand to set text color
-  void displayHighscores(String highscoreString) { 
+  void displayHighscores(String highscoreString, int linesOffset) { 
+    textAlign(CENTER);
+    textSize(fontSize);
+    textLeading(fontSize);
+    text(highscoreString, width/2, textBaseOffset+fontSize*linesOffset);
+  }
+  
+  // Use fill() beforehand to set text color
+  void displayHighscoresCorner(String highscoreString) { 
     textAlign(RIGHT);
     textSize(fontSize);
     textLeading(fontSize);
@@ -84,14 +93,34 @@ class GameMenu {
   }
   
   // Use fill() beforehand to set text color
-  void displayScores(RunnerGame game) {
+  void displayScores(RunnerGame game, boolean newHighScore, int linesOffset) {
+    textSize(fontSize);
+    textAlign(CENTER);
+    
+    text("Score: " + game.score, width/2, textBaseOffset+fontSize*linesOffset);
+    text("Coins: " +((int)game.colScore) + "/100", width/2, textBaseOffset+fontSize*(linesOffset+1));
+    if(newHighScore) {
+      text("New Highscore!", width/2, textBaseOffset+fontSize*(linesOffset+2));
+    } else {
+      text("Highscore: " + game.gameHighScore, width/2, textBaseOffset+fontSize*(linesOffset+2));
+    }
+  }
+  
+  // Use fill() beforehand to set text color
+  void displayScoresCorner(RunnerGame game, boolean newHighScore) {
     textSize(fontSize);
     textAlign(LEFT);
     
     text("Score: " + game.score, 20, fontSize);
     text("Coins: " +((int)game.colScore) + "/100", 20, fontSize*2);
     if (game.lives >= 0) text("lives: " + game.lives, 20, fontSize*3);
-    if (game.gameHighScore > 0) text("Highscore: " + game.gameHighScore, 20, fontSize*4);
+    if (game.gameHighScore > 0) {
+      if(newHighScore) {
+        text("New Highscore!", 20, fontSize*4);
+      } else {
+        text("Highscore: " + game.gameHighScore, 20, fontSize*4);
+      }
+    }
   }
   
   void displayFramerate() {
