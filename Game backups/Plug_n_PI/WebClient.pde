@@ -52,7 +52,7 @@ class WebClient {
         getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_user");
         break;
       case Ready:
-        getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_play");
+        getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_join");
         break;
       default:
         break;
@@ -109,7 +109,7 @@ class WebClient {
       println("Received username: " + content);
       break;
     case "queued":
-      println("Received start game");
+    println("Received queued with value \"" + "\"\n");
       if(content == "true" && gameState != GameState.Playing) {
         startGame();
       }
