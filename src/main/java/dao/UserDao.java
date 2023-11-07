@@ -141,10 +141,10 @@ public enum UserDao {
     public JsonArray getAllUsers(String utype) {
         if(utype.equals("undefined")) {
             return ORM.executeQuery(
-                    "SELECT u.username, u.email, u.u_type FROM project.account u");
+                    "SELECT u.username, u.email, u.u_type, u.active FROM project.account u");
         } else {
             return ORM.executeQuery(
-                    "SELECT u.username, u.email, u.u_type FROM project.account u WHERE u.u_type = ?::project.u_type", utype);
+                    "SELECT u.username, u.email, u.u_type, u.active FROM project.account u WHERE u.u_type = ?::project.u_type", utype);
         }
     }
     public boolean isAdmin(User user)
