@@ -260,8 +260,6 @@ class RunnerGame {
     scale(23, 32, 32);
     scale(0.8);
     rotateY(playerRotation);
-
-
     vertex(-1, 1, 1, 0, 0);
     vertex( 1, 1, 1, 1, 0);
     vertex( 1, 1, -1, 1, 1);
@@ -301,14 +299,12 @@ class RunnerGame {
     }
   }
   
-  void displayPlayerMenu(float posX, float posY, float dt){
-    menuY += dt;
-    translate(posX, posY + 10*sin(menuY*0.2));
-    scale(8);
-    image(playerImage,0,0);
-  }
-  
   boolean getNewHighScore() {
     return newHighScore;
+  }
+  
+  void rescale(int w, int h){
+    gameW = w;
+    gameH = h;
   }
 }
