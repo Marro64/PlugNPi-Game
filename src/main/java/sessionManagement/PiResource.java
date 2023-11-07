@@ -45,6 +45,15 @@ public class PiResource {
         return indicator;
     }
 
+    public void removeSession(int uid) {
+        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+            if (entry.getValue() == uid) {
+                String sessionId = entry.getKey();
+                SessionDao.INSTANCE.removeSession(sessionId);
+            }
+        }
+    }
+
     /**
      * For the user to join a game
      * @return a 200 OK if the user has joined a session
@@ -63,6 +72,15 @@ public class PiResource {
             }
         }
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    public void unQueueGame(int uid) {
+        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+            if (entry.getValue() == uid) {
+                String sessionId = entry.getKey();
+                SessionDao.INSTANCE.removeInGame(sessionId);
+            }
+        }
     }
 
 
@@ -93,6 +111,7 @@ public class PiResource {
                     }
                     System.out.println("Connecting " + session + " to user account " + user.getUid());
                     System.out.println("Responding with a redirect to the leaderboard.");
+                    removeSession(user.getUid()); //NEW NEEDS TEST
                     SessionDao.INSTANCE.addPiSession(session, user.getUid());
                     return Response.seeOther(URI.create("/plugnpi/leaderboard.html")).build();
                 }

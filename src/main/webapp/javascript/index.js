@@ -145,8 +145,8 @@ const APISwitchRole = async (username) => {
 }
 
 const APIUpdateProfileDetailsCall = async (userData) => {
-    const response = await fetch(`/plugnpi/api/profile/update`, {
-        method: "POST",
+    const response = await fetch(`/plugnpi/api/user`, {
+        method: "PUT",
         body: JSON.stringify(userData),
         headers: {
             "Content-Type": "application/json",
@@ -163,7 +163,10 @@ const APIGetLog = async () => {
 }
 
 const APIDeleteUser = async () => {
-
+    const response = await fetch(`/plugnpi/api/user`, {
+        method: "DELETE",
+    });
+    return response;
 }
 
 const APIGetUserLog = async () => {

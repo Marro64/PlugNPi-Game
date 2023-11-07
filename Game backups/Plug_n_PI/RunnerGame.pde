@@ -44,8 +44,8 @@ class RunnerGame {
   int lives = 0;
 
   int score = 0;
-  int endScore = 0;
   int gameHighScore = 0;
+  boolean newHighScore = false;
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
@@ -153,9 +153,11 @@ class RunnerGame {
         }
       }
     }
-
-    //groundgrid
-    groundGrid.update(distMoved);
+    
+    if(score > gameHighScore) {
+      newHighScore = true;
+      gameHighScore = score;
+    }
   }
 
   void displayBackground() {
@@ -171,7 +173,7 @@ class RunnerGame {
     popMatrix();
   }
 
-  void display(Capture video) {
+  void display() {
     pushMatrix();
 
     // Translate and rotate world
@@ -195,7 +197,7 @@ class RunnerGame {
     }
 
     // Draw player
-    displayPlayer(video);
+    displayPlayer();
     popMatrix();
   }
 
@@ -239,7 +241,7 @@ class RunnerGame {
     }
   }
 
-  void displayPlayer(Capture video) {
+  void displayPlayer() {
 
     beginShape(QUADS);
     texture(playerImage);
@@ -268,11 +270,10 @@ class RunnerGame {
   }
 
   void reset() {
-    endScore = score;
     score = 0;//reset score
     colScore = 0;
     lives = 0;
-    if (endScore > gameHighScore) gameHighScore = endScore;
+    newHighScore = false;
     resetGameObjects();
   }
 
@@ -300,5 +301,9 @@ class RunnerGame {
         collectible.reset();
       }
     }
+  }
+  
+  boolean getNewHighScore() {
+    return newHighScore;
   }
 }
