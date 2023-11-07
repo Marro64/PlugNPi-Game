@@ -25,9 +25,10 @@ int w, h;
 
 void setup() {
   //setup gamewindow
-  w = 1920;
-  h = 1080;
-  size(1920, 1080, P3D);
+  w = 1910;
+  h = 1050;
+  size(1910, 1000, P3D);
+  //fullScreen(P3D, 1);
   surface.setResizable(true);
   registerMethod("pre", this);
 
@@ -199,6 +200,7 @@ void pre() {
     h = height;
     //resize gameobjects
     RunnerGame.rescale(w,h);
+    gameMenu.rescale(w,h);
     //gameMenu.rescale(w,h);
   }
 }
