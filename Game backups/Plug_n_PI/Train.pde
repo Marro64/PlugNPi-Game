@@ -9,7 +9,7 @@ class Train {
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
-  float gScale;
+  float gScale = 1;
 
   Train(PImage TrainFront, PImage TrainSide, PImage TrainTop, float PosX, float PosY) {
     posX = PosX;
