@@ -52,6 +52,7 @@ public class ModerationActionResource {
         User user = (User) req.getAttribute("user");
         log = ModerationActionDao.INSTANCE.getLogsFromAdmin(user);
         log.addAll(ModerationActionDao.INSTANCE.getLogsFromUser(user));
+        ModerationActionResource.createAction(user.getUid(), user.getUid(), ModerationType.GDPR_DATA_REQUEST); //Getting my own data
         return Response.ok(log.toString()).build();
     }
 
