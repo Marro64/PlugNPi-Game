@@ -48,13 +48,12 @@ public class PiResource {
 
     public void removeSession(int uid) {
         Iterator<Map.Entry<String, Integer>> iterator = SessionDao.INSTANCE.getSessions().entrySet().iterator();
-
         while (iterator.hasNext()) {
             Map.Entry<String, Integer> entry = iterator.next();
 
             if (entry.getValue() == uid) {
                 String sessionId = entry.getKey();
-                SessionDao.INSTANCE.removeSession(sessionId);
+                //SessionDao.INSTANCE.removeSession(sessionId);
                 iterator.remove(); // Safely remove the entry from the iterator
 
                 System.out.println("RS MAP: "+SessionDao.INSTANCE.getSessions());
