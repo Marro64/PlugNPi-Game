@@ -249,7 +249,7 @@ class RunnerGame {
     //front
     walktimer -= 3;
     calculateFlip();
-    translate(laneXpos[posIdx], gameH*0.6, 30 + 2*sin(walktimer*0.1));
+    translate(laneXpos[posIdx]*scale, gameH*0.6, 30 + 2*sin(walktimer*0.1));
     int rotationDirection = 1;
     if (doAflip) {
       if (playerRotation >0){
@@ -308,5 +308,10 @@ class RunnerGame {
     scale = scale * float(h)/gameH;
     groundGrid.rescale(scale);
     gameH = h;
+        for (Train train : trains) {//reset trains
+      if (train != null) {
+        train.rescale(scale);
+      }
+    }
   }
 }
