@@ -45,6 +45,18 @@ public class ModerationActionResource {
         return Response.ok(log.toString()).build();
     }
 
+    @GET
+    @Path("/me")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLogsForMe()
+    {
+        JsonArray log = new JsonArray();
+        User user = (User) req.getAttribute("user");
+        log = ModerationActionDao.INSTANCE.getLogsFromAdmin(user);
+        log.addAll(ModerationActionDao.INSTANCE.getLogsFromUser(user));
+        return Response.ok(log.toString()).build();
+    }
+
     @Path("/logs")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
