@@ -81,7 +81,7 @@
             let isAdmin = await APIAdminCheck();
             if (isAdmin.success === true) {
                 const userManagementButton = document.createElement("a");
-                userManagementButton.className = "mauricios-button hover-bg-pink-200";
+                userManagementButton.className = "mauricios-button hover:bg-pink-200";
                 userManagementButton.textContent = "User Management";
                 userManagementButton.style.marginRight = "4px";
                 userManagementButton.onclick = function () {
@@ -90,7 +90,7 @@
 
 
                 const userLogButton = document.createElement("log");
-                userLogButton.className = "mauricios-button hover-bg-pink-200";
+                userLogButton.className = "mauricios-button hover:bg-pink-200";
                 userLogButton.textContent = "Log Management";
                 userLogButton.onclick = function () {
                     window.location.href = 'log.html';
