@@ -44,36 +44,53 @@ Use the built-in continuous integration in GitLab.
 
 ***
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
 ## Name
-Choose a self-explaining name for your project.
+Plug'n'Pi
 
 ## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+This project consists of two parts: The game and the website. The game uses facial tracked motion controls and is accompanied by the website which shows a leaderboard that enables players to have competitive tournaments and keep track of all your scores.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+## Requirements
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- Raspberry Pi 4 or better with 4GB RAM or higher 
+- A second device (eg laptop) to host the website with Tomcat
+- 720p or 1080p USB-webcam
+- 1080p display with mini-HDMI (adapter possible)
+- Mobile Phone with QR scanner
+- Text Editor, like IntelliJ IDEA
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+To install the webapp locally, you will need Tomcat and Maven set up on your text editor.
+
+### Setup IntelliJ IDEA
+If you don't have Tomcat installed already, follow these steps:
+1. Download the latest version of Tomcat [here](https://tomcat.apache.org/). We are using Tomcat 10.1.15.
+2. Extract the downloaded Tomcat zip file to your desired location.
+3. In your desired text editor, install the plugins `Maven` and `Tomcat and TomEE`.
+4. Click `Edit Configurations` in your text editor and add a **Tomcat Local** server
+5. Add the directories for your Tomcat install in the two fields and click `OK`.
+6. The URL should be *http://localhost:8080/plugnpi/login.html*.
+7. In the Deployment tab, click the + and add the plugnpi:war artifact.
+8. Click apply and scroll to the bottom, click on the built artifact and ensure both checkboxes are checked.
+
+
+### Setup Raspberry Pi
+1. In the Git, you will find a directory called `Plug_n_Pi`. Copy this directory over to a desired place on your Pi.
+2. On the Pi, visit [this website](https://processing.org/download) to download the latest version of Processing 4. The RaspBerry Pi 4 uses 64bit instructions.
+3. The following libraries need to be installed and can be installed using Processing's build in `Tools > Tools Manager > Libraries`:
+- Minim                            v2.2.2     Damien Di Fede and Anderson Mills
+- Video Library for Processing 4   v2.2.2     The Processing Foundation
+- OpenCV for Processing            v0.7.0     Greg Borenstein and Florian Bruggisser
+- HTTP Requests for Processing     v0.1.5     Rune Madsen, Daniel Shiffman
+4. The zxing4p3 library needs to be installed manually by downloading the file from [this website](http://cagewebdev.com/zxing4p/zxing4p3.zip) and needs to be placed inside the `user/home/sketches/libraries` folder.
+5. Play the game by opening any of the Processing files and click on the triangular play-button.
+
 
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
 ## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+May you encounter any issues during the install, contact us in the [discord channel](https://discord.com/channels/1130758232206495806/1130823228533772288) for inquires. Disclaimer: This channel is only accessible by our group TAs, teachers and the development team.
 
 ## Contributing
 State if you are open to contributions and what your requirements are for accepting them.
