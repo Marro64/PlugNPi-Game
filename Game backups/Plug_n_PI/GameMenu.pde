@@ -1,17 +1,13 @@
 class GameMenu {
   PImage titleImage;
-  int gameWidth;
-  int gameHeight;
   Button[] buttons_state1;
   int fontSize = 30;
   int textBaseOffset = 430;
 
-  GameMenu(int GameWidth, int GameHeight) {
-    gameWidth = GameWidth;
-    gameHeight = GameHeight;
+  GameMenu() {
     titleImage = loadImage("PlugNPI.png");
     buttons_state1 = new Button[1];
-    buttons_state1[0] = new Button(GameWidth/2, 880, 400, 50, "Play Offline", GameState.Playing);
+    buttons_state1[0] = new Button(width/2, height-200, 400, 50, "Play Offline", GameState.Playing);
     //buttons_state1[1] = new Button(GameWidth/2 + 110, 420, 200, 50, "Play Online", 2);
   }
 
@@ -70,7 +66,7 @@ class GameMenu {
   void displayTitleImage() {
     pushMatrix();
     imageMode(CENTER);
-    translate(gameWidth/2, 0);
+    translate(width/2, 0);
     scale(0.5);
     image(titleImage, 0, 400);
     popMatrix();

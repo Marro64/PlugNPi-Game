@@ -34,7 +34,7 @@ void setup() {
   gameState = GameState.MainMenu;
 
   //setup gameMenu
-  gameMenu = new GameMenu(width, height);
+  gameMenu = new GameMenu();
 
   //setup lane Detection
   LaneDetection = new lanedetection(this, 600, 400);
