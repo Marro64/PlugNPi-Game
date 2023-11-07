@@ -144,6 +144,13 @@ const APISwitchRole = async (username) => {
     });
 }
 
+const APISwitchBan = async (username) => {
+    console.log("Switch Role: " + username)
+    const response = await fetch(`/plugnpi/api/users/${username}/ban`, {
+        method: "PUT",
+    });
+}
+
 const APIUpdateProfileDetailsCall = async (userData) => {
     const response = await fetch(`/plugnpi/api/user`, {
         method: "PUT",

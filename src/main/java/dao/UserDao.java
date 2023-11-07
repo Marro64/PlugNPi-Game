@@ -154,7 +154,8 @@ public enum UserDao {
     public boolean isActive(User user)
     {
         JsonArray userQuery = ORM.executeQuery("SELECT a.active FROM project.account a WHERE a.u_id = ?", user.getUid() );
-        String active = userQuery.get(0).getAsString();
+        String active = ((JsonObject) userQuery.get(0)).get("active").getAsString();
+        System.out.println(active);
         boolean isactive = true;
         if (active.equalsIgnoreCase("false")) {
             isactive = false;
@@ -167,10 +168,10 @@ public enum UserDao {
     {
         if( isActive(user) ) {
 
-            ORM.executeQuery("UPDATE project.account SET active = false WHERE a.u_id = ?", user.getUid() );
+            ORM.executeQuery("UPDATE project.account SET active = false WHERE u_id = ?", user.getUid() );
         } else if (!isActive(user)) {
 
-            ORM.executeQuery("UPDATE project.account SET active = true WHERE a.u_id = ?", user.getUid() );
+            ORM.executeQuery("UPDATE project.account SET active = true WHERE u_id = ?", user.getUid() );
         }
 
         }

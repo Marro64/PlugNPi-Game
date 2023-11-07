@@ -109,7 +109,7 @@ public class UserResource {
     @Path("/ban")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deActivateUser(String username) {
+    public Response deActivateUser() {
         User user = new User();
         JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
         UserDao.INSTANCE.jsonToUser(jsonObject, user);

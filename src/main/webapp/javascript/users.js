@@ -67,9 +67,9 @@ class UsersTable extends HTMLElement {
             const bodyCellBan = document.createElement("td");
             bodyCellBan.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
             if(data.active) {
-                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchRole(this.id)>Ban</button>";
+                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchBan(this.id)>Ban</button>";
             } else {
-                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchRole(this.id)>Unban</button>";
+                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=APISwitchBan(this.id)>Unban</button>";
             }
 
             const bodyCellUsername = document.createElement("td");
