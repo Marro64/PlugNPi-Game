@@ -53,7 +53,7 @@ class GameMenu {
     fill(0);
     textSize(fontSize);
     text("Hello " + connectedUserName, width/2, textBaseOffset);
-    text("Start a game on your phone to play!", width/2, textBaseOffset+2*fontSize);
+    text("Press the START GAME button on your phone to play!", width/2, textBaseOffset+2*fontSize);
   }
   
   void displayGameOver() {
