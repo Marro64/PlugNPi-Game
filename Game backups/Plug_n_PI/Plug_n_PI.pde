@@ -87,10 +87,10 @@ void draw() {
       
       //display the game
       RunnerGame.displayBackground();
-      RunnerGame.display(LaneDetection.passvideo());
+      RunnerGame.display();
       LaneDetection.display();
       fill(255);
-      gameMenu.displayScores(RunnerGame);
+      gameMenu.displayScoresCorner(RunnerGame, RunnerGame.getNewHighScore());
       gameMenu.displayHighscoresCorner(webClient.getHighscores());
       gameMenu.displayFramerate();
       gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
@@ -102,8 +102,8 @@ void draw() {
       gameMenu.display(mouseX, mouseY);
       gameMenu.displayGameOver();
       fill(0);
-      gameMenu.displayScores(RunnerGame);
-      gameMenu.displayHighscores(webClient.getHighscores());
+      gameMenu.displayScores(RunnerGame, RunnerGame.getNewHighScore(), 2);
+      gameMenu.displayHighscores(webClient.getHighscores(), 7);
       gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
       break;
   }
@@ -136,6 +136,7 @@ void startGame() {
 
 void endGame() {
   uploadScore(RunnerGame.endScore);
+  RunnerGame.updateHighscore();
   gameState = GameState.GameOver;
 }
 

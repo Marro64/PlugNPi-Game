@@ -153,9 +153,6 @@ class RunnerGame {
         }
       }
     }
-
-    //groundgrid
-    groundGrid.update(distMoved);
   }
 
   void displayBackground() {
@@ -171,7 +168,7 @@ class RunnerGame {
     popMatrix();
   }
 
-  void display(Capture video) {
+  void display() {
     pushMatrix();
 
     // Translate and rotate world
@@ -195,7 +192,7 @@ class RunnerGame {
     }
 
     // Draw player
-    displayPlayer(video);
+    displayPlayer();
     popMatrix();
   }
 
@@ -240,7 +237,7 @@ class RunnerGame {
     }
   }
 
-  void displayPlayer(Capture video) {
+  void displayPlayer() {
 
     beginShape(QUADS);
     texture(playerImage);
@@ -266,8 +263,13 @@ class RunnerGame {
     score = 0;//reset score
     colScore = 0;
     lives = 0;
-    if (endScore > gameHighScore) gameHighScore = endScore;
     resetGameObjects();
+  }
+  
+  void updateHighscore() {
+    if (endScore > gameHighScore) {
+      gameHighScore = endScore;
+    }
   }
 
   void calculateFlip() {
@@ -294,5 +296,9 @@ class RunnerGame {
         collectible.reset();
       }
     }
+  }
+  
+  boolean getNewHighScore() {
+    return score > gameHighScore;
   }
 }

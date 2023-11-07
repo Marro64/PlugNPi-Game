@@ -36,7 +36,7 @@ class WebClient {
     onlineState = OnlineState.Connecting;
   }
 
-  void update(float dt) { //<>// //<>// //<>//
+  void update(float dt) { //<>//
     CycleTime += dt;
     if (CycleTime > completeCycleTime) {
       CycleTime = 0;
