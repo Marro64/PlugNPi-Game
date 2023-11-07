@@ -154,7 +154,7 @@ public enum UserDao {
     public boolean isActive(User user)
     {
         JsonArray userQuery = ORM.executeQuery("SELECT a.active FROM project.account a WHERE a.u_id = ?", user.getUid() );
-        String active = userQuery.get(0).getAsString();
+        String active = ((JsonObject) userQuery.get(0)).get("active").getAsString();
         boolean isactive = true;
         if (active.equalsIgnoreCase("false")) {
             isactive = false;
