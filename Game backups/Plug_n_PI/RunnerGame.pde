@@ -16,7 +16,7 @@ class RunnerGame {
   int posIdx = 1;
   float playerRotation = 0;
   boolean doAflip = false;
-  float flipSpeed = 0.9;
+  float flipSpeed = 0.6;
   
   float menuY = 0;
 
@@ -260,10 +260,10 @@ class RunnerGame {
     scale(23, 32, 32);
     scale(0.8);
     rotateY(playerRotation);
-    vertex(-1, 1, 1, 0, 0);
-    vertex( 1, 1, 1, 1, 0);
-    vertex( 1, 1, -1, 1, 1);
-    vertex(-1, 1, -1, 0, 1);
+    vertex(-1, 0, 1, 0, 0);
+    vertex( 1, 0, 1, 1, 0);
+    vertex( 1, 0, -1, 1, 1);
+    vertex(-1, 0, -1, 0, 1);
     endShape();
   }
 
