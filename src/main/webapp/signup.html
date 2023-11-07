@@ -79,17 +79,17 @@
 
                 /* Additional specific validations */
                 if (!isValidUser(username.value)) {
-                    setFormError("Obama does not like your username.", username);
+                    setFormError("This username is invallid", username);
                     bool =false;
                 }
 
                 if (!isValidEmail(email.value)) {
-                    setFormError("Trump does not like your email.", email);
+                    setFormError("Invalid email", email);
                     bool =false;
                 }
 
                 if (!isValidPassword(passwordInput.value)){
-                    setFormError("Pfft, even Biden can guess this password.", passwordInput);
+                    setFormError("Password must comply with regex expressions", passwordInput);
                     bool =false;
                 }
 

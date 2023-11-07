@@ -114,7 +114,8 @@
     <!-- Header navigation bar -->
     <div id="buttons">
         <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='play.html';">Play</a>
-        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>
+        <!-- demo can stay commented out until video is up -->
+<!--        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>-->
         <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='profile.html';">Profile Info</a>
         <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
     </div>
@@ -136,14 +137,14 @@
                         All time
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="daily-m"
+                       onclick=fetchLeaderboardAndPopulate('daily-m');>
+                        Weekly
+                    </a>
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="daily"
                        onclick=fetchLeaderboardAndPopulate('daily');>
                         Last 24h
-                    </a>
-                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="daily-m"
-                       onclick=fetchLeaderboardAndPopulate('daily-m');>
-                        All time (Mauricio's version)
                     </a>
                 </div>
                 <!-- Do not mind this button, you'll regret it -->
