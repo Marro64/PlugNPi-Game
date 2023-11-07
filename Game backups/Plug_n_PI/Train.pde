@@ -9,6 +9,7 @@ class Train {
   PImage trainFront;
   PImage trainSide;
   PImage trainTop;
+  float gScale;
 
   Train(PImage TrainFront, PImage TrainSide, PImage TrainTop, float PosX, float PosY) {
     posX = PosX;
@@ -28,7 +29,7 @@ class Train {
     fill(0, 70, 25);
     pushMatrix();
     noStroke();
-    translate(posX, posY, 32);
+    translate(posX, posY*gScale, 32);
     scale(32);
     beginShape(QUADS);
     texture(trainFront);
@@ -84,5 +85,9 @@ class Train {
   
   void reset(){
     distMoved = 10000;
+  }
+  
+  void rescale(float scale){
+    gScale = scale;
   }
 }
