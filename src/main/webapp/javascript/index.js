@@ -196,3 +196,14 @@ const APIJoinQueue = async () => {
         return {success: false, message: errorMessage};
     }
 }
+
+const callSwitchRoleAndActiveButton = async (username) => {
+    await APISwitchRole(username); // Call your specific function here
+    window.location.href = "users.html";
+}
+
+const callSwitchBanAndActiveButton = async (username) => {
+    await APISwitchBan(username); // Call your specific function here
+    window.location.href = "users.html";
+}
+
