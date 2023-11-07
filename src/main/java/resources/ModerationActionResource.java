@@ -16,12 +16,10 @@ import model.*;
 public class ModerationActionResource {
     @Context
     private HttpServletRequest req;
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadAction(ModerationAction action) {
-        System.out.println("MODRESOURCE: " + action.getAid());
-        ModerationActionDao.INSTANCE.addLog(action);
-        return Response.ok().build();
+
+    public static void createAction(int adminID, int affectedID, ModerationType action) {
+        ModerationAction mod = new ModerationAction(adminID,affectedID,action);
+        ModerationActionDao.INSTANCE.addLog(mod);
     }
 
     @GET

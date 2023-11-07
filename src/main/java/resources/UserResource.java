@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import model.ModerationType;
 import model.SecurityFactory;
 import model.User;
 import model.UserType;
@@ -49,12 +50,13 @@ public class UserResource {
     @Path("/permissions")
     @PUT
     public Response switchPermissions() {
-//        User admin = (User) req.getAttribute("user");
+        User admin = (User) request.getAttribute("user");
         User userAffected = new User();
         JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
         UserDao.INSTANCE.jsonToUser(jsonObject, userAffected);
-        if (true) {
+        if (admin.getUser_type().equals(UserType.ADMIN)) {
             UserDao.INSTANCE.changeUserRole(userAffected);
+            ModerationActionResource.createAction(admin.getUid(),userAffected.getUid(),ModerationType.SWITCH_ROLE);
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build(); //Used to handle invalid actions (check js)
@@ -109,6 +111,7 @@ public class UserResource {
         User currentUser = (User) request.getAttribute("user");
         if (currentUser.getUser_type().equals(UserType.ADMIN)) {
             UserDao.INSTANCE.de_Activate(user);
+            ModerationActionResource.createAction(currentUser.getUid(),user.getUid(),ModerationType.BAN);
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
