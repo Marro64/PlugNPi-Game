@@ -1,7 +1,5 @@
 package sessionManagement;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dao.SessionDao;
 import dao.UserDao;
@@ -10,12 +8,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.ConnectionRequest;
 import model.User;
 
-import javax.print.attribute.standard.Media;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -46,6 +43,26 @@ public class PiResource {
         System.out.println("Sending: " + indicator);
         SessionDao.INSTANCE.addPiSession(id,-1); //When you want to connect check whether the id exists, and update the uid
         return indicator;
+    }
+
+    /**
+     * For the user to join a game
+     * @return a 200 OK if the user has joined a session
+     */
+    @GET
+    @Path("/queue")
+    public Response queueGame() {
+        User user = (User) httpreq.getAttribute("user");
+        int uid = user.getUid();
+
+        for (Map.Entry<String, Integer> entry : SessionDao.INSTANCE.getSessions().entrySet()) {
+            if (entry.getValue() == uid) {
+                String sessionId = entry.getKey();
+                SessionDao.INSTANCE.addInGame(sessionId);
+                return Response.ok().build();
+            }
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
 
@@ -113,6 +130,9 @@ public class PiResource {
                     return Response.status(Response.Status.OK).entity(output).build();
                 }
                 return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            else if (action.equals("request_join")) { //Queries it's own session with request_join action
+                return Response.ok("queued:" + SessionDao.INSTANCE.getInGame().contains(session)).build();
             }
             else
             {
