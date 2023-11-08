@@ -1,18 +1,18 @@
 package resources;
 
 import com.google.gson.JsonObject;
+import dao.SessionDao;
 import dao.UserDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.*;
 import model.ModerationType;
 import model.SecurityFactory;
 import model.User;
 import model.UserType;
+
+import java.net.URI;
 
 @Path("/user")
 public class UserResource {
@@ -72,8 +72,12 @@ public class UserResource {
     public Response deleteUser() {
         User user = getUserDetails();
         if (UserDao.INSTANCE.UserExists(user)) {
+            String session = (String) request.getAttribute("session");
+
             UserDao.INSTANCE.deleteUser(user);
-            return Response.ok().build();
+
+            NewCookie cookie = new NewCookie("sessionId", session, "/", null, null, 0, false);
+            return Response.ok().cookie(cookie).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
