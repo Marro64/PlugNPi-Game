@@ -70,11 +70,8 @@ public class UserResource {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser() {
-        User user = new User();
-        System.out.println(username);
-        JsonObject jsonObject = UserDao.INSTANCE.getByUsername(username);
-        UserDao.INSTANCE.jsonToUser(jsonObject, user);
-        System.out.println(user.getUsername());
+        User user = (User) request.getAttribute("user");
+        System.out.println("DELETING: " +  user.getUsername());
         if (UserDao.INSTANCE.UserExists(user)) {
             UserDao.INSTANCE.deleteUser(user);
             return Response.ok().build();
