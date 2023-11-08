@@ -63,6 +63,10 @@ public class UserResource {
         }
     }
 
+    /**
+     * For GDPR requests, doesn't need any ADMIN perms
+     * @return
+     */
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser() {

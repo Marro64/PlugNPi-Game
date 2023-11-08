@@ -43,6 +43,10 @@ public class ModerationActionResource {
         return Response.ok(log.toString()).build();
     }
 
+    /**
+     * For current user, doesn't need any ADMIN perms.
+     * @return
+     */
     @GET
     @Path("/me")
     @Produces(MediaType.APPLICATION_JSON)
