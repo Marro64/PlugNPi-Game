@@ -105,13 +105,16 @@ Handle not acceptable if the username/email already exists
                     const urlCall = await APIConnectToPi(url);
                     if (urlCall != null && urlCall.success) {
                         // Redirect to the leaderboard on successful login
-                        toastr.success("Successfully connected to a Pi.")
+                        toastr.success("Successfully connected to a Pi.");
+                        document.location.href = "play.html";
+
                     } else {
                         // Display the error message in the formError
                         alert("Logged in but could not connect to a Pi, please read instructions on the next page.");
+                        document.location.href = "play.html";
                     }
                 }
-                document.location.href = "play.html";
+                document.location.href = "leaderboard.html";
             } else {
                 // Display the error message in the formError
                 setFormError(loginCall.message, passwordInput);
