@@ -35,6 +35,14 @@ public enum ScoreDao {
                 scoreid);
     }
 
+    public int getUidForScore(int scoreid) {
+        JsonArray addUserQuerry =  ORM.executeQuery(
+                "SELECT s.u_id FROM project.score s WHERE s.s_id = ?",
+                scoreid);
+        int userId = ((JsonObject) addUserQuerry.get(0)).get("u_id").getAsInt();
+        return userId;
+    }
+
 
     public JsonArray getTop100AllTime()
     {
@@ -75,6 +83,7 @@ public enum ScoreDao {
         JsonArray objects =  ORM.executeQuery("SELECT\n" +
                 "    a.username,\n" +
                 "    s.distance,\n" +
+                "    s.s_id,\n" +
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
                 "WHERE s.s_id IN (\n" +
