@@ -24,6 +24,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="javascript/index.js" type="text/javascript"></script>
   <script src="javascript/users.js" type="text/javascript"></script>
+  <script src="javascript/formHandler.js" type="text/javascript"></script>
 
   <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,13 +87,7 @@
     }
 
     const getLog = async () => {
-      const username = (await APIGetProfileDetails()).username;
-      console.log(username);
-      if(JSON.stringify(await APIGetUserLog(username)) === null){
-        document.getElementById("user-log").value = "No data recorded for this user";
-      }else{
-        document.getElementById("user-log").value = JSON.stringify(await APIGetUserLog(username));
-      }
+      document.getElementById("user-log").value = JSON.stringify(await APIGetMyLog());
     }
 
     const handleDetailsFormSubmit = async () => {

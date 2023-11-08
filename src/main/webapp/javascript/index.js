@@ -188,6 +188,14 @@ const APIGetUserLog = async (username) => {
     return response.json();
 }
 
+const APIGetMyLog = async () => {
+    const response = await fetch(`/plugnpi/api/actionlog/me`, { //TODO
+        method: "GET"
+    });
+    // user sid needed
+    return response.json();
+}
+
 const APIJoinQueue = async () => {
     const response = await fetch('/plugnpi/api/pi/queue',{ //TODO
         method: "GET"
