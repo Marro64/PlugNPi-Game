@@ -66,6 +66,7 @@ public enum ScoreDao {
         return  ORM.executeQuery("SELECT\n" +
                 "    a.username,\n" +
                 "    s.distance,\n" +
+                "    s.s_id,\n" +
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
                 "WHERE s.s_id IN (\n" +
@@ -106,6 +107,7 @@ public enum ScoreDao {
         JsonArray objects = ORM.executeQuery("SELECT\n" +
                 "    a.username,\n" +
                 "    s.distance,\n" +
+                "    s.s_id,\n" +
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
                 "WHERE s.u_id = a.u_id\n" +
@@ -119,6 +121,7 @@ public enum ScoreDao {
         return  ORM.executeQuery("SELECT\n" +
                 "    a.username,\n" +
                 "    s.distance,\n" +
+                "    s.s_id,\n" +
                 "    s.date_of_record\n" +
                 "FROM project.score s, project.account a\n" +
                 "WHERE s.s_id IN (\n" +
