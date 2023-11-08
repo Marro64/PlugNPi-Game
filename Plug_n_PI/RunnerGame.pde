@@ -17,7 +17,7 @@ class RunnerGame {
   float playerRotation = 0;
   boolean doAflip = false;
   float flipSpeed = 0.6;
-  
+
   float menuY = 0;
 
   //possible lane locations
@@ -143,7 +143,7 @@ class RunnerGame {
         if (collectible.collideWith(laneXpos[posIdx], gameH*0.6)) {
           playDopaminesfx();
           colScore ++;
-          if (colScore > 99) {
+          if (colScore > 49) {
             colScore = 0;
             lives ++;
           }
@@ -153,8 +153,8 @@ class RunnerGame {
         }
       }
     }
-    
-    if(score > gameHighScore) {
+
+    if (score > gameHighScore) {
       newHighScore = true;
       gameHighScore = score;
     }
@@ -252,10 +252,10 @@ class RunnerGame {
     translate(laneXpos[posIdx]*scale, gameH*0.6, 30 + 2*sin(walktimer*0.1));
     int rotationDirection = 1;
     if (doAflip) {
-      if (playerRotation >0){
+      if (playerRotation >0) {
         rotationDirection= -1;
       }
-      translate(64*rotationDirection+(64/(2*PI))*playerRotation, 0,3*(pow(PI, 2)-pow(abs(playerRotation)-PI, 2)));
+      translate(64*rotationDirection+(64/(2*PI))*playerRotation, 0, 3*(pow(PI, 2)-pow(abs(playerRotation)-PI, 2)));
     }
     scale(23, 32, 32);
     scale(0.8);
@@ -272,6 +272,7 @@ class RunnerGame {
     colScore = 0;
     lives = 0;
     newHighScore = false;
+    speed = startSpeed;
     resetGameObjects();
   }
 
@@ -286,7 +287,6 @@ class RunnerGame {
   }
 
   void resetGameObjects() {
-    speed = startSpeed;
     for (Train train : trains) {//reset trains
       if (train != null) {
         train.reset();
@@ -298,17 +298,17 @@ class RunnerGame {
       }
     }
   }
-  
+
   boolean getNewHighScore() {
     return newHighScore;
   }
-  
-  void rescale(int w, int h){
+
+  void rescale(int w, int h) {
     gameW = w;
     scale = scale * float(h)/gameH;
     groundGrid.rescale(scale);
     gameH = h;
-        for (Train train : trains) {//reset trains
+    for (Train train : trains) {//reset trains
       if (train != null) {
         train.rescale(scale);
       }
