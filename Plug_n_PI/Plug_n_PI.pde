@@ -77,6 +77,7 @@ void draw() {
       break;
     case Ready:
       gameMenu.displayPlayerConnected();
+      gameMenu.displayQRCodeCorner(webClient.getQRCodeSmall(), webClient.getSessionID());
       break;
     }
 
