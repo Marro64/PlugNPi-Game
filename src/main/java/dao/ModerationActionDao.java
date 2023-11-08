@@ -21,7 +21,11 @@ public enum ModerationActionDao {
     public JsonArray getAllLogs()
     {
         return ORM.executeQuery(
-          "SELECT * FROM project.moderation_action ORDER BY time_of_action DESC"
+          "SELECT a.username AS admin_username, m.action_type, u.username AS user_username, m.time_of_action\n" +
+                  "FROM project.account a\n" +
+                  "JOIN project.moderation_action m ON a.u_id = m.admin_id\n" +
+                  "LEFT JOIN project.account u ON m.player_id = u.u_id\n" +
+                  "ORDER by m.time_of_action"
         );
     }
     public JsonArray getLogsFromAdmin(User admin)

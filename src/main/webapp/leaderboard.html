@@ -117,7 +117,7 @@
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
 
-    <div class="topnav">
+    <div class="topnav" style="height: 65px">
         <a class="active" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
         <a onclick="window.location.href='play.html';" style="background-color: #444444">Play</a>
         <a id="logbtn" style="visibility: hidden; background-color: #444444" onclick="window.location.href='log.html';" >Log</a>
@@ -149,7 +149,7 @@
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="daily-m" id="btn2"
-                       onclick=fetchLeaderboardAndPopulate('daily-m');>
+                       onclick=fetchLeaderboardAndPopulate('weekly');>
                         Weekly
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"

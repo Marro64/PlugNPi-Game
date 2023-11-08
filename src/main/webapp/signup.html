@@ -116,9 +116,7 @@
                 /* Request was successfuly, if we get back the token */
                 if (registerCall.success) {
                     /* Save the access token to localstorage and redirect the user to main page */
-                    setTimeout(() => {
-                        document.location.href = "login.html";
-                    }, 1500);
+                    document.location.href = "login.html";
                 } else {
                     /* Set the form error */
                     setFormError(registerCall.message, username);
