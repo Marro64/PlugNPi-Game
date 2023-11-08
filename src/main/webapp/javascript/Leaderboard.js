@@ -3,10 +3,12 @@ class Leaderboard extends HTMLElement {
         super();
     }
     /* Invoked each time the custom element is appended into a document-connected element. */
-    connectedCallback() {
+    async connectedCallback() {
         /* Leaderboard data must be a json object */
         const leaderboardData = this.attributes.leaderboardData?.value;
         const leaderboardDataDecoded = JSON.parse(leaderboardData);
+
+        let isAdmin = await APIAdminCheck();
 
         /* Wrapper div for the whole table */
         const wrapperDiv = document.createElement("div");
@@ -39,15 +41,23 @@ class Leaderboard extends HTMLElement {
         headerCellTime.classList.add("px-6", "py-3");
         headerCellTime.innerHTML = "date_of_record";
 
+        if (isAdmin.success === true) {
+            const headerCellInvalidate = document.createElement("th");
+            headerCellInvalidate.classList.add("px-6", "py-3");
+            headerCellInvalidate.innerHTML = "Invalidate Score";
 
-        tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned,headerCellTime);
-        tableHead.appendChild(tableHeadRow);
+            tableHeadRow.append(headerCellInvalidate, headerCellPosition, headerCellPerson, headerCellEarned, headerCellTime);
+            tableHead.appendChild(tableHeadRow);
+        } else {
+            tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned, headerCellTime);
+            tableHead.appendChild(tableHeadRow);
+        }
 
         /* Table body */
         const tableBody = document.createElement("tbody");
 
         /* Going over all leaderboard data entries */
-        leaderboardDataDecoded.forEach((data,index) => {
+        leaderboardDataDecoded.forEach((data, index) => {
             const rank = index + 1;
 
             /* Creating table body row */
@@ -86,8 +96,18 @@ class Leaderboard extends HTMLElement {
             bodyCellTime.classList.add("px-6", "py-3");
             bodyCellTime.innerHTML = data.date_of_record;
 
-            tr.append(bodyCellPosition, bodyCellPerson, bodyCellPoints,bodyCellTime);
-            tableBody.appendChild(tr);
+            if (isAdmin.success === true) {
+                console.log("added admin buttons")
+                const bodyCellInvalidate = document.createElement("td");
+                bodyCellInvalidate.classList.add("px-6", "py-3");
+                bodyCellInvalidate.innerHTML = "<button id='" + data.s_id + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callDeleteScoreAndRefresh(this.id)>Invalidate Score</button>";
+                tr.append(bodyCellInvalidate, bodyCellPosition, bodyCellPerson, bodyCellPoints, bodyCellTime);
+                tableBody.appendChild(tr);
+            } else {
+                console.log("did not add admin buttons")
+                tr.append(bodyCellPosition, bodyCellPerson, bodyCellPoints, bodyCellTime);
+                tableBody.appendChild(tr);
+            }
         });
 
         /* Finalizing */

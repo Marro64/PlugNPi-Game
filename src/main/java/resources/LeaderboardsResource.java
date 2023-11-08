@@ -52,8 +52,9 @@ public class LeaderboardsResource {
     public Response removeScore(@QueryParam("scoreid") int scoreid) {
         User user = (User) req.getAttribute("user");
         if(user.getUser_type().equals(UserType.ADMIN)) { //TODO get the user of that score
+            int affectedid = ScoreDao.INSTANCE.getUidForScore(scoreid);
             ScoreDao.INSTANCE.deleteScore(scoreid);
-            ModerationActionResource.createAction(user.getUid(), user.getUid(), ModerationType.INVALIDATE_SCORE); //TODO check the user who got that score
+            ModerationActionResource.createAction(user.getUid(), affectedid, ModerationType.INVALIDATE_SCORE); //TODO check the user who got that score
             return Response.ok().build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();

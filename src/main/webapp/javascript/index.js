@@ -207,3 +207,13 @@ const callSwitchBanAndActiveButton = async (username) => {
     window.location.href = "users.html";
 }
 
+const APIDeleteScore = async (scoreid) => {
+    const response = await fetch(`/plugnpi/api/leaderboard?scoreid=${scoreid}`, {
+        method: "DELETE",
+    });
+}
+const callDeleteScoreAndRefresh = async (scoreid) => {
+    await APIDeleteScore(scoreid);
+    window.location.href = "leaderboard.html";
+}
+
