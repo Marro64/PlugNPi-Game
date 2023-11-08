@@ -8,8 +8,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.PiScore;
-import model.Score;
+import model.*;
 
 @Path("/leaderboard")
 public class LeaderboardsResource {
@@ -43,10 +42,21 @@ public class LeaderboardsResource {
         return Response.ok(allScores.toString()).build();
     }
 
+    /**
+     * MISSING: CHECK WHO GOT A CERTAIN SCORE
+     * LEADERBOARD ONLY SHOWS USERNAMES AND SCORES AND DATE -> SOMEHOW GET THE RELATION SCORE ID AND FIND THE USER WHO GOT IT
+     * @param scoreid
+     * @return
+     */
     @DELETE
     public Response removeScore(@QueryParam("scoreid") int scoreid) {
-        ScoreDao.INSTANCE.deleteScore(scoreid);
-        return Response.ok().build();
+        User user = (User) req.getAttribute("user");
+        if(user.getUser_type().equals(UserType.ADMIN)) { //TODO get the user of that score
+            ScoreDao.INSTANCE.deleteScore(scoreid);
+            ModerationActionResource.createAction(user.getUid(), user.getUid(), ModerationType.INVALIDATE_SCORE); //TODO check the user who got that score
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
