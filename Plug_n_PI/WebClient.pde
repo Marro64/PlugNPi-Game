@@ -17,8 +17,8 @@ class WebClient {
   float completeCycleTime = 50;
   float CycleTime = 0;
 
-  String host = "http://145.126.2.121:8080";
-  
+  //String host = "http://145.126.2.121:8080";
+  String host = "http://192.168.1.62:8080";
   String QRCodeContent = "https://www.youtube.com/watch?v=KMU0tzLwhbE";
   PImage QRCode;
   PImage QRCodeSmall;
