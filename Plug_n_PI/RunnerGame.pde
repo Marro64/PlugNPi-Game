@@ -143,7 +143,7 @@ class RunnerGame {
         if (collectible.collideWith(laneXpos[posIdx], gameH*0.6)) {
           playDopaminesfx();
           colScore ++;
-          if (colScore > 99) {
+          if (colScore > 49) {
             colScore = 0;
             lives ++;
           }

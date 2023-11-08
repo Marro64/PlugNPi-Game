@@ -95,7 +95,7 @@ class GameMenu {
     
     text(webClient.username, width/2, textBaseOffset+fontSize*linesOffset);
     text("Score: " + game.score, width/2, textBaseOffset+fontSize*(linesOffset+1));
-    text("Coins: " +((int)game.colScore) + "/100", width/2, textBaseOffset+fontSize*(linesOffset+2));
+    text("Coins: " +((int)game.colScore) + "/50", width/2, textBaseOffset+fontSize*(linesOffset+2));
     if(newHighScore) {
       text("New Highscore!", width/2, textBaseOffset+fontSize*(linesOffset+3));
     } else {
@@ -110,7 +110,7 @@ class GameMenu {
     
     text(webClient.username, 20, fontSize);
     text("Score: " + game.score, 20, fontSize*2);
-    text("Coins: " +((int)game.colScore) + "/100", 20, fontSize*3);
+    text("Coins: " +((int)game.colScore) + "/50", 20, fontSize*3);
     if (game.lives >= 0) text("lives: " + game.lives, 20, fontSize*4);
     if (game.gameHighScore > 0) {
       if(newHighScore) {
