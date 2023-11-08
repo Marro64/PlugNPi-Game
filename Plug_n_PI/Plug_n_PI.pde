@@ -15,8 +15,8 @@ String connectedUserName;
 
 enum GameState {
   MainMenu,
-    Playing,
-    GameOver
+  Playing,
+  GameOver
 }
 
 GameState gameState;

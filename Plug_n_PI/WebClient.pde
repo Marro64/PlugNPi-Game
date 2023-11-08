@@ -17,8 +17,8 @@ class WebClient {
   float completeCycleTime = 50;
   float CycleTime = 0;
 
-  String host = "http://145.126.2.121:8080";
-  
+  //String host = "http://145.126.2.121:8080";
+  String host = "http://192.168.1.62:8080";
   String QRCodeContent = "https://www.youtube.com/watch?v=KMU0tzLwhbE";
   PImage QRCode;
   PImage QRCodeSmall;
@@ -34,9 +34,10 @@ class WebClient {
     this.papplet = papplet;
     zxing4p = new ZXING4P();
     onlineState = OnlineState.Connecting;
+    getRequest("/plugnpi/api/pi");
   }
 
-  void update(float dt) { //<>//
+  void update(float dt) {
     CycleTime += dt;
     if (CycleTime > completeCycleTime) {
       CycleTime = 0;
@@ -47,17 +48,18 @@ class WebClient {
   void runRoutineUpdates() {
     switch(onlineState) {
       case Connecting:
-        getRequest("/plugnpi/api/pi");
+        break;
       case QRCode:
         getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_user");
+        updateHighscores();
         break;
       case Ready:
         getRequest("/plugnpi/api/pi/link?session=" + sessionID + "&action=request_join");
+        updateHighscores();
         break;
       default:
         break;
     }
-    updateHighscores();
   }
   
   void uploadScore(int score) {
@@ -100,7 +102,7 @@ class WebClient {
         onlineState = OnlineState.QRCode;
       }
       updateSessionID(content);
-      println("Received session code.\n");
+      println("Received session code.\n"); //<>//
       break;
     case "username":
       username = content;
