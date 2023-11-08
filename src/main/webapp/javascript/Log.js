@@ -54,7 +54,7 @@ class Log extends HTMLElement {
             /* Creating table data cells */
             const bodyCellAdmin = document.createElement("td");
             bodyCellAdmin.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
-            bodyCellAdmin.innerHTML = data.admin_id;
+            bodyCellAdmin.innerHTML = data.admin_username;
 
             const bodyCellAction = document.createElement("td");
             bodyCellAction.classList.add("px-6", "py-4");
@@ -62,7 +62,7 @@ class Log extends HTMLElement {
 
             const bodyCellToUser = document.createElement("td");
             bodyCellToUser.classList.add("px-6", "py-4");
-            bodyCellToUser.innerHTML = data.player_id;
+            bodyCellToUser.innerHTML = data.user_username;
 
             const bodyCellTime = document.createElement("td");
             bodyCellTime.classList.add("px-6", "py-3");
