@@ -69,7 +69,7 @@ class UsersTable extends HTMLElement {
             if(data.active) {
                 bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callSwitchBanAndActiveButton(this.id)>Ban</button>";
             } else {
-                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callSwitchBanAndActiveButton(this.id))>Unban</button>";
+                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callSwitchBanAndActiveButton(this.id)>Unban</button>";
             }
 
             const bodyCellUsername = document.createElement("td");

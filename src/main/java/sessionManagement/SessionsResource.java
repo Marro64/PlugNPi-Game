@@ -36,8 +36,15 @@ public class SessionsResource {
         System.out.println("Login for: " + user.getUsername());
         String passwordToCheck = user.getPassword(); //this is a normal input, needs to be hashed and salted
         JsonObject dbUser = UserDao.INSTANCE.getByUsername(user.getUsername()); //get the user from the DB
+
+        if(!dbUser.get("active").getAsBoolean()) {
+            System.out.println("BANNED USER");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         User userObj = new User();
         UserDao.INSTANCE.jsonToUser(dbUser,userObj);
+
 
         if(dbUser != null) {
             int uid = userObj.getUid();
@@ -96,6 +103,4 @@ public class SessionsResource {
             return Response.ok(Response.Status.UNAUTHORIZED).build(); //Can't log out if you aren't logged in
         }
     }
-
-
 }

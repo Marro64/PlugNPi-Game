@@ -76,7 +76,21 @@ public class SessionFilter implements ContainerRequestFilter {
         httprequest.setAttribute("user", user);
     }
 
+    public static boolean isActive(String session) {
+        JsonObject queried = UserDao.INSTANCE.getUserFromSession(session);
+        if(queried != null) {
+            return queried.get("active").getAsBoolean();
+        } else {
+            return false;
+        }
+    }
+
     public filterType userLoggedInHandler (String session, String uri, String method) {
+
+        if(!isActive(session)) {
+            return filterType.REDIRECT_LOGIN;
+        }
+
         boolean valid = verifySession(session); //Will delete invalid session
         if (valid) { //Unexpired
             if(uri.equals("/plugnpi/api/session/login") || (uri.equals("/plugnpi/api/session/users") && method.equals("POST"))) {

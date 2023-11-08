@@ -43,6 +43,10 @@ const APILoginCall = async (data) => {
         console.log("invalid creds")
         const errorMessage = "Invalid credentials.";
         return {success: false, message: errorMessage};
+    } else if (response.status === 403) {
+        console.log("no user exists")
+        const errorMessage = "This user has been banned.";
+        return {success: false, message: errorMessage};
     } else if (response.status === 404) {
         console.log("no user exists")
         const errorMessage = "No such user exists.";
