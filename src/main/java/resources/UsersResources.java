@@ -46,17 +46,22 @@ public class UsersResources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers(@QueryParam("role") String role) {
-        JsonArray users = new JsonArray();
-        if (role.equals("undefined")) {
-            users = UserDao.INSTANCE.getAllUsers(role);
-        } else if (role.equals("PLAYER")) {
-            users = UserDao.INSTANCE.getAllUsers(role);
-        } else if (role.equals("ADMIN")) {
-            users = UserDao.INSTANCE.getAllUsers(role);
+        User user = (User) request.getAttribute("user");
+        if(user.getUser_type().equals(UserType.ADMIN)) {
+            JsonArray users = new JsonArray();
+            if (role.equals("undefined")) {
+                users = UserDao.INSTANCE.getAllUsers(role);
+            } else if (role.equals("PLAYER")) {
+                users = UserDao.INSTANCE.getAllUsers(role);
+            } else if (role.equals("ADMIN")) {
+                users = UserDao.INSTANCE.getAllUsers(role);
+            } else {
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.ok(users.toString()).build();
         } else {
-            return Response.status(Response.Status.NO_CONTENT).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        return Response.ok(users.toString()).build();
     }
 
     @Path("/{username}")
