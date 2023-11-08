@@ -41,7 +41,20 @@
     var url;
     window.onload = () => {
       /* Initializing dom element references */
+      checkAdmin();
       url = document.getElementById("url");
+    }
+
+    const checkAdmin = async () => {
+      console.log("Checking for Admin type")
+      let isAdmin = await APIAdminCheck();
+      const logbtn = document.getElementById("logbtn");
+      const userbtn = document.getElementById("usersbtn");
+
+      if (isAdmin.success === true) {
+        logbtn.style.visibility = "visible";
+        userbtn.style.visibility = "visible";
+      }
     }
 
     const validateForm = () => {
@@ -93,7 +106,8 @@
 <!--  <div>-->
 <!--    <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>-->
 <!--  </div>-->
-  <div class="topnav">
+
+  <div class="topnav" style="height: 65px">
     <a onclick="window.location.href='leaderboard.html';" style="background-color: #444444">Leaderboard</a>
     <a class="active" onclick="window.location.href='play.html';">Play</a>
     <a id="logbtn" style="visibility: hidden; background-color: #444444" onclick="window.location.href='log.html';">Log</a>
@@ -133,7 +147,7 @@
 
       <div class="mt-6">
         <!-- "handle for submit is a function to handle the input of the login" -->
-        <button class="btn btn-info w-full hover:bg-slate-400 border-none" style="background-color: #eca62d;" onclick="handleFormSubmit()">Submit</button>
+        <button class="btn btn-info w-full sign-button border-none" onclick="handleFormSubmit()">Submit</button>
       </div>
     </div>
   </div>
