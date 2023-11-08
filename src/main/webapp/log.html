@@ -50,8 +50,20 @@
             logInfo.appendChild(
                 parseHTML(`<log-table logData='${JSON.stringify(log)}'></log-table>`));
         }
+        const checkAdmin = async () => {
+            console.log("Checking for Admin type")
+            let isAdmin = await APIAdminCheck();
+            const logbtn = document.getElementById("logbtn");
+            const userbtn = document.getElementById("usersbtn");
+
+            if (isAdmin.success === true) {
+                logbtn.style.visibility = "visible";
+                userbtn.style.visibility = "visible";
+            }
+        }
 
         window.onload = () => {
+            checkAdmin();
             fetchAndPopulateLog();
         }
     </script>
@@ -67,10 +79,10 @@
     <div class="topnav">
         <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
         <a onclick="window.location.href='profile.html';">Profile</a>
-        <a class="active" onclick="window.location.href='log.html';">Log</a>
-        <a onclick="window.location.href='users.html';">Users</a>
+        <a class="active" id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
+        <a id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
         <div class="topnav-right">
-            <a onclick="window.location.href='signup.html';APILogoutCall();">Logout</a>
+            <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
         </div>
     </div>
 

@@ -56,6 +56,23 @@
             //
             // /* Initializing default values */
             // const by = urlParams.get("by") ?? "year";
+            const daily = document.getElementById("btn3");
+            const dailym = document.getElementById("btn2");
+            const alltime = document.getElementById("btn1");
+
+            if(date.toString() === "daily"){
+                daily.style.color="#f38237";
+                dailym.style.color="grey";
+                alltime.style.color="grey";
+            }else if(date.toString() === "daily-m"){
+                daily.style.color="grey";
+                dailym.style.color="#f38237";
+                alltime.style.color="gray";
+            }else if(date.toString() === "all-time"){
+                daily.style.color="grey";
+                dailym.style.color="grey";
+                alltime.style.color="#f38237";
+            }
 
             const ourRankingWrapper = document.getElementById("our-ranking-leaderboard-wrapper");
             const leaderboardWrapper = document.getElementById("leaderboard-wrapper");
@@ -79,7 +96,12 @@
         const checkAdmin = async () => {
             console.log("Checking for Admin type")
             let isAdmin = await APIAdminCheck();
+            const logbtn = document.getElementById("logbtn");
+            const userbtn = document.getElementById("usersbtn");
+
             if (isAdmin.success === true) {
+                logbtn.style.visibility="visible";
+                userbtn.style.visibility="visible";
                 const userManagementButton = document.createElement("a");
                 userManagementButton.className = "mauricios-button hover:bg-pink-200";
                 userManagementButton.textContent = "User Management";
@@ -112,24 +134,14 @@
 <body>
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
-    <!-- Header navigation bar -->
-<!--    <div id="buttons" class="">-->
-<!--        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='play.html';">Play</a>-->
-<!--        &lt;!&ndash; demo can stay commented out until video is up &ndash;&gt;-->
-<!--&lt;!&ndash;        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>&ndash;&gt;-->
-<!--        <a class="mauricios-button" onclick="window.location.href='profile.html';">Profile Info</a>-->
-<!--        <div>-->
-<!--            <button class="mauricios-button " style="float: right" onclick=APILogoutCall()>Log Out</button>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="topnav">
         <a class="active" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
         <a onclick="window.location.href='profile.html';">Profile</a>
-        <a onclick="window.location.href='log.html';">Log</a>
-        <a onclick="window.location.href='users.html';">Users</a>
+        <a id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
+        <a id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
         <div class="topnav-right">
-            <a onclick="window.location.href='signup.html';APILogoutCall();">Logout</a>
+            <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
         </div>
     </div>
 
@@ -144,19 +156,19 @@
 
 
                 <div class="rounded-md shadow-sm cursor-pointer">
-                    <a aria-current="page"
+                    <a aria-current="page" id="btn1"
                        class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
                        data-by="all-time"
                        onclick=fetchLeaderboardAndPopulate('all-time');>
                         All time
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="daily-m"
+                       data-by="daily-m" id="btn2"
                        onclick=fetchLeaderboardAndPopulate('daily-m');>
-                        Mauricio's Version
+                        Weekly
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="daily"
+                       data-by="daily" id="btn3"
                        onclick=fetchLeaderboardAndPopulate('daily');>
                         Last 24h
                     </a>
@@ -183,7 +195,7 @@
                         <span class="loading loading-spinner loading-lg" id="spinner"></span>
                     </div>
 
-                    <a class="text-xs text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Show
+                    <a class="text-xs cursor-pointer hover:text-blue-500 transition-all duration-200" style="color: #eca62d">Show
                         more
                         results</a>
                 </div>

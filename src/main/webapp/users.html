@@ -39,6 +39,22 @@
     <script>
         /* Method for fetching leaderboard and populating dom */
         const fetchUsersAndPopulate = async (role) => {
+            const player = document.getElementById("btn2");
+            const admin = document.getElementById("btn1");
+            const empt = document.getElementById("btn3");
+            if(role.toString() === "ADMIN"){
+                admin.style.color="#f38237";
+                player.style.color="grey";
+                empt.style.color="grey";
+            }else if(role.toString() === "PLAYER"){
+                admin.style.color="grey";
+                player.style.color="#f38237";
+                empt.style.color="gray";
+            }else{
+                player.style.color="grey";
+                admin.style.color="grey";
+                empt.style.color="#f38237";
+            }
 
             const ourRankingWrapper = document.getElementById("our-ranking-leaderboard-wrapper");
             const leaderboardWrapper = document.getElementById("leaderboard-wrapper");
@@ -57,8 +73,20 @@
             leaderboardWrapper.appendChild(
                 parseHTML(`<users-table usersData='${JSON.stringify(leaderboard)}'></users-table>`));
         }
+        const checkAdmin = async () => {
+            console.log("Checking for Admin type")
+            let isAdmin = await APIAdminCheck();
+            const logbtn = document.getElementById("logbtn");
+            const userbtn = document.getElementById("usersbtn");
+
+            if (isAdmin.success === true) {
+                logbtn.style.visibility = "visible";
+                userbtn.style.visibility = "visible";
+            }
+        }
 
         window.onload = () => {
+            checkAdmin();
             /* Initializing leaderboard on page load */
             fetchUsersAndPopulate();
         }
@@ -77,10 +105,10 @@
     <div class="topnav">
         <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
         <a onclick="window.location.href='profile.html';">Profile</a>
-        <a onclick="window.location.href='log.html';">Log</a>
-        <a class="active" onclick="window.location.href='users.html';">Users</a>
+        <a id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
+        <a class="active" id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
         <div class="topnav-right">
-            <a onclick="window.location.href='signup.html';APILogoutCall();">Logout</a>
+            <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
         </div>
     </div>
 
@@ -96,19 +124,18 @@
 
 
                 <div class="rounded-md shadow-sm cursor-pointer">
-                    <a aria-current="page"
-                       class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="All Users"
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="All Users" id="btn3"
                        onclick=fetchUsersAndPopulate();>
                         All Users
                     </a>
                     <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="Players Only"
+                       data-by="Players Only" id="btn2"
                        onclick=fetchUsersAndPopulate('PLAYER');>
                         Player Only
                     </a>
-                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-blue-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
-                       data-by="Admins Only"
+                    <a class="leaderboard-by-sorter px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-500 focus:z-10 focus:ring-1 focus:ring-blue-500 focus:text-blue-500 transition-all duration-200"
+                       data-by="Admins Only" id="btn1"
                        onclick=fetchUsersAndPopulate('ADMIN');>
                         Admins Only
                     </a>
@@ -135,7 +162,7 @@
                         <span class="loading loading-spinner loading-lg" id="spinner"></span>
                     </div>
 
-                    <a class="text-xs text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200">Show
+                    <a class="text-xs text-blue-400 cursor-pointer hover:text-blue-500 transition-all duration-200" style="color: #eca62d">Show
                         more
                         results</a>
                 </div>
