@@ -41,7 +41,10 @@ class Leaderboard extends HTMLElement {
         headerCellTime.classList.add("px-6", "py-3");
         headerCellTime.innerHTML = "date_of_record";
 
+        console.log("in js");
+        console.log(isAdmin.success);
         if (isAdmin.success === true) {
+            console.log("admin leaderboard");
             const headerCellInvalidate = document.createElement("th");
             headerCellInvalidate.classList.add("px-6", "py-3");
             headerCellInvalidate.innerHTML = "Invalidate Score";
@@ -49,6 +52,7 @@ class Leaderboard extends HTMLElement {
             tableHeadRow.append(headerCellInvalidate, headerCellPosition, headerCellPerson, headerCellEarned, headerCellTime);
             tableHead.appendChild(tableHeadRow);
         } else {
+            console.log("player leaderboard");
             tableHeadRow.append(headerCellPosition, headerCellPerson, headerCellEarned, headerCellTime);
             tableHead.appendChild(tableHeadRow);
         }
