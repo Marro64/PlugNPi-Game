@@ -61,12 +61,16 @@ public class ModerationActionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllLogs()
     {
-        JsonArray allLogs = ModerationActionDao.INSTANCE.getAllLogs();
-        if(!allLogs.isJsonNull()) {
-            return Response.ok(allLogs.toString()).build();
-        }else{
-            return Response.status(Response.Status.NO_CONTENT).build();
+        User user = (User) req.getAttribute("user");
+        if(user.getUser_type() == UserType.ADMIN) {
+            JsonArray allLogs = ModerationActionDao.INSTANCE.getAllLogs();
+            if (!allLogs.isJsonNull()) {
+                return Response.ok(allLogs.toString()).build();
+            } else {
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 
