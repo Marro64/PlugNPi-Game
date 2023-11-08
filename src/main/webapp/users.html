@@ -42,19 +42,22 @@
             const player = document.getElementById("btn2");
             const admin = document.getElementById("btn1");
             const empt = document.getElementById("btn3");
-            if(role.toString() === "ADMIN"){
-                admin.style.color="#f38237";
-                player.style.color="grey";
-                empt.style.color="grey";
-            }else if(role.toString() === "PLAYER"){
-                admin.style.color="grey";
-                player.style.color="#f38237";
-                empt.style.color="gray";
-            }else{
+            if(role === undefined){
                 player.style.color="grey";
                 admin.style.color="grey";
                 empt.style.color="#f38237";
+            }else{
+                if(role.toString() === "ADMIN"){
+                    admin.style.color="#f38237";
+                    player.style.color="grey";
+                    empt.style.color="grey";
+                }else if(role.toString() === "PLAYER"){
+                    admin.style.color="grey";
+                    player.style.color="#f38237";
+                    empt.style.color="gray";
+                }
             }
+
 
             const ourRankingWrapper = document.getElementById("our-ranking-leaderboard-wrapper");
             const leaderboardWrapper = document.getElementById("leaderboard-wrapper");
@@ -67,9 +70,11 @@
                 leaderboardWrapper.removeChild(leaderboardWrapper.lastChild);
             }
 
+            console.log("API");
             /* Issueing request */
             const leaderboard = await APIGetUsers(role);
 
+            console.log("API called");
             leaderboardWrapper.appendChild(
                 parseHTML(`<users-table usersData='${JSON.stringify(leaderboard)}'></users-table>`));
         }
@@ -104,9 +109,9 @@
 <!--    </div>-->
     <div class="topnav">
         <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
-        <a onclick="window.location.href='profile.html';">Profile</a>
         <a id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
         <a class="active" id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
+        <a onclick="window.location.href='profile.html';">Profile</a>
         <div class="topnav-right">
             <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
         </div>
