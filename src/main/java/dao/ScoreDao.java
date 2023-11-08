@@ -35,6 +35,7 @@ public enum ScoreDao {
                 scoreid);
     }
 
+
     public JsonArray getTop100AllTime()
     {
       return ORM.executeQuery("SELECT\n" +
