@@ -60,7 +60,7 @@ public class UsersResources {
             }
             return Response.ok(users.toString()).build();
         }
-        return Response.status(Response.Status.UNAUTHORIZED).build();
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @Path("/{username}")
