@@ -52,7 +52,7 @@
       /* Validate email*/
       console.log("checking url valid")
       if (!isValidSession(url.value)) {
-        setFormError("Kim Jong Un does not like your sessionID.", url);
+        setFormError("Invalid Session ID.", url);
         bool = false;
       }
       return bool;
@@ -89,11 +89,24 @@
   </script>
 </head>
 <body>
-<div class="mauricios-color-bg height">
-  <div>
-    <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+<div class="flex flex-col h-screen bg-slate-200">
+<!--  <div>-->
+<!--    <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>-->
+<!--  </div>-->
+  <div class="topnav">
+    <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+    <a class="active" onclick="window.location.href='play.html';">Play</a>
+    <a id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
+    <a id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
+    <div class="topnav-right">
+      <a onclick="window.location.href='profile.html';" >Profile</a>
+    </div>
+    <div class="topnav-right">
+      <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
+    </div>
   </div>
-  <div class="mauricios-container mauricios-color-bg-v2">
+
+  <div class="mauricios-container bg-slate-400">
 
 
     <div class="flex flex-col">
