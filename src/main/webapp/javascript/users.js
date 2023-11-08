@@ -62,14 +62,14 @@ class UsersTable extends HTMLElement {
             /* Creating table data cells */
             const bodyCellAction = document.createElement("td");
             bodyCellAction.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
-            bodyCellAction.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callSwitchRoleAndActiveButton(this.id)>Change Role</button>";
+            bodyCellAction.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full sign-button border-none' onclick=callSwitchRoleAndActiveButton(this.id)>Change Role</button>";
 
             const bodyCellBan = document.createElement("td");
             bodyCellBan.classList.add("flex", "justify-between", "items-center", "px-6", "py-4");
             if(data.active) {
-                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callSwitchBanAndActiveButton(this.id)>Ban</button>";
+                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full sign-button border-none' onclick=callSwitchBanAndActiveButton(this.id)>Ban</button>";
             } else {
-                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callSwitchBanAndActiveButton(this.id)>Unban</button>";
+                bodyCellBan.innerHTML = "<button id='" + data.username + "' class='btn btn-info w-full sign-button border-none' onclick=callSwitchBanAndActiveButton(this.id)>Unban</button>";
             }
 
             const bodyCellUsername = document.createElement("td");
