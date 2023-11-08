@@ -113,16 +113,29 @@
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
     <!-- Header navigation bar -->
-    <div id="buttons">
-        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='play.html';">Play</a>
-        <!-- demo can stay commented out until video is up -->
-<!--        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>-->
-        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='profile.html';">Profile Info</a>
-        <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
+<!--    <div id="buttons" class="">-->
+<!--        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='play.html';">Play</a>-->
+<!--        &lt;!&ndash; demo can stay commented out until video is up &ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='demo.html';">Watch Demo</a>&ndash;&gt;-->
+<!--        <a class="mauricios-button" onclick="window.location.href='profile.html';">Profile Info</a>-->
+<!--        <div>-->
+<!--            <button class="mauricios-button " style="float: right" onclick=APILogoutCall()>Log Out</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="topnav">
+        <a class="active" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+        <a onclick="window.location.href='profile.html';">Profile</a>
+        <a onclick="window.location.href='log.html';">Log</a>
+        <a onclick="window.location.href='users.html';">Users</a>
+        <div class="topnav-right">
+            <a onclick="window.location.href='signup.html';APILogoutCall();">Logout</a>
+        </div>
     </div>
 
     <!-- Page main content part -->
     <div class="flex w-full h-max grow flex-col bg-slate-200 gap-6 justify-center p-8 items-center">
+
         <!-- Main content wrapper -->
         <div class="w-2/3">
             <!-- Title and filter buttons section -->

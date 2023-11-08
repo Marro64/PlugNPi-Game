@@ -60,9 +60,18 @@
 <!-- Wrapper class for navbar and content -->
 <div class="flex flex-col h-screen">
     <!-- Header navigation bar -->
-    <div id="buttons">
-        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>
-        <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>
+<!--    <div id="buttons">-->
+<!--        <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>-->
+<!--        <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>-->
+<!--    </div>-->
+    <div class="topnav">
+        <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+        <a onclick="window.location.href='profile.html';">Profile</a>
+        <a class="active" onclick="window.location.href='log.html';">Log</a>
+        <a onclick="window.location.href='users.html';">Users</a>
+        <div class="topnav-right">
+            <a onclick="window.location.href='signup.html';APILogoutCall();">Logout</a>
+        </div>
     </div>
 
     <!-- Page main content part -->
