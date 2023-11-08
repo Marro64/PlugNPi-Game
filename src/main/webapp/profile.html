@@ -88,7 +88,7 @@
     const getLog = async () => {
       const username = (await APIGetProfileDetails()).username;
       console.log(username);
-      if(JSON.stringify(await APIGetUserLog(username)) == null){
+      if(JSON.stringify(await APIGetUserLog(username)) === null){
         document.getElementById("user-log").value = "No data recorded for this user";
       }else{
         document.getElementById("user-log").value = JSON.stringify(await APIGetUserLog(username));
@@ -117,15 +117,15 @@
 <div class="flex flex-col h-screen">
 
   <div class="topnav">
-    <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
-    <a onclick="window.location.href='play.html';">Play</a>
-    <a id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
-    <a id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
-    <div class="topnav-right">
-      <a class="active" onclick="window.location.href='profile.html';" >Profile</a>
-    </div>
+    <a onclick="window.location.href='leaderboard.html';" style="background-color: #444444">Leaderboard</a>
+    <a onclick="window.location.href='play.html';" style="background-color: #444444">Play</a>
+    <a id="logbtn" style="visibility: hidden; background-color: #444444" onclick="window.location.href='log.html';">Log</a>
+    <a id="usersbtn" style="visibility: hidden; background-color: #444444"  onclick="window.location.href='users.html';">Users</a>
     <div class="topnav-right">
       <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
+    </div>
+    <div class="topnav-right">
+      <a class="active" onclick="window.location.href='profile.html';" >Profile</a>
     </div>
   </div>
 

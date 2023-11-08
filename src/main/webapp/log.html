@@ -78,15 +78,15 @@
 <!--        <a class="mauricios-button hover:bg-pink-300 float-right" onclick=APILogoutCall()>Log Out</a>-->
 <!--    </div>-->
     <div class="topnav">
-        <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
-        <a onclick="window.location.href='play.html';">Play</a>
+        <a onclick="window.location.href='leaderboard.html';" style="background-color: #444444">Leaderboard</a>
+        <a onclick="window.location.href='play.html';" style="background-color: #444444">Play</a>
         <a class="active" id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
-        <a id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
+        <a id="usersbtn" style="visibility: hidden; background-color: #444444"  onclick="window.location.href='users.html';" >Users</a>
+        <div class="topnav-right" >
+            <a onclick="window.location.href='login.html';APILogoutCall();" >Logout</a>
+        </div>
         <div class="topnav-right">
             <a onclick="window.location.href='profile.html';" >Profile</a>
-        </div>
-        <div class="topnav-right" >
-            <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
         </div>
     </div>
 
