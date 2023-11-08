@@ -52,7 +52,6 @@
       password = document.getElementById("password-input");
       newpassword = document.getElementById("confirm-password-input");
 
-
       /* Fetch profile information on load */
       // (async () => {
       //   const profileDetailsCall = await APIGetProfileDetails();
@@ -92,17 +91,19 @@
 
     const handleDetailsFormSubmit = async () => {
       if (!validateForm()) return;
-
       const data = {
         "email": email.value,
         "username": username.value,
         "password": password.value
       };
 
-      await APIUpdateProfileDetailsCall(data);
-      setFormSuccess("Credentials updated!", username);
+
+
       const btn = document.getElementById("update-account");
       btn.style.visibility="visible";
+      await APIUpdateProfileDetailsCall(data);
+      setFormSuccess("Credentials updated!", username);
+
     }
   </script>
 </head>
