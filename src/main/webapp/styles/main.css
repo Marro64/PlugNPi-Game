@@ -233,6 +233,8 @@ alert {
     text-decoration: none;
     font-size: 17px;
     border-radius: 7px;
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 /* Change the color of links on hover */
@@ -252,4 +254,10 @@ alert {
     float: right;
     background-color: #f38237;
     border-radius: 7px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.btn:hover{
+    background-color: #f3b449;
 }

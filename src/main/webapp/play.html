@@ -94,24 +94,24 @@
 <!--    <a class="mauricios-button hover:bg-pink-200" onclick="window.location.href='leaderboard.html';">Leaderboard</a>-->
 <!--  </div>-->
   <div class="topnav">
-    <a onclick="window.location.href='leaderboard.html';">Leaderboard</a>
+    <a onclick="window.location.href='leaderboard.html';" style="background-color: #555555">Leaderboard</a>
     <a class="active" onclick="window.location.href='play.html';">Play</a>
-    <a id="logbtn" style="visibility: hidden" onclick="window.location.href='log.html';">Log</a>
-    <a id="usersbtn" style="visibility: hidden"  onclick="window.location.href='users.html';">Users</a>
-    <div class="topnav-right">
-      <a onclick="window.location.href='profile.html';" >Profile</a>
-    </div>
+    <a id="logbtn" style="visibility: hidden; background-color: #555555" onclick="window.location.href='log.html';">Log</a>
+    <a id="usersbtn" style="visibility: hidden; background-color: #555555"  onclick="window.location.href='users.html';">Users</a>
     <div class="topnav-right">
       <a onclick="window.location.href='login.html';APILogoutCall();">Logout</a>
     </div>
+    <div class="topnav-right">
+      <a onclick="window.location.href='profile.html';" >Profile</a>
+    </div>
   </div>
 
-  <div class="mauricios-container bg-slate-400">
+  <div class="mauricios-container bg-slate-400" style="border-radius: 7px;">
 
 
     <div class="flex flex-col">
       <div class="mt-7">
-        <button class="btn btn-info w-full bg-lime-500 hover:bg-lime-300 border-none" onclick="queueGame()">Start Game</button>
+        <button class="btn btn-info w-full bg-blue-500 hover:bg-blue-300 border-none" onclick="queueGame()">Start Game</button>
       </div><br>
       <div class="form-group">
         <br>
@@ -119,7 +119,7 @@
         <span class="text-gray-300">If the start game button doesn't work, enter the session code below or scan the QR code on the screen of the Pi.</span>
         <div class="divider -mt-1"></div>
         <label class="label">
-          <span class="label-text">Enter the session ID for the Pi</span>
+          <span class="label-text text-gray-300">Enter the session ID for the Pi</span>
         </label>
 
         <input type="text" id="url" placeholder="01234567-89AB-CDEF-0123-456789ABCDEF" name="URL"
@@ -133,7 +133,7 @@
 
       <div class="mt-6">
         <!-- "handle for submit is a function to handle the input of the login" -->
-        <button class="btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none" onclick="handleFormSubmit()">Submit</button>
+        <button class="btn btn-info w-full hover:bg-slate-400 border-none" style="background-color: #eca62d;" onclick="handleFormSubmit()">Submit</button>
       </div>
     </div>
   </div>
