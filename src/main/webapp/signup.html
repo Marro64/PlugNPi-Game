@@ -72,7 +72,7 @@
 
                 let bool = true;
 
-                if(!termsOfService.value){
+                if(!termsOfService.checked){
                     setFormError("You must agree to the Terms of Service to create an account", termsOfService);
                     bool = false;
                 }
@@ -89,7 +89,7 @@
                 }
 
                 if (!isValidPassword(passwordInput.value)){
-                    setFormError("Password must comply with regex expressions", passwordInput);
+                    setFormError("Password does not meet minimum requirements", passwordInput);
                     bool =false;
                 }
 
