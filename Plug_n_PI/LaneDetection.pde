@@ -15,6 +15,7 @@ boolean showCamera;
 boolean showRectangles;
 boolean showIndicator = true;
 float indicatorTHICCness;
+float laneSize;
 
 Rectangle[] faces;
 
@@ -33,6 +34,7 @@ class lanedetection {
     opencv = new OpenCV(papplet, capWidth/Cscale, capHeight/Cscale);
     opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE);
     video.start();
+    laneSize = capWidth/8;
   }
 
   void update() {
@@ -74,10 +76,10 @@ class lanedetection {
     pushMatrix();
     hint(DISABLE_DEPTH_TEST);
     fill(220);
-    rect(width/2, height-indicatorTHICCness/2 -10, capWidth, indicatorTHICCness);
+    rect(width/2, height-indicatorTHICCness/2 -10, laneSize*6, indicatorTHICCness);
     fill(255);
-    rect(width/2 + capWidth/6, height-indicatorTHICCness/2 -10, 10, indicatorTHICCness);
-    rect(width/2 - capWidth/6, height-indicatorTHICCness/2 -10, 10, indicatorTHICCness);
+    rect(width/2 + laneSize, height-indicatorTHICCness/2 -10, 10, indicatorTHICCness);
+    rect(width/2 - laneSize, height-indicatorTHICCness/2 -10, 10, indicatorTHICCness);
     fill(255, 0, 0);
     if (faces.length >0) {
       rect(width/2 + float(capWidth)/2 - (faces[0].x + faces[0].width/2)*Cscale, height -indicatorTHICCness/2 -10, 10, indicatorTHICCness);
@@ -94,10 +96,10 @@ class lanedetection {
 
   void detect_lane(float FaceCenter) {
     String newlane;
-    if ((capWidth/Cscale)/3>FaceCenter) {
+    if ((capWidth/Cscale/2)-laneSize/Cscale>FaceCenter) {
       newlane = "right";
       moveLane(2);
-    } else if (FaceCenter>(((capWidth/Cscale)/3)*2)) {
+    } else if (FaceCenter>(((capWidth/Cscale)/2)+laneSize/Cscale)) {
       newlane = "left";
       moveLane(0);
     } else {
