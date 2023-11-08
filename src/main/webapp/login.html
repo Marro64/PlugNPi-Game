@@ -103,15 +103,15 @@ Handle not acceptable if the username/email already exists
                     console.log('calling api call for QR why tf')
                     const url = document.getElementById("apiCallData").value
                     const urlCall = await APIConnectToPi(url);
-                    if (urlCall.success) {
+                    if (urlCall != null && urlCall.success) {
                         // Redirect to the leaderboard on successful login
                         toastr.success("Successfully connected to a Pi.")
                     } else {
                         // Display the error message in the formError
-                        toastr.error("Could not connect to a Pi, please try again in the Play tab.");
+                        alert("Logged in but could not connect to a Pi, please read instructions on the next page.");
                     }
                 }
-                document.location.href = "leaderboard.html";
+                document.location.href = "play.html";
             } else {
                 // Display the error message in the formError
                 setFormError(loginCall.message, passwordInput);
