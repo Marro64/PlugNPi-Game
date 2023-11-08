@@ -104,7 +104,7 @@ class Leaderboard extends HTMLElement {
                 console.log("added admin buttons")
                 const bodyCellInvalidate = document.createElement("td");
                 bodyCellInvalidate.classList.add("px-6", "py-3");
-                bodyCellInvalidate.innerHTML = "<button id='" + data.s_id + "' class='btn btn-info w-full bg-blue-400 hover:bg-blue-500 border-none' onclick=callDeleteScoreAndRefresh(this.id)>Invalidate Score</button>";
+                bodyCellInvalidate.innerHTML = "<button id='" + data.s_id + "' class='btn btn-info w-full sign-button border-none' onclick=callDeleteScoreAndRefresh(this.id)>Invalidate Score</button>";
                 tr.append(bodyCellInvalidate, bodyCellPosition, bodyCellPerson, bodyCellPoints, bodyCellTime);
                 tableBody.appendChild(tr);
             } else {

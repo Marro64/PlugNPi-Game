@@ -222,6 +222,7 @@ alert {
     background-color: #333333;
     overflow: visible;
     padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 /* Style the links inside the navigation bar */
