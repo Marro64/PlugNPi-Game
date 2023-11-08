@@ -50,6 +50,7 @@ input[type=range]::-webkit-slider-thumb:hover {
     display: inline-block;
     font-size: 16px;
     width: 200px;
+    float: right;
 }
 
 .mauricios-container {
@@ -71,6 +72,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .button-padding{
     padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .popup {
@@ -212,4 +215,41 @@ alert {
 
 .closebtn:hover {
     color: green;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #333;
+    overflow: visible;
+
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-radius: 7px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #eca62d;
+    color: white;
+}
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+    float: right;
+    background-color: #f38237;
+    border-radius: 7px;
 }
