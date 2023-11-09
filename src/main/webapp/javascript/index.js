@@ -177,7 +177,7 @@ const APIDeleteUser = async () => {
     const response = await fetch(`/plugnpi/api/user`, {
         method: "DELETE",
     });
-    return response;
+    window.location.href = "signup.html";
 }
 
 const APIGetUserLog = async (username) => {

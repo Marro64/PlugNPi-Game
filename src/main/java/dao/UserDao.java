@@ -72,6 +72,8 @@ public enum UserDao {
 
     //different method for admin that only they can access.
     public void deleteUser(User user) {
+        System.out.println("Deleting user");
+        int uid = user.getUid();
         JsonArray deleteUserQuerry =  ORM.executeQuery(
                 "DELETE FROM project.moderation_action\n" +
                         "WHERE admin_id IN (SELECT u_id FROM project.account WHERE u_id = ?);\n" +
@@ -82,7 +84,7 @@ public enum UserDao {
                         "DELETE FROM project.session\n" +
                         "WHERE u_id IN (SELECT u_id FROM project.account WHERE u_id = ?);\n" +
                         "DELETE FROM project.account WHERE u_id = ?;",
-                user.getUid());
+                uid,uid,uid,uid,uid);
     }
     public int updateUser(User user) {
         user = InputSanitizer.userSanitize(user);
