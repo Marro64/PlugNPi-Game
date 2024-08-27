@@ -45,9 +45,6 @@ Like this: `String host = "http://[server ip]:8080";`
 ## Usage
 The user must create an account before being able to play a game. Then, once you log in, you are redirected to the play page where you can manually enter a Pi session code. You can also scan a QR code to connect to a Pi, then log in. From the play page you can navigate to the home page containing the leaderboards. Admins and players will see different options here, most notably that admins can access a user management page and log page.
 
-## Support
-May you encounter any issues during the install, contact us in the [discord channel](https://discord.com/channels/1130758232206495806/1130823228533772288) for inquires. Disclaimer: This channel is only accessible by our group TAs, teachers and the development team.
-
 ## Authors and acknowledgment
 Created by the Mod5 Goats: Baro, Bas, Kalin, Mauricio, Noah and Marinus.
 
